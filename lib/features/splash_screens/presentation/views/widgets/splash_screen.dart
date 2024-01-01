@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
-import 'package:mohra_project/features/intro_screen/presentation/views/widgets/intro_screen_body.dart';
+import 'package:mohra_project/features/splash_screens/presentation/views/widgets/splash_screen_body_widget.dart';
 
-class IntroScreen extends StatelessWidget {
-  const IntroScreen({super.key});
+class SplashScreenBody extends StatelessWidget {
+  const SplashScreenBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorManger.introScreenBackgroundColor,
-      body: const IntroScreenBodyWidget(),
+      body: const SplashScreenBodyWidget(),
     );
   }
 }

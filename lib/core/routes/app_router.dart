@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
-import 'package:mohra_project/features/intro_screen/presentation/views/intro_screen.dart';
-import 'package:mohra_project/features/splash_screen/presentation/views/first_splash_screen.dart';
+import 'package:mohra_project/features/intro_screens/presentation/views/first_intro_screen.dart';
+import 'package:mohra_project/features/register_screen/presentation/view/register_screen.dart';
+import 'package:mohra_project/features/splash_screens/presentation/views/splash_screen.dart';
 
 class AppRouter {
   static Route onGenrateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RouterName.introScreenRoute:
         return MaterialPageRoute(
-          builder: (_) => const IntroScreen(),
+          builder: (_) => const SplashScreen(),
         );
       case RouterName.firstSplashScreenRoute:
         return MaterialPageRoute(
-          builder: (_) => const FirstSplashScreen(),
+          builder: (_) => const IntroScreens(),
+        );
+      case RouterName.registerScreen:
+        return MaterialPageRoute(
+          builder: (_) => const RegisterScreen(),
         );
       default:
         return _errorRoute();

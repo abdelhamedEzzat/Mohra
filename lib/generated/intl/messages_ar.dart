@@ -21,5 +21,22 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{};
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "buttonNameFirstAndSecoundIntroScreen":
+            MessageLookupByLibrary.simpleMessage("التالي"),
+        "buttonNameThirdIntroScreen":
+            MessageLookupByLibrary.simpleMessage("انفر للبدء"),
+        "subtitleForFirstIntroScreen": MessageLookupByLibrary.simpleMessage(
+            "يمكنك بسهولة تحميل المستندات ومتابعة سير العمل عليها ويمكنك أيضًا كتابة التعليقات"),
+        "subtitleForSecondIntroScreen": MessageLookupByLibrary.simpleMessage(
+            "يمكنك بسهولة تحميل مستنداتك ومراجعتها من قبل محاسبين ومراجعين متخصصين في أسرع وقت"),
+        "subtitleForThirdIntroScreen": MessageLookupByLibrary.simpleMessage(
+            "يمكنك الاحتفاظ بالمستندات التي تم تحميلها، والاطلاع عليها في أي وقت، وتصفية المستندات وفقًا لحالتها"),
+        "titleForFirstIntroScreen":
+            MessageLookupByLibrary.simpleMessage("إدارة المستندات الخاصة بك"),
+        "titleForSecondIntroScreen":
+            MessageLookupByLibrary.simpleMessage("قم بمراجعة مستنداتك"),
+        "titleForThirdIntroScreen":
+            MessageLookupByLibrary.simpleMessage("سجل الآن واحفظ البيانات")
+      };
 }

@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
-import 'package:mohra_project/features/intro_screen/presentation/views/widgets/widget_build_intro_screen.dart';
+import 'package:mohra_project/features/splash_screens/presentation/views/widgets/widget_build_splash_screen.dart';
 
-class IntroScreenBodyWidget extends StatefulWidget {
-  const IntroScreenBodyWidget({super.key});
+class SplashScreenBodyWidget extends StatefulWidget {
+  const SplashScreenBodyWidget({super.key});
 
   @override
-  State<IntroScreenBodyWidget> createState() => _IntroScreenBodyWidgetState();
+  State<SplashScreenBodyWidget> createState() => _IntroScreenBodyWidgetState();
 }
 
-class _IntroScreenBodyWidgetState extends State<IntroScreenBodyWidget>
+class _IntroScreenBodyWidgetState extends State<SplashScreenBodyWidget>
     with TickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<Offset> slidingAnimation;
+
+//
+//initial State For animation and duration
+//
   @override
   void initState() {
     super.initState();
 
     initSlidingAnimation();
 
-    Future.delayed(const Duration(seconds: 6), () {
-      Navigator.of(context)
-          .pushReplacementNamed(RouterName.firstSplashScreenRoute);
-    });
+    durationToNavigatorToIntroScreen();
   }
 
   @override
@@ -33,7 +34,7 @@ class _IntroScreenBodyWidgetState extends State<IntroScreenBodyWidget>
 
   @override
   Widget build(BuildContext context) {
-    return WidgetBuildIntroScreen(
+    return WidgetBuildSplashScreen(
       slidingAnimation: slidingAnimation,
     );
   }
@@ -46,5 +47,12 @@ class _IntroScreenBodyWidgetState extends State<IntroScreenBodyWidget>
         Tween<Offset>(begin: const Offset(0, 5), end: Offset.zero)
             .animate(animationController);
     animationController.forward();
+  }
+
+  Future<Null> durationToNavigatorToIntroScreen() {
+    return Future.delayed(const Duration(seconds: 6), () {
+      Navigator.of(context)
+          .pushReplacementNamed(RouterName.firstSplashScreenRoute);
+    });
   }
 }

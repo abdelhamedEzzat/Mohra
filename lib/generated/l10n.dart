@@ -49,6 +49,86 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+
+  /// `Manging Your documents`
+  String get titleForFirstIntroScreen {
+    return Intl.message(
+      'Manging Your documents',
+      name: 'titleForFirstIntroScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can easily upload documents, follow the progress of work on them, and you can also write comments`
+  String get subtitleForFirstIntroScreen {
+    return Intl.message(
+      'You can easily upload documents, follow the progress of work on them, and you can also write comments',
+      name: 'subtitleForFirstIntroScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Review Your documents`
+  String get titleForSecondIntroScreen {
+    return Intl.message(
+      'Review Your documents',
+      name: 'titleForSecondIntroScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can easily upload your documents and have them reviewed by specialized accountants and auditors `
+  String get subtitleForSecondIntroScreen {
+    return Intl.message(
+      'You can easily upload your documents and have them reviewed by specialized accountants and auditors ',
+      name: 'subtitleForSecondIntroScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register And Save Data`
+  String get titleForThirdIntroScreen {
+    return Intl.message(
+      'Register And Save Data',
+      name: 'titleForThirdIntroScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can keep the uploaded documents, see them at any time, and filter the documents according to their status`
+  String get subtitleForThirdIntroScreen {
+    return Intl.message(
+      'You can keep the uploaded documents, see them at any time, and filter the documents according to their status',
+      name: 'subtitleForThirdIntroScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get buttonNameFirstAndSecoundIntroScreen {
+    return Intl.message(
+      'Next',
+      name: 'buttonNameFirstAndSecoundIntroScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click To Start`
+  String get buttonNameThirdIntroScreen {
+    return Intl.message(
+      'Click To Start',
+      name: 'buttonNameThirdIntroScreen',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class FontConstants {
+class FoontManger {
   static const String fontFamily = "Kanit";
 }
 

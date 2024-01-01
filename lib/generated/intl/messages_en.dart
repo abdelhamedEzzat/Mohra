@@ -21,5 +21,22 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{};
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "buttonNameFirstAndSecoundIntroScreen":
+            MessageLookupByLibrary.simpleMessage("Next"),
+        "buttonNameThirdIntroScreen":
+            MessageLookupByLibrary.simpleMessage("Click To Start"),
+        "subtitleForFirstIntroScreen": MessageLookupByLibrary.simpleMessage(
+            "You can easily upload documents, follow the progress of work on them, and you can also write comments"),
+        "subtitleForSecondIntroScreen": MessageLookupByLibrary.simpleMessage(
+            "You can easily upload your documents and have them reviewed by specialized accountants and auditors "),
+        "subtitleForThirdIntroScreen": MessageLookupByLibrary.simpleMessage(
+            "You can keep the uploaded documents, see them at any time, and filter the documents according to their status"),
+        "titleForFirstIntroScreen":
+            MessageLookupByLibrary.simpleMessage("Manging Your documents"),
+        "titleForSecondIntroScreen":
+            MessageLookupByLibrary.simpleMessage("Review Your documents"),
+        "titleForThirdIntroScreen":
+            MessageLookupByLibrary.simpleMessage("Register And Save Data")
+      };
 }

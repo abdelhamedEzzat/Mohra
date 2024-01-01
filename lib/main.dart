@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
+import 'package:mohra_project/core/constants/theme/themeManger.dart';
 import 'package:mohra_project/core/routes/app_router.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/generated/l10n.dart';
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
         splitScreenMode: true,
         builder: (_, child) {
           return MaterialApp(
-            theme: ThemeData(fontFamily: "Kanit"),
+            theme: ThemeManger.themeData,
             debugShowCheckedModeBanner: false,
             // for Responcive Screens
             builder: DevicePreview.appBuilder,

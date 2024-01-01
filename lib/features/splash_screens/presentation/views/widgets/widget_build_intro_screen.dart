@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
-import 'package:mohra_project/core/constants/const_images/const_images.dart';
+import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/constants/const_words/const_words.dart';
 import 'package:mohra_project/core/constants/font_manger/font_manger.dart';
 
@@ -35,7 +35,7 @@ class _IntroScreenForMobileState extends State<WidgetBuildIntroScreen>
       child: Image.asset(
         width: MediaQuery.of(context).size.width,
         fit: BoxFit.fill,
-        ConstImages.mohraLogo,
+        ImageManger.mohraLogo,
       ),
     );
   }

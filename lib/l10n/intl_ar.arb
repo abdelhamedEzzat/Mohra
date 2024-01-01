@@ -1,1 +1,18 @@
-{}
+{
+    "titleForFirstIntroScreen" :"إدارة المستندات الخاصة بك",
+
+    "subtitleForFirstIntroScreen" :"يمكنك بسهولة تحميل المستندات ومتابعة سير العمل عليها ويمكنك أيضًا كتابة التعليقات",
+ 
+    "titleForSecondIntroScreen":"قم بمراجعة مستنداتك",
+ 
+    "subtitleForSecondIntroScreen" :"يمكنك بسهولة تحميل مستنداتك ومراجعتها من قبل محاسبين ومراجعين متخصصين في أسرع وقت",
+ 
+    "titleForThirdIntroScreen":"سجل الآن واحفظ البيانات",
+    
+    "subtitleForThirdIntroScreen" :"يمكنك الاحتفاظ بالمستندات التي تم تحميلها، والاطلاع عليها في أي وقت، وتصفية المستندات وفقًا لحالتها",
+
+    "buttonNameFirstAndSecoundIntroScreen" : "التالي",
+    
+    "buttonNameThirdIntroScreen" : "انفر للبدء"
+
+}

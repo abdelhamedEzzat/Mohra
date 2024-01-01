@@ -1,4 +1,17 @@
 {
+   "titleForFirstIntroScreen" :"Manging Your documents",
+
+   "subtitleForFirstIntroScreen" :"You can easily upload documents, follow the progress of work on them, and you can also write comments",
+
+   "titleForSecondIntroScreen":"Review Your documents",
+
+   "subtitleForSecondIntroScreen" :"You can easily upload your documents and have them reviewed by specialized accountants and auditors ",
+
+   "titleForThirdIntroScreen":"Register And Save Data",
    
-    
+   "subtitleForThirdIntroScreen" :"You can keep the uploaded documents, see them at any time, and filter the documents according to their status",
+   
+   "buttonNameFirstAndSecoundIntroScreen" : "Next",
+   
+    "buttonNameThirdIntroScreen" : "Click To Start"
 }
