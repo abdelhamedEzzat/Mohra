@@ -22,10 +22,40 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "AlreadyHaveAccount":
+            MessageLookupByLibrary.simpleMessage("Already Have Account? "),
+        "Login": MessageLookupByLibrary.simpleMessage("Login"),
         "buttonNameFirstAndSecoundIntroScreen":
             MessageLookupByLibrary.simpleMessage("Next"),
         "buttonNameThirdIntroScreen":
             MessageLookupByLibrary.simpleMessage("Click To Start"),
+        "didntHaveAccount":
+            MessageLookupByLibrary.simpleMessage("Didnt Have Account? "),
+        "emailHintTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("Enter Your Email"),
+        "emailLabelTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("Email"),
+        "forgetPassword":
+            MessageLookupByLibrary.simpleMessage("Forget Password ?"),
+        "loginAccount": MessageLookupByLibrary.simpleMessage("Login "),
+        "loginAccountBotton": MessageLookupByLibrary.simpleMessage("Login"),
+        "loginAccountBottonByGoogle":
+            MessageLookupByLibrary.simpleMessage("Login with google"),
+        "nameHintTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("Enter Your Name"),
+        "nameLabelTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("Name"),
+        "passwordHintTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("Enter Your Pasword"),
+        "passwordLabelTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("Password"),
+        "register": MessageLookupByLibrary.simpleMessage("Register"),
+        "registerAccount":
+            MessageLookupByLibrary.simpleMessage("Register Account "),
+        "registerAccountBotton":
+            MessageLookupByLibrary.simpleMessage("Register Account"),
+        "registerAccountBottonByGoogle":
+            MessageLookupByLibrary.simpleMessage("Register with google"),
         "subtitleForFirstIntroScreen": MessageLookupByLibrary.simpleMessage(
             "You can easily upload documents, follow the progress of work on them, and you can also write comments"),
         "subtitleForSecondIntroScreen": MessageLookupByLibrary.simpleMessage(

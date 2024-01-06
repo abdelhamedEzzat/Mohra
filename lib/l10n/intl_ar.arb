@@ -13,6 +13,26 @@
 
     "buttonNameFirstAndSecoundIntroScreen" : "التالي",
     
-    "buttonNameThirdIntroScreen" : "انفر للبدء"
+    "buttonNameThirdIntroScreen" : "اضغط للبدء",
+
+    "registerAccount" : "تسجيل حساب" , 
+    "emailLabelTextInRegisterScreen" : "الايميل" , 
+    "emailHintTextInRegisterScreen" : "اكتب الايميل الخاص بك " , 
+    "passwordLabelTextInRegisterScreen" : "باسورد" , 
+    "passwordHintTextInRegisterScreen" : "اكتب الباسورد الخاص بك" , 
+    "nameLabelTextInRegisterScreen" : "الاسم" , 
+    "nameHintTextInRegisterScreen" : "اكتب اسمك" , 
+    "registerAccountBotton" : "تسجيل الحساب " , 
+    "registerAccountBottonByGoogle" : "تسجيل الحساب من خلال جوجل" , 
+    "AlreadyHaveAccount" : "اذا كنت تمتلك حساب" , 
+    "Login" : "سجل الدخول" ,
+
+    "loginAccount" : "تسجيل الدخول " , 
+    "loginAccountBotton" : "سجل الدخول" , 
+    "loginAccountBottonByGoogle" : "تسجيل الدخول من خلال جوجل" , 
+    "didntHaveAccount" : "اذا لم تكن تمتلك حساب ؟ " , 
+    "register" : "انشاء حساب " ,
+
+    "forgetPassword" :   "نسيت كلمه المرور ؟" 
 
 }

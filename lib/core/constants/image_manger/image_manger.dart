@@ -3,10 +3,9 @@ class ImageManger {
   static const String splashScreen1 = "assets/images/splashScreen1.png";
   static const String splashScreen2 = "assets/images/splashScreen2.png";
   static const String splashScreen3 = "assets/images/splashScreen3.png";
-
-  //icons
-  static const String embtyIcon = "assets/icons/embty_circle_icon.svg";
-  static const String solidIcon = "assets/icons/solid_circle_icon.svg";
-  static const String rightArrow = "assets/icons/Right_Arrow_Icons.svg";
-  static const String leftArrow = "assets/icons/Left_arrow_icons.svg";
+  static const String loginAndRejesterScreen =
+      "assets/images/loginAndRejesterScreen.png";
+  static const String googleLogo = "assets/images/googleLogo.png";
+  static const String addCompanyLogo = "assets/images/AddCompanyLogo.png";
+  static const String decument = "assets/images/decument.jpeg";
 }

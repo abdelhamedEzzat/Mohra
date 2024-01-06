@@ -59,10 +59,10 @@ flutter:
     - assets/images/splashScreen2.png
     - assets/images/splashScreen3.png
     - assets/images/MohraLogo.png
-    - assets/icons/embty_circle_icon.svg
-    - assets/icons/Left_arrow_icons.svg
-    - assets/icons/solid_circle_icon.svg
-    - assets/icons/Right_Arrow_Icons.svg
+    - assets/images/googleLogo.png
+    - assets/images/AddCompanyLogo.png
+    - assets/images/decument.jpeg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

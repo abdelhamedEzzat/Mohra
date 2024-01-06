@@ -22,10 +22,40 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "AlreadyHaveAccount":
+            MessageLookupByLibrary.simpleMessage("اذا كنت تمتلك حساب"),
+        "Login": MessageLookupByLibrary.simpleMessage("سجل الدخول"),
         "buttonNameFirstAndSecoundIntroScreen":
             MessageLookupByLibrary.simpleMessage("التالي"),
         "buttonNameThirdIntroScreen":
-            MessageLookupByLibrary.simpleMessage("انفر للبدء"),
+            MessageLookupByLibrary.simpleMessage("اضغط للبدء"),
+        "didntHaveAccount":
+            MessageLookupByLibrary.simpleMessage("اذا لم تكن تمتلك حساب ؟ "),
+        "emailHintTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("اكتب الايميل الخاص بك "),
+        "emailLabelTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("الايميل"),
+        "forgetPassword":
+            MessageLookupByLibrary.simpleMessage("نسيت كلمه المرور ؟"),
+        "loginAccount": MessageLookupByLibrary.simpleMessage("تسجيل الدخول "),
+        "loginAccountBotton":
+            MessageLookupByLibrary.simpleMessage("سجل الدخول"),
+        "loginAccountBottonByGoogle":
+            MessageLookupByLibrary.simpleMessage("تسجيل الدخول من خلال جوجل"),
+        "nameHintTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("اكتب اسمك"),
+        "nameLabelTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("الاسم"),
+        "passwordHintTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("اكتب الباسورد الخاص بك"),
+        "passwordLabelTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("باسورد"),
+        "register": MessageLookupByLibrary.simpleMessage("انشاء حساب "),
+        "registerAccount": MessageLookupByLibrary.simpleMessage("تسجيل حساب"),
+        "registerAccountBotton":
+            MessageLookupByLibrary.simpleMessage("تسجيل الحساب "),
+        "registerAccountBottonByGoogle":
+            MessageLookupByLibrary.simpleMessage("تسجيل الحساب من خلال جوجل"),
         "subtitleForFirstIntroScreen": MessageLookupByLibrary.simpleMessage(
             "يمكنك بسهولة تحميل المستندات ومتابعة سير العمل عليها ويمكنك أيضًا كتابة التعليقات"),
         "subtitleForSecondIntroScreen": MessageLookupByLibrary.simpleMessage(

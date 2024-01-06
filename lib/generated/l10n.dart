@@ -129,6 +129,176 @@ class S {
       args: [],
     );
   }
+
+  /// `Register Account `
+  String get registerAccount {
+    return Intl.message(
+      'Register Account ',
+      name: 'registerAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get emailLabelTextInRegisterScreen {
+    return Intl.message(
+      'Email',
+      name: 'emailLabelTextInRegisterScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Your Email`
+  String get emailHintTextInRegisterScreen {
+    return Intl.message(
+      'Enter Your Email',
+      name: 'emailHintTextInRegisterScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get passwordLabelTextInRegisterScreen {
+    return Intl.message(
+      'Password',
+      name: 'passwordLabelTextInRegisterScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Your Pasword`
+  String get passwordHintTextInRegisterScreen {
+    return Intl.message(
+      'Enter Your Pasword',
+      name: 'passwordHintTextInRegisterScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get nameLabelTextInRegisterScreen {
+    return Intl.message(
+      'Name',
+      name: 'nameLabelTextInRegisterScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Your Name`
+  String get nameHintTextInRegisterScreen {
+    return Intl.message(
+      'Enter Your Name',
+      name: 'nameHintTextInRegisterScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register Account`
+  String get registerAccountBotton {
+    return Intl.message(
+      'Register Account',
+      name: 'registerAccountBotton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register with google`
+  String get registerAccountBottonByGoogle {
+    return Intl.message(
+      'Register with google',
+      name: 'registerAccountBottonByGoogle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get Login {
+    return Intl.message(
+      'Login',
+      name: 'Login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Already Have Account? `
+  String get AlreadyHaveAccount {
+    return Intl.message(
+      'Already Have Account? ',
+      name: 'AlreadyHaveAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login `
+  String get loginAccount {
+    return Intl.message(
+      'Login ',
+      name: 'loginAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get loginAccountBotton {
+    return Intl.message(
+      'Login',
+      name: 'loginAccountBotton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login with google`
+  String get loginAccountBottonByGoogle {
+    return Intl.message(
+      'Login with google',
+      name: 'loginAccountBottonByGoogle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Didnt Have Account? `
+  String get didntHaveAccount {
+    return Intl.message(
+      'Didnt Have Account? ',
+      name: 'didntHaveAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register`
+  String get register {
+    return Intl.message(
+      'Register',
+      name: 'register',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forget Password ?`
+  String get forgetPassword {
+    return Intl.message(
+      'Forget Password ?',
+      name: 'forgetPassword',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

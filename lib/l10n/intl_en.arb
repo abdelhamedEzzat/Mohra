@@ -13,5 +13,31 @@
    
    "buttonNameFirstAndSecoundIntroScreen" : "Next",
    
-    "buttonNameThirdIntroScreen" : "Click To Start"
+    "buttonNameThirdIntroScreen" : "Click To Start" , 
+
+    "registerAccount" : "Register Account " , 
+    "emailLabelTextInRegisterScreen" : "Email" , 
+    "emailHintTextInRegisterScreen" : "Enter Your Email" , 
+    "passwordLabelTextInRegisterScreen" : "Password" , 
+    "passwordHintTextInRegisterScreen" : "Enter Your Pasword" , 
+    "nameLabelTextInRegisterScreen" : "Name" , 
+    "nameHintTextInRegisterScreen" : "Enter Your Name" , 
+    "registerAccountBotton" : "Register Account" , 
+    "registerAccountBottonByGoogle" : "Register with google" , 
+    "Login" : "Login" ,
+    "AlreadyHaveAccount" : "Already Have Account? " , 
+  
+
+
+    "loginAccount" : "Login " , 
+    "loginAccountBotton" : "Login" , 
+    "loginAccountBottonByGoogle" : "Login with google" , 
+    "didntHaveAccount" : "Didnt Have Account? " , 
+    "register" : "Register" ,
+
+    "forgetPassword" :   "Forget Password ?" 
+
+   
+
+
 }
