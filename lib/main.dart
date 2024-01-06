@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
             //
             // for Routing Screens
             onGenerateRoute: AppRouter.onGenrateRoute,
-            initialRoute: RouterName.introScreenRoute,
+            initialRoute: RouterName.auditorHomeScreen,
           );
         },
       );

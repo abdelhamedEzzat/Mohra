@@ -10,11 +10,15 @@ class CustomTextFormField extends StatelessWidget {
     this.labelText,
     required this.hintText,
     required this.prefixIcon,
+    this.keyboardType,
+    this.fontStyle,
   });
   final double? hight;
   final String? labelText;
   final String hintText;
   final Icon prefixIcon;
+  final TextInputType? keyboardType;
+  final FontStyle? fontStyle;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
       child: SizedBox(
         height: hight?.h ?? 50.h,
         child: TextFormField(
+            keyboardType: keyboardType,
             cursorColor: ColorManger.backGroundColorToSplashScreen,
             decoration: InputDecoration(
                 filled: true,
@@ -36,8 +41,8 @@ class CustomTextFormField extends StatelessWidget {
                 hintStyle: TextStyle(
                     color: ColorManger.darkGray, fontSize: FontSize.s14.h),
                 labelStyle: TextStyle(
-                    fontStyle: FontStyle.italic,
-                    fontSize: FontSize.s14.h,
+                    fontStyle: fontStyle ?? FontStyle.italic,
+                    fontSize: FontSize.s15.w,
                     color: ColorManger.backGroundColorToSplashScreen),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),

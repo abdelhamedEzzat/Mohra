@@ -46,9 +46,10 @@ class DetailsDocuments extends StatelessWidget {
                 height: 15.h,
               ),
               Container(
-                padding: EdgeInsets.only(left: 15.w),
+                padding: EdgeInsets.only(left: 15.w, top: 10.h, bottom: 10.h),
                 child: Row(children: [Text("Comment : "), Text("Comment")]),
                 decoration: BoxDecoration(
+                    border: Border.all(color: ColorManger.darkGray),
                     color: ColorManger.white,
                     borderRadius: BorderRadius.circular(25)),
               )

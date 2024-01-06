@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
+import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/accountant_home_screen.dart';
+import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/accuntant_company_documents.dart';
+import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/documents_detatils_for_accountant.dart';
+import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/admin_home_screen.dart';
+import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_home_screen.dart';
+import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_detatils_documents_screen.dart';
+import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/auditor_company_documents.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/create_company.dart';
 import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/home_screen_for_user.dart';
@@ -48,6 +55,34 @@ class AppRouter {
       case RouterName.detailsDocuments:
         return MaterialPageRoute(
           builder: (_) => const DetailsDocuments(),
+        );
+      case RouterName.auditorHomeScreen:
+        return MaterialPageRoute(
+          builder: (_) => const AuditorHomeScreen(),
+        );
+      case RouterName.accountantHomeScreen:
+        return MaterialPageRoute(
+          builder: (_) => const AccountantHomeScreen(),
+        );
+      case RouterName.adminHomeScreen:
+        return MaterialPageRoute(
+          builder: (_) => const AdminHomeScreen(),
+        );
+      case RouterName.accuntantCompanyDocuments:
+        return MaterialPageRoute(
+          builder: (_) => const AccuntantCompanyDocuments(),
+        );
+      case RouterName.accountantDocumentDetails:
+        return MaterialPageRoute(
+          builder: (_) => const AccountantDocumentDetails(),
+        );
+      case RouterName.auditorDocumentDetails:
+        return MaterialPageRoute(
+          builder: (_) => const AuditorDocumentDetails(),
+        );
+      case RouterName.auditorCompanyDocuments:
+        return MaterialPageRoute(
+          builder: (_) => const AuditorCompanyDocuments(),
         );
 
       default:

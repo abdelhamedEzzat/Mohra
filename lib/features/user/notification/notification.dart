@@ -38,7 +38,7 @@ class NotificationScreen extends StatelessWidget {
                         alignment: Alignment.bottomLeft,
                         child: ListTile(
                             title: Text(
-                              "DecumentName For Company Name",
+                              "Decument NO.( 1 ) For Company Name",
                               style: Theme.of(context).textTheme.displayMedium,
                             ),
                             subtitle: Text.rich(TextSpan(children: [
@@ -87,7 +87,7 @@ class AcceptedOrRejectedDocFromOuditorToAcountant extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           child: ListTile(
               title: Text(
-                "Document Name For  Company Name",
+                "Decument NO.( 1 ) For  Company Name",
                 style: Theme.of(context).textTheme.displayMedium,
               ),
               subtitle: Text.rich(TextSpan(children: [
@@ -216,7 +216,7 @@ class DocumentNotificationsForUser extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           child: ListTile(
               title: Text(
-                "Document Name for  Company Name",
+                "Decument NO.( 1 ) for  Company Name",
                 style: Theme.of(context).textTheme.displayMedium,
               ),
               subtitle: Text.rich(TextSpan(children: [

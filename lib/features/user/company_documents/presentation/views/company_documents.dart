@@ -14,7 +14,7 @@ class CompanyDocuments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
-    final mediaQueryWidth = MediaQuery.of(context).size.width;
+//    final mediaQueryWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: const CustomAppBar(
           leading: BackButton(color: Colors.white),
@@ -85,9 +85,23 @@ class CompanyDocuments extends StatelessWidget {
                   height: 15.h,
                 ),
                 DocumentImageAndNumberAfterUpload(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(RouterName.detailsDocuments);
+                    },
+                    numberOfDocument: "1",
+                    image: ImageManger.decument,
+                    withState: true,
                     color: ColorManger.darkGray,
                     status: "Waiting for the accountant's review"),
                 DocumentImageAndNumberAfterUpload(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(RouterName.detailsDocuments);
+                    },
+                    numberOfDocument: "1",
+                    image: ImageManger.decument,
+                    withState: true,
                     color: ColorManger.acceptedCompanyStatus,
                     status: "accepted"),
               ],
@@ -100,81 +114,173 @@ class CompanyDocuments extends StatelessWidget {
 class DocumentImageAndNumberAfterUpload extends StatelessWidget {
   const DocumentImageAndNumberAfterUpload({
     Key? key,
-    required this.color,
-    required this.status,
+    this.color,
+    this.status,
+    required this.withState,
+    required this.image,
+    required this.numberOfDocument,
+    required this.onTap,
+    this.typeOfDocument,
   }) : super(key: key);
-  final Color color;
-  final String status;
+  final Color? color;
+  final String? status;
+  final bool withState;
+  final String numberOfDocument;
+  final String? typeOfDocument;
+  final String image;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pushNamed(RouterName.detailsDocuments);
-      },
-      child: Column(
-        children: [
-          Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.25,
-              decoration: BoxDecoration(
-                  color: ColorManger.black,
-                  borderRadius: BorderRadius.circular(25)),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+        onTap: onTap,
+        child: withState == true
+            ? Column(
                 children: [
                   Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 15.h),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: color,
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(25),
-                            topRight: Radius.circular(25))),
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    child: Text(
-                      status,
-                      style: Theme.of(context).textTheme.displaySmall,
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                            flex: 4,
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(25)),
-                              child: Image.asset(
-                                ImageManger.decument,
-                                fit: BoxFit.fill,
-                              ),
-                            )),
-                        Expanded(
-                            child: CircleAvatar(
-                          radius: 25,
-                          child: Text(
-                            "1",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayMedium!
-                                .copyWith(color: Colors.black),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      decoration: BoxDecoration(
+                          color: ColorManger.black,
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.only(left: 15.h),
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                                color: color,
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(25),
+                                    topRight: Radius.circular(25))),
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            child: Text(
+                              status ?? "",
+                              style: Theme.of(context).textTheme.displaySmall,
+                            ),
                           ),
-                        )),
-                      ],
-                    ),
+                          Expanded(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Expanded(
+                                    flex: 4,
+                                    child: ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(25)),
+                                        child: Image.asset(
+                                          image,
+                                          fit: BoxFit.fill,
+                                        ))),
+                                Expanded(
+                                    child: CircleAvatar(
+                                  radius: 25,
+                                  child: Text(
+                                    numberOfDocument,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium!
+                                        .copyWith(color: Colors.black),
+                                  ),
+                                )),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )),
+                  SizedBox(
+                    height: 15.h,
                   ),
                 ],
-              )),
-          SizedBox(
-            height: 15.h,
-          ),
-        ],
-      ),
-    );
+              )
+            : Column(
+                children: [
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Stack(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(top: 20.h),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          decoration: BoxDecoration(
+                              color: ColorManger.black,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Expanded(
+                                        flex: 4,
+                                        child: ClipRRect(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(25)),
+                                          child: Image.asset(
+                                            ImageManger.decument,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )),
+                      Positioned(
+                        top: 20.h,
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.black87.withOpacity(0.8),
+                                borderRadius: const BorderRadius.only(
+                                  bottomRight: Radius.circular(10),
+                                  topLeft: Radius.circular(10),
+                                )),
+                            padding: EdgeInsets.only(left: 1.w),
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            height: MediaQuery.of(context).size.height * 0.055,
+                            child: Center(
+                                child: Text(numberOfDocument,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge!
+                                        .copyWith(color: Colors.white)))),
+                      ),
+                      Positioned(
+                        top: 20.h,
+                        right: 0,
+                        bottom: 0,
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.black87.withOpacity(0.8),
+                                borderRadius: const BorderRadius.only(
+                                  //   topLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                )),
+                            padding: EdgeInsets.only(left: 1.w),
+                            width: MediaQuery.of(context).size.width * 0.30,
+                            height: MediaQuery.of(context).size.height * 0.055,
+                            child: Center(
+                                child: Text(typeOfDocument ?? "New",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge!
+                                        .copyWith(color: Colors.white)))),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                ],
+              ));
   }
 }
+
 // / StatusWidget
 
 class AddCompanyLogoWidget extends StatelessWidget {
