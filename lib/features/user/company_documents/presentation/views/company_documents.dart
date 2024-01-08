@@ -6,7 +6,7 @@ import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
-import 'package:mohra_project/features/user/settings_screen/settings_screen.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/widgets/details_profile.dart';
 
 class CompanyDocuments extends StatelessWidget {
   const CompanyDocuments({super.key});

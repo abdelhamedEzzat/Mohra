@@ -5,7 +5,7 @@ import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/auditor_home_screen_body.dart';
 
-import 'package:mohra_project/features/user/notification/notification.dart';
+import 'package:mohra_project/features/user/notification/persrntation/views/notification.dart';
 import 'package:mohra_project/features/user/settings_screen/settings_screen.dart';
 
 class AuditorHomeScreen extends StatefulWidget {
