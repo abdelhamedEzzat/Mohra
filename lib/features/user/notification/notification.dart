@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
-import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/home_screen_for_user_body.dart';
+import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/status_company.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});

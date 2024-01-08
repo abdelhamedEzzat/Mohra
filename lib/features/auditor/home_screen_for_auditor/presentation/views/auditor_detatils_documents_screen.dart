@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
+import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/company_documents.dart';
-import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/home_screen_for_user.dart';
 
 class AuditorDocumentDetails extends StatefulWidget {
   const AuditorDocumentDetails({super.key});
@@ -173,7 +173,7 @@ class DataFromAccountant extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQueryHeight = MediaQuery.of(context).size.height;
+    // final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
     return Container(
       decoration: BoxDecoration(

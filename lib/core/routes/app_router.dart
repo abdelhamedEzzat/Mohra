@@ -4,6 +4,9 @@ import 'package:mohra_project/features/accountant/home_screen_for_accountant/pre
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/accuntant_company_documents.dart';
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/documents_detatils_for_accountant.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/admin_home_screen.dart';
+import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/add_new_accountant.dart';
+import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/add_new_auditor.dart';
+import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/manage_assignment.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_home_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_detatils_documents_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/auditor_company_documents.dart';
@@ -83,6 +86,18 @@ class AppRouter {
       case RouterName.auditorCompanyDocuments:
         return MaterialPageRoute(
           builder: (_) => const AuditorCompanyDocuments(),
+        );
+      case RouterName.addNewAccountant:
+        return MaterialPageRoute(
+          builder: (_) => const AddNewAccountant(),
+        );
+      case RouterName.addNewAuditor:
+        return MaterialPageRoute(
+          builder: (_) => const AddNewAuditor(),
+        );
+      case RouterName.manageAssignment:
+        return MaterialPageRoute(
+          builder: (_) => const ManageAssignment(),
         );
 
       default:

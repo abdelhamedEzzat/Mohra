@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
-import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/home_screen_for_user_body.dart';
+import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
+import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/icon_and_text_company.dart';
 
 class AuditorHomeScreenBody extends StatelessWidget {
   const AuditorHomeScreenBody({super.key});

@@ -16,4 +16,7 @@ class RouterName {
   static const String accountantDocumentDetails = "AccountantDocumentDetails";
   static const String auditorDocumentDetails = "auditorDocumentDetails";
   static const String auditorCompanyDocuments = "AuditorCompanyDocuments";
+  static const String addNewAccountant = "addNewAccountant";
+  static const String addNewAuditor = "addNewAuditor";
+  static const String manageAssignment = "ManageAssignment";
 }
