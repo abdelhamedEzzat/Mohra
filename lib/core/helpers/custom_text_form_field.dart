@@ -12,6 +12,8 @@ class CustomTextFormField extends StatelessWidget {
     required this.prefixIcon,
     this.keyboardType,
     this.fontStyle,
+    this.onChanged,
+    this.controller,
   });
   final double? hight;
   final String? labelText;
@@ -19,6 +21,8 @@ class CustomTextFormField extends StatelessWidget {
   final Icon prefixIcon;
   final TextInputType? keyboardType;
   final FontStyle? fontStyle;
+  final void Function(String)? onChanged;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,6 +30,8 @@ class CustomTextFormField extends StatelessWidget {
       child: SizedBox(
         height: hight?.h ?? 50.h,
         child: TextFormField(
+            controller: controller,
+            onChanged: onChanged,
             keyboardType: keyboardType,
             cursorColor: ColorManger.backGroundColorToSplashScreen,
             decoration: InputDecoration(

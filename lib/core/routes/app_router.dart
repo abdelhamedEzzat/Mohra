@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/accountant_home_screen.dart';
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/accuntant_company_documents.dart';
@@ -10,6 +11,10 @@ import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_home_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_detatils_documents_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/auditor_company_documents.dart';
+import 'package:mohra_project/features/login_screen/data/auth_login_repo.dart';
+import 'package:mohra_project/features/login_screen/presentation/manger/login_cubit/login_cubit.dart';
+import 'package:mohra_project/features/register_screen/data/auth_repostory.dart';
+import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/signup_cubit.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/create_company.dart';
 import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/home_screen_for_user.dart';
@@ -31,14 +36,24 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const IntroScreens(),
         );
+      //
+      //
       case RouterName.registerScreen:
         return MaterialPageRoute(
-          builder: (_) => const RegisterScreen(),
-        );
+            builder: (_) => BlocProvider(
+                  create: (context) => SignupCubit(),
+                  child: const RegisterScreen(),
+                ));
+      //
+      //
       case RouterName.loginScreen:
         return MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-        );
+            builder: (_) => BlocProvider(
+                  create: (context) => LoginCubit(),
+                  child: const LoginScreen(),
+                ));
+//
+//
       case RouterName.homeScreenForUser:
         return MaterialPageRoute(
           builder: (_) => const HomeScreenForUser(),

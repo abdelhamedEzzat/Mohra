@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
-import 'package:mohra_project/features/user/company_documents/presentation/views/company_documents.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/add_Image_widget.dart';
+import 'package:mohra_project/features/user/create_company/presentation/views/widget/title_of_form_create_company.dart';
 
 class CreateCompany extends StatelessWidget {
   const CreateCompany({super.key});

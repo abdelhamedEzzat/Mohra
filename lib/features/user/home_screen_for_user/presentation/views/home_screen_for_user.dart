@@ -25,11 +25,13 @@ class _HomeScreenForUserState extends State<HomeScreenForUser> {
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    // String firstName = BlocProvider.of<SignupCubit>(context).getFirstName();
+
     return Scaffold(
         bottomNavigationBar: bottomNavigationBar(),
         appBar: CustomAppBar(
             title: Text(
-          "Hello : Abdelhameed Ezzat",
+          " Hello : ",
           style: Theme.of(context)
               .textTheme
               .displayMedium!

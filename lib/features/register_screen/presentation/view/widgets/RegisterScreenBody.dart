@@ -8,62 +8,74 @@ import 'package:mohra_project/features/register_screen/presentation/view/widgets
 import 'package:mohra_project/features/register_screen/presentation/view/widgets/landscape/landscape_logo_and_text_field_and_botton.dart';
 import 'package:mohra_project/features/register_screen/presentation/view/widgets/protrait/protrat_logo_and_text_field_and_botton.dart';
 
-class RegisterScreenBody extends StatelessWidget {
+class RegisterScreenBody extends StatefulWidget {
   const RegisterScreenBody({
     super.key,
   });
 
   @override
+  State<RegisterScreenBody> createState() => _RegisterScreenBodyState();
+}
+
+class _RegisterScreenBodyState extends State<RegisterScreenBody> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      body: Oriantation(
-        portrait: Container(
-          height: double.infinity,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: gradiantList,
-          )),
-          child: NotificationListener<OverscrollIndicatorNotification>(
-            onNotification: (overscroll) {
-              overscroll.disallowIndicator();
-              return true;
-            },
-            child: const SingleChildScrollView(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  GlassScreenForRegisterScreen(),
-                  LogoAndTextFieldAndbuttonProtrait(),
-                ],
+      body: Builder(
+        builder: (context) {
+          return Oriantation(
+            portrait: Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: gradiantList,
+              )),
+              child: NotificationListener<OverscrollIndicatorNotification>(
+                onNotification: (overscroll) {
+                  overscroll.disallowIndicator();
+                  return true;
+                },
+                child: const SingleChildScrollView(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      GlassScreenForRegisterScreen(),
+                      LogoAndTextFieldAndbuttonProtrait(),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        landscape: Container(
-          height: double.infinity,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: gradiantList,
-          )),
-          child: NotificationListener<OverscrollIndicatorNotification>(
-            onNotification: (notification) {
-              notification.disallowIndicator();
-              return true;
-            },
-            child: const Stack(
-              alignment: Alignment.center,
-              children: [
-                GlassScreenForRegisterScreen(),
-                LogoAndTextFieldAndbuttonlandscape(),
-              ],
+            landscape: Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: gradiantList,
+              )),
+              child: NotificationListener<OverscrollIndicatorNotification>(
+                onNotification: (notification) {
+                  notification.disallowIndicator();
+                  return true;
+                },
+                child: const Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    GlassScreenForRegisterScreen(),
+                    LogoAndTextFieldAndbuttonlandscape(),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

@@ -5,7 +5,9 @@ import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
-import 'package:mohra_project/features/user/company_documents/presentation/views/company_documents.dart';
+import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/comment.dart';
+import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/data_from_accountant.dart';
+import 'package:mohra_project/features/user/create_company/presentation/views/widget/title_of_form_create_company.dart';
 
 class AuditorDocumentDetails extends StatefulWidget {
   const AuditorDocumentDetails({super.key});
@@ -70,21 +72,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                 SizedBox(
                   height: 10.h,
                 ),
-                Container(
-                  padding: EdgeInsets.only(left: 15.w, top: 10.h, bottom: 10.h),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: ColorManger.darkGray),
-                      color: ColorManger.white,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Row(children: [
-                    Text(
-                      "Comment : ",
-                      style: Theme.of(context).textTheme.displayMedium,
-                    ),
-                    Text("Comment",
-                        style: Theme.of(context).textTheme.displayMedium)
-                  ]),
-                ),
+                const CommentWidget(),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -106,38 +94,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                 SizedBox(
                   height: 15.h,
                 ),
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
-                  decoration: BoxDecoration(
-                      color: ColorManger.white,
-                      borderRadius: BorderRadius.circular(15.h),
-                      border: Border.all(color: ColorManger.darkGray)),
-                  child: DropdownButton<String>(
-                    hint: Text(
-                      "Select Status Of Document",
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium!
-                          .copyWith(
-                              color: ColorManger.backGroundColorToSplashScreen),
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                    isExpanded: true,
-                    value: selectItem,
-                    items: stutsDocumentDropDown
-                        .map((item) => DropdownMenuItem(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: Theme.of(context).textTheme.displayMedium,
-                            )))
-                        .toList(),
-                    onChanged: (item) => setState(() {
-                      selectItem = item!;
-                    }),
-                  ),
-                ),
+                SelectStatusOfDocument(context),
                 SizedBox(
                   height: 15.h,
                 ),
@@ -159,134 +116,36 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
           ),
         ));
   }
-}
 
-class DataFromAccountant extends StatelessWidget {
-  const DataFromAccountant({
-    super.key,
-    required this.constansType,
-    required this.writeForAccountant,
-  });
-
-  final String constansType;
-  final String writeForAccountant;
-
-  @override
-  Widget build(BuildContext context) {
-    // final mediaQueryHeight = MediaQuery.of(context).size.height;
-    final mediaQueryWidth = MediaQuery.of(context).size.width;
+  Container SelectStatusOfDocument(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
       decoration: BoxDecoration(
-          border: Border.all(color: ColorManger.darkGray),
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(15.h))),
-      padding: EdgeInsets.only(top: 10.h, bottom: 10.h, left: 15.w),
-      width: mediaQueryWidth,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text(
-                constansType,
-                style: Theme.of(context)
-                    .textTheme
-                    .displaySmall!
-                    .copyWith(color: ColorManger.backGroundColorToSplashScreen),
-              ),
-              Text(
-                writeForAccountant,
-                style: Theme.of(context).textTheme.displaySmall,
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 5.h,
-          ),
-          Row(
-            children: [
-              Text(
-                constansType,
-                style: Theme.of(context)
-                    .textTheme
-                    .displaySmall!
-                    .copyWith(color: ColorManger.backGroundColorToSplashScreen),
-              ),
-              Text(
-                writeForAccountant,
-                style: Theme.of(context).textTheme.displaySmall,
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 5.h,
-          ),
-          Row(
-            children: [
-              Text(
-                constansType,
-                style: Theme.of(context)
-                    .textTheme
-                    .displaySmall!
-                    .copyWith(color: ColorManger.backGroundColorToSplashScreen),
-              ),
-              Text(
-                writeForAccountant,
-                style: Theme.of(context).textTheme.displaySmall,
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 5.h,
-          ),
-          Row(
-            children: [
-              Text(
-                constansType,
-                style: Theme.of(context)
-                    .textTheme
-                    .displaySmall!
-                    .copyWith(color: ColorManger.backGroundColorToSplashScreen),
-              ),
-              Text(
-                writeForAccountant,
-                style: Theme.of(context).textTheme.displaySmall,
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 5.h,
-          ),
-          Row(
-            children: [
-              Text(
-                constansType,
-                style: Theme.of(context)
-                    .textTheme
-                    .displaySmall!
-                    .copyWith(color: ColorManger.backGroundColorToSplashScreen),
-              ),
-              Text(
-                writeForAccountant,
-                style: Theme.of(context).textTheme.displaySmall,
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-            ],
-          ),
-        ],
+          color: ColorManger.white,
+          borderRadius: BorderRadius.circular(15.h),
+          border: Border.all(color: ColorManger.darkGray)),
+      child: DropdownButton<String>(
+        hint: Text(
+          "Select Status Of Document",
+          style: Theme.of(context)
+              .textTheme
+              .displayMedium!
+              .copyWith(color: ColorManger.backGroundColorToSplashScreen),
+        ),
+        borderRadius: BorderRadius.circular(10),
+        isExpanded: true,
+        value: selectItem,
+        items: stutsDocumentDropDown
+            .map((item) => DropdownMenuItem(
+                value: item,
+                child: Text(
+                  item,
+                  style: Theme.of(context).textTheme.displayMedium,
+                )))
+            .toList(),
+        onChanged: (item) => setState(() {
+          selectItem = item!;
+        }),
       ),
     );
   }

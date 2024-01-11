@@ -27,42 +27,7 @@ class _AccountantHomeScreenState extends State<AdminHomeScreen> {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-          bottomNavigationBar: BottomNavigationBar(
-              unselectedIconTheme: IconThemeData(size: 20.h),
-              selectedIconTheme: IconThemeData(size: 24.h),
-              selectedLabelStyle: TextStyle(
-                fontSize: 14.h,
-              ),
-              currentIndex: currentIndex,
-              onTap: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-              fixedColor: ColorManger.backGroundColorToSplashScreen,
-              items: [
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.home,
-                    color: ColorManger.backGroundColorToSplashScreen,
-                  ),
-                  label: "Home",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.notification_add,
-                    color: ColorManger.backGroundColorToSplashScreen,
-                  ),
-                  label: "Notification",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.settings,
-                    color: ColorManger.backGroundColorToSplashScreen,
-                  ),
-                  label: "Settings",
-                ),
-              ]),
+          bottomNavigationBar: bottomNavigationForAdmin(),
           appBar: CustomAppBar(
               title: Text(
             "Hello : Abdelhameed Ezzat",
@@ -73,5 +38,44 @@ class _AccountantHomeScreenState extends State<AdminHomeScreen> {
           )),
           body: pages[currentIndex]),
     );
+  }
+
+  BottomNavigationBar bottomNavigationForAdmin() {
+    return BottomNavigationBar(
+        unselectedIconTheme: IconThemeData(size: 20.h),
+        selectedIconTheme: IconThemeData(size: 24.h),
+        selectedLabelStyle: TextStyle(
+          fontSize: 14.h,
+        ),
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        fixedColor: ColorManger.backGroundColorToSplashScreen,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: ColorManger.backGroundColorToSplashScreen,
+            ),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.notification_add,
+              color: ColorManger.backGroundColorToSplashScreen,
+            ),
+            label: "Notification",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              color: ColorManger.backGroundColorToSplashScreen,
+            ),
+            label: "Settings",
+          ),
+        ]);
   }
 }

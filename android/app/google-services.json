@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "136471079349",
+    "project_id": "mohra-project",
+    "storage_bucket": "mohra-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136471079349:android:2d5c281cff25ad850491fc",
+        "android_client_info": {
+          "package_name": "com.example.mohra_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgkzQM-AMV3QmM1gYOu27OHC_04Mrlf6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

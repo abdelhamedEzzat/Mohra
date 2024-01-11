@@ -1,19 +1,37 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/theme/themeManger.dart';
+import 'package:mohra_project/core/helpers/bloc_abserver.dart';
 import 'package:mohra_project/core/routes/app_router.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
+import 'package:mohra_project/features/login_screen/data/auth_login_repo.dart';
+import 'package:mohra_project/features/register_screen/data/auth_repostory.dart';
+import 'package:mohra_project/firebase_options.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
-void main() {
+void main() async {
+  Bloc.observer = MyBlocObserver();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => const MyApp(),
-    ),
+        enabled: !kReleaseMode,
+        builder: (context) => MultiBlocProvider(
+              providers: [
+                RepositoryProvider<AuthRepostory>(
+                    create: (_) => AuthRepostory()),
+                RepositoryProvider<LoginAuthProvider>(
+                    create: (_) => LoginAuthProvider()),
+              ],
+              child: const MyApp(),
+            )),
   );
 }
 
@@ -33,7 +51,16 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (_, child) {
-          return MaterialApp(
+          return
+              // MultiBlocProvider(
+              //   providers: [
+              //     // BlocProvider(
+              //     //   create: (context) =>
+              //     //       SignupCubit(authRepostory: context.read<AuthRepostory>()),
+              //     // ),
+              //   ],
+              // child:
+              MaterialApp(
             theme: theme(),
 
             debugShowCheckedModeBanner: false,
@@ -51,7 +78,8 @@ class MyApp extends StatelessWidget {
             //
             // for Routing Screens
             onGenerateRoute: AppRouter.onGenrateRoute,
-            initialRoute: RouterName.homeScreenForUser,
+            initialRoute: RouterName.registerScreen,
+            // ),
           );
         },
       );

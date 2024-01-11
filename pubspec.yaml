@@ -31,6 +31,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   device_preview: ^1.1.0
   equatable: ^2.0.5
+  firebase_auth: ^4.16.0
+  firebase_core: ^2.24.2
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
@@ -38,6 +40,8 @@ dependencies:
     sdk: flutter
   flutter_screenutil: ^5.9.0
   flutter_svg: ^2.0.9
+  modal_progress_hud_nsn: ^0.4.0
+  
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -62,7 +66,6 @@ flutter:
     - assets/images/googleLogo.png
     - assets/images/AddCompanyLogo.png
     - assets/images/decument.jpeg
-
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

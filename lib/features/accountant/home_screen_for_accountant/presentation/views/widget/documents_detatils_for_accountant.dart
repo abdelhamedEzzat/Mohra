@@ -5,7 +5,7 @@ import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
-import 'package:mohra_project/features/user/company_documents/presentation/views/company_documents.dart';
+import 'package:mohra_project/features/user/create_company/presentation/views/widget/title_of_form_create_company.dart';
 
 class AccountantDocumentDetails extends StatefulWidget {
   const AccountantDocumentDetails({super.key});
@@ -200,9 +200,6 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                 SizedBox(
                   height: 10.h,
                 ),
-                // Expanded(
-                //   flex: 1,
-                //   child:
                 CustomTextFormField(
                   hight: mediaQueryHeight * 0.10,
                   hintText: "Add any Comment Here",
