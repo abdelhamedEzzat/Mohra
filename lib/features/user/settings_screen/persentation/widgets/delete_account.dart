@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
 
-class LogOutBotton extends StatelessWidget {
-  const LogOutBotton({
+class DeleteAccount extends StatelessWidget {
+  const DeleteAccount({
     super.key,
   });
 
@@ -15,17 +15,24 @@ class LogOutBotton extends StatelessWidget {
       builder: (context, state) {
         return GestureDetector(
             onTap: () {
-              BlocProvider.of<AuthCubit>(context).logOut().then((value) =>
-                  Navigator.of(context)
-                      .pushReplacementNamed(RouterName.loginScreen));
+              BlocProvider.of<AuthCubit>(context).deleteAccount().then(
+                  (value) => Navigator.of(context)
+                      .pushReplacementNamed(RouterName.registerScreen));
             },
             child: Padding(
               padding: EdgeInsets.only(left: 4.w),
               child: ListTile(
-                leading: Icon(Icons.logout, size: 24.h),
+                leading: Icon(
+                  Icons.delete,
+                  size: 24.h,
+                  color: Colors.red,
+                ),
                 title: Text(
-                  "LogOut",
-                  style: Theme.of(context).textTheme.displayMedium,
+                  "Delete account",
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayMedium!
+                      .copyWith(color: Colors.red),
                 ),
               ),
             ));

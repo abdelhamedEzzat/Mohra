@@ -19,4 +19,6 @@ class RouterName {
   static const String addNewAccountant = "addNewAccountant";
   static const String addNewAuditor = "addNewAuditor";
   static const String manageAssignment = "ManageAssignment";
+  static const String resetPasswordScreen = "resetPasswordScreen";
+  static const String vreifyEmail = "VreifyEmail";
 }

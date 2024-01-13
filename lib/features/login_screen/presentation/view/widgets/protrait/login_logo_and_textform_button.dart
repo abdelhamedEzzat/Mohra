@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,11 +9,10 @@ import 'package:mohra_project/core/helpers/custom_button_with_icon_or_image.dart
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
 import 'package:mohra_project/core/helpers/snackBar.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
-import 'package:mohra_project/features/login_screen/presentation/manger/login_cubit/login_cubit.dart';
-import 'package:mohra_project/features/login_screen/presentation/manger/login_cubit/login_state.dart';
 import 'package:mohra_project/features/login_screen/presentation/view/widgets/forget_password.dart';
 import 'package:mohra_project/features/login_screen/presentation/view/widgets/if_didnt_have_account.dart';
 import 'package:mohra_project/features/login_screen/presentation/view/widgets/login_account_text.dart';
+import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
 import 'package:mohra_project/features/register_screen/presentation/view/widgets/class_morphism_Inside_screen.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
@@ -23,18 +23,22 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final trigerCubit = BlocProvider.of<LoginCubit>(context);
+    final trigerCubit = BlocProvider.of<AuthCubit>(context);
     bool isLoading = false;
 
-    return BlocConsumer<LoginCubit, LoginState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is LoginLoading) {
           isLoading = true;
         } else if (state is LoginSuccess) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            RouterName.homeScreenForUser,
-            (route) => false,
-          );
+          if (FirebaseAuth.instance.currentUser!.emailVerified) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              RouterName.homeScreenForUser,
+              (route) => false,
+            );
+          } else {
+            Navigator.of(context).pushReplacementNamed(RouterName.vreifyEmail);
+          }
         } else if (state is Loginfaild) {
           isLoading = false;
           showSnackBar(context, state.error);
@@ -77,6 +81,12 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
                                 height: 8,
                               ),
                               CustomTextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "* this Field is required You must enter data";
+                                    }
+                                    return null;
+                                  },
                                   onChanged: (value) {
                                     trigerCubit.emailCubit = value;
                                   },
@@ -88,6 +98,12 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
                                       .emailHintTextInRegisterScreen,
                                   prefixIcon: const Icon(Icons.email)),
                               CustomTextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "* this Field is required You must enter data";
+                                    }
+                                    return null;
+                                  },
                                   onChanged: (value) {
                                     trigerCubit.passwordCubit = value;
                                   },

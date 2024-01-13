@@ -18,12 +18,12 @@ class RegisterScreenBody extends StatefulWidget {
 }
 
 class _RegisterScreenBodyState extends State<RegisterScreenBody> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      key: scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: Builder(
         builder: (context) {
@@ -42,6 +42,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                   return true;
                 },
                 child: const SingleChildScrollView(
+                  physics: NeverScrollableScrollPhysics(),
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -65,12 +66,15 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                   notification.disallowIndicator();
                   return true;
                 },
-                child: const Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    GlassScreenForRegisterScreen(),
-                    LogoAndTextFieldAndbuttonlandscape(),
-                  ],
+                child: const SingleChildScrollView(
+                  physics: NeverScrollableScrollPhysics(),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      GlassScreenForRegisterScreen(),
+                      LogoAndTextFieldAndbuttonlandscape(),
+                    ],
+                  ),
                 ),
               ),
             ),

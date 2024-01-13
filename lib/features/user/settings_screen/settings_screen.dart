@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/widgets/Language_wiget.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/widgets/delete_account.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/widgets/details_profile.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/widgets/log_out_Botton.dart';
 
@@ -32,7 +33,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SizedBox(
                 height: 10,
               ),
-              LogOutBotton()
+              LogOutBotton(),
+              SizedBox(
+                height: 10,
+              ),
+              DeleteAccount()
             ]),
       ),
     );

@@ -9,8 +9,7 @@ import 'package:mohra_project/core/constants/theme/themeManger.dart';
 import 'package:mohra_project/core/helpers/bloc_abserver.dart';
 import 'package:mohra_project/core/routes/app_router.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
-import 'package:mohra_project/features/login_screen/data/auth_login_repo.dart';
-import 'package:mohra_project/features/register_screen/data/auth_repostory.dart';
+import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
 import 'package:mohra_project/firebase_options.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
@@ -22,16 +21,19 @@ void main() async {
   );
   runApp(
     DevicePreview(
-        enabled: !kReleaseMode,
-        builder: (context) => MultiBlocProvider(
-              providers: [
-                RepositoryProvider<AuthRepostory>(
-                    create: (_) => AuthRepostory()),
-                RepositoryProvider<LoginAuthProvider>(
-                    create: (_) => LoginAuthProvider()),
-              ],
-              child: const MyApp(),
-            )),
+      enabled: !kReleaseMode,
+      builder: (context) =>
+
+          //  MultiBlocProvider(
+          // providers: [
+          //   RepositoryProvider<AuthRepostory>(
+          //       create: (_) => AuthRepostory()),
+          //   RepositoryProvider<LoginAuthProvider>(
+          //       create: (_) => LoginAuthProvider()),
+          // ],
+          const MyApp(),
+      // )
+    ),
   );
 }
 
@@ -51,36 +53,33 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (_, child) {
-          return
-              // MultiBlocProvider(
-              //   providers: [
-              //     // BlocProvider(
-              //     //   create: (context) =>
-              //     //       SignupCubit(authRepostory: context.read<AuthRepostory>()),
-              //     // ),
-              //   ],
-              // child:
-              MaterialApp(
-            theme: theme(),
+          return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => AuthCubit(),
+                ),
+              ],
+              child: MaterialApp(
+                theme: theme(),
 
-            debugShowCheckedModeBanner: false,
-            // for Responcive Screens
-            builder: DevicePreview.appBuilder,
-            //
-            // For Localization Screens
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            //
-            // for Routing Screens
-            onGenerateRoute: AppRouter.onGenrateRoute,
-            initialRoute: RouterName.registerScreen,
-            // ),
-          );
+                debugShowCheckedModeBanner: false,
+                // for Responcive Screens
+                builder: DevicePreview.appBuilder,
+                //
+                // For Localization Screens
+                localizationsDelegates: const [
+                  S.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: S.delegate.supportedLocales,
+                //
+                // for Routing Screens
+                onGenerateRoute: AppRouter.onGenrateRoute,
+                initialRoute: RouterName.registerScreen,
+                // ),
+              ));
         },
       );
     });

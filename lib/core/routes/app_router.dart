@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/accountant_home_screen.dart';
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/accuntant_company_documents.dart';
@@ -11,10 +10,7 @@ import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_home_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_detatils_documents_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/auditor_company_documents.dart';
-import 'package:mohra_project/features/login_screen/data/auth_login_repo.dart';
-import 'package:mohra_project/features/login_screen/presentation/manger/login_cubit/login_cubit.dart';
-import 'package:mohra_project/features/register_screen/data/auth_repostory.dart';
-import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/signup_cubit.dart';
+import 'package:mohra_project/features/login_screen/presentation/view/widgets/forget_password.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/create_company.dart';
 import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/home_screen_for_user.dart';
@@ -24,6 +20,7 @@ import 'package:mohra_project/features/register_screen/presentation/view/registe
 import 'package:mohra_project/features/splash_screens/presentation/views/splash_screen.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/company_documents.dart';
 import 'package:mohra_project/features/user/upload_document/presentation/views/upload_documents.dart';
+import 'package:mohra_project/features/vreify_email/vreify_email.dart';
 
 class AppRouter {
   static Route onGenrateRoute(RouteSettings settings) {
@@ -40,18 +37,18 @@ class AppRouter {
       //
       case RouterName.registerScreen:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-                  create: (context) => SignupCubit(),
-                  child: const RegisterScreen(),
-                ));
+          builder: (_) => const RegisterScreen(),
+        );
       //
       //
       case RouterName.loginScreen:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-                  create: (context) => LoginCubit(),
-                  child: const LoginScreen(),
-                ));
+          builder: (_) => const LoginScreen(),
+          // BlocProvider(
+          //       create: (context) => AuthCubit(),
+          //       child: const LoginScreen(),
+          //     )
+        );
 //
 //
       case RouterName.homeScreenForUser:
@@ -113,6 +110,14 @@ class AppRouter {
       case RouterName.manageAssignment:
         return MaterialPageRoute(
           builder: (_) => const ManageAssignment(),
+        );
+      case RouterName.resetPasswordScreen:
+        return MaterialPageRoute(
+          builder: (_) => const ResetPasswordScreen(),
+        );
+      case RouterName.vreifyEmail:
+        return MaterialPageRoute(
+          builder: (_) => const VreifyEmail(),
         );
 
       default:

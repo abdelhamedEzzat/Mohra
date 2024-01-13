@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
@@ -14,6 +16,7 @@ class CustomTextFormField extends StatelessWidget {
     this.fontStyle,
     this.onChanged,
     this.controller,
+    this.validator,
   });
   final double? hight;
   final String? labelText;
@@ -23,18 +26,23 @@ class CustomTextFormField extends StatelessWidget {
   final FontStyle? fontStyle;
   final void Function(String)? onChanged;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 4.w, bottom: 8.w),
       child: SizedBox(
-        height: hight?.h ?? 50.h,
+        // height: hight?.h ?? 52.h,
         child: TextFormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: validator,
             controller: controller,
             onChanged: onChanged,
             keyboardType: keyboardType,
             cursorColor: ColorManger.backGroundColorToSplashScreen,
             decoration: InputDecoration(
+                errorMaxLines: 2,
+                isDense: true,
                 filled: true,
                 fillColor: Colors.white,
                 focusedBorder: OutlineInputBorder(

@@ -24,7 +24,13 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "AlreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("Already Have Account? "),
+        "ContinueAfterSendVerify":
+            MessageLookupByLibrary.simpleMessage("Continue"),
         "Login": MessageLookupByLibrary.simpleMessage("Login"),
+        "SubTitleVerify": MessageLookupByLibrary.simpleMessage(
+            "We have just send email verification link on your email , please check email and click on that link to verify your email address"),
+        "Verifyyouremailaddress":
+            MessageLookupByLibrary.simpleMessage("Verify your email address"),
         "buttonNameFirstAndSecoundIntroScreen":
             MessageLookupByLibrary.simpleMessage("Next"),
         "buttonNameThirdIntroScreen":
@@ -56,6 +62,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Register Account"),
         "registerAccountBottonByGoogle":
             MessageLookupByLibrary.simpleMessage("Register with google"),
+        "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
+        "sendRequest": MessageLookupByLibrary.simpleMessage("Send Request"),
         "subtitleForFirstIntroScreen": MessageLookupByLibrary.simpleMessage(
             "You can easily upload documents, follow the progress of work on them, and you can also write comments"),
         "subtitleForSecondIntroScreen": MessageLookupByLibrary.simpleMessage(

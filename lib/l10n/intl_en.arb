@@ -35,7 +35,19 @@
     "didntHaveAccount" : "Didnt Have Account? " , 
     "register" : "Register" ,
 
-    "forgetPassword" :   "Forget Password ?" 
+    "forgetPassword" :   "Forget Password ?" ,
+
+    "sendRequest" :   "Send Request" ,
+    "resetPassword" :   "Reset Password" ,
+    "ContinueAfterSendVerify" :   "Continue" ,
+
+  
+
+
+    
+    "Verifyyouremailaddress" : "Verify your email address",
+
+    "SubTitleVerify" : "We have just send email verification link on your email , please check email and click on that link to verify your email address"
 
    
 

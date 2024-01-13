@@ -33,6 +33,7 @@
     "didntHaveAccount" : "اذا لم تكن تمتلك حساب ؟ " , 
     "register" : "انشاء حساب " ,
 
-    "forgetPassword" :   "نسيت كلمه المرور ؟" 
-
+    "forgetPassword" :   "نسيت كلمه المرور ؟" ,
+    "Send Request" :   "اعاده المصادقه",
+    "ContinueAfterSendVerify" :   "التالي" 
 }
