@@ -23,6 +23,7 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<FormState> formKey = GlobalKey();
     final trigerCubit = BlocProvider.of<AuthCubit>(context);
     bool isLoading = false;
 
@@ -37,7 +38,11 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
               (route) => false,
             );
           } else {
-            Navigator.of(context).pushReplacementNamed(RouterName.vreifyEmail);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              RouterName.homeScreenForUser,
+              (route) => false,
+            );
+            // Navigator.of(context).pushReplacementNamed(RouterName.vreifyEmail);
           }
         } else if (state is Loginfaild) {
           isLoading = false;
@@ -73,65 +78,102 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
                         ),
                         padding: const EdgeInsets.only(
                             top: 20, bottom: 20, right: 10, left: 10),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const LoginAccountText(),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              CustomTextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "* this Field is required You must enter data";
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-                                    trigerCubit.emailCubit = value;
-                                  },
-                                  labelText: S
-                                      .of(context)
-                                      .emailLabelTextInRegisterScreen,
-                                  hintText: S
-                                      .of(context)
-                                      .emailHintTextInRegisterScreen,
-                                  prefixIcon: const Icon(Icons.email)),
-                              CustomTextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "* this Field is required You must enter data";
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-                                    trigerCubit.passwordCubit = value;
-                                  },
-                                  labelText: S
-                                      .of(context)
-                                      .passwordLabelTextInRegisterScreen,
-                                  hintText: S
-                                      .of(context)
-                                      .passwordHintTextInRegisterScreen,
-                                  prefixIcon: const Icon(Icons.lock)),
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const LoginAccountText(),
+                                const SizedBox(
+                                  height: 8,
+                                ),
 
-                              const ForgetPassword(),
-                              //  fontSize: FontSize.s12.h, color: ColorManger.black
-                              CustomButton(
-                                  nameOfButton:
-                                      S.of(context).loginAccountBotton,
-                                  onTap: () {
-                                    trigerCubit.userSignin(
-                                        email: trigerCubit.emailCubit,
-                                        password: trigerCubit.passwordCubit);
-                                  }),
-                              CustomBottonWithIconOrImage(
-                                  onTap: () {},
-                                  imageIconButton: ImageManger.googleLogo,
-                                  nameOfButton:
-                                      S.of(context).loginAccountBottonByGoogle),
-                              const IfYouDidntHaveAccount()
-                            ])),
+                                //
+                                //   TextFormField fo email
+
+                                CustomTextFormField(
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "* this Field is required You must enter data";
+                                      }
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      trigerCubit.emailCubit = value;
+                                    },
+                                    labelText: S
+                                        .of(context)
+                                        .emailLabelTextInRegisterScreen,
+                                    hintText: S
+                                        .of(context)
+                                        .emailHintTextInRegisterScreen,
+                                    prefixIcon: const Icon(Icons.email)),
+
+                                //
+                                //   TextFormField fo password
+
+                                CustomTextFormField(
+                                    obscureText: true,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "* this Field is required You must enter data";
+                                      }
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      trigerCubit.passwordCubit = value;
+                                    },
+                                    labelText: S
+                                        .of(context)
+                                        .passwordLabelTextInRegisterScreen,
+                                    hintText: S
+                                        .of(context)
+                                        .passwordHintTextInRegisterScreen,
+                                    prefixIcon: const Icon(Icons.lock)),
+                                //
+                                //this widget for forget password
+
+                                const ForgetPassword(),
+
+                                //
+                                //
+                                CustomButton(
+                                    nameOfButton:
+                                        S.of(context).loginAccountBotton,
+                                    onTap: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        formKey.currentState!.save();
+                                        //
+                                        // this function for  user sign in
+
+                                        await trigerCubit.userSignin(
+                                            email: trigerCubit.emailCubit,
+
+                                            //
+                                            // this function for get user data
+
+                                            password:
+                                                trigerCubit.passwordCubit);
+                                        await trigerCubit.getUserdata();
+                                      }
+                                    }),
+
+                                //
+                                // this function for sign in with google
+
+                                CustomBottonWithIconOrImage(
+                                    onTap: () {},
+                                    imageIconButton: ImageManger.googleLogo,
+                                    nameOfButton: S
+                                        .of(context)
+                                        .loginAccountBottonByGoogle),
+
+                                //
+                                //this function for goto signup screen
+
+                                const IfYouDidntHaveAccount()
+                              ]),
+                        )),
                   ),
                 ),
               ],

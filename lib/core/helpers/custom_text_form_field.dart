@@ -1,13 +1,13 @@
-import 'dart:ui';
-
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/font_manger/font_manger.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
-    super.key,
+    Key? key,
     this.hight,
     this.labelText,
     required this.hintText,
@@ -17,16 +17,23 @@ class CustomTextFormField extends StatelessWidget {
     this.onChanged,
     this.controller,
     this.validator,
-  });
+    this.obscureText,
+    this.min,
+    this.max,
+  }) : super(key: key);
   final double? hight;
   final String? labelText;
   final String hintText;
-  final Icon prefixIcon;
+  final Widget prefixIcon;
   final TextInputType? keyboardType;
   final FontStyle? fontStyle;
   final void Function(String)? onChanged;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final bool? obscureText;
+  final int? min;
+  final int? max;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -34,6 +41,10 @@ class CustomTextFormField extends StatelessWidget {
       child: SizedBox(
         // height: hight?.h ?? 52.h,
         child: TextFormField(
+            style: TextStyle(fontSize: 15.h),
+            minLines: min,
+            maxLines: max ?? 1,
+            obscureText: obscureText ?? false,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: validator,
             controller: controller,
@@ -52,6 +63,7 @@ class CustomTextFormField extends StatelessWidget {
                 labelText: labelText,
                 hintText: hintText,
                 prefixIcon: prefixIcon,
+                contentPadding: EdgeInsets.all(8.0.w),
                 hintStyle: TextStyle(
                     color: ColorManger.darkGray, fontSize: FontSize.s14.h),
                 labelStyle: TextStyle(

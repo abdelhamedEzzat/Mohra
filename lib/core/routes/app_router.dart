@@ -12,18 +12,14 @@ import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentat
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/auditor_company_documents.dart';
 import 'package:mohra_project/features/login_screen/presentation/view/widgets/forget_password.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/create_company.dart';
-import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
-import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/home_screen_for_user.dart';
 import 'package:mohra_project/features/intro_screens/presentation/views/first_intro_screen.dart';
 import 'package:mohra_project/features/login_screen/presentation/view/login_screen.dart';
 import 'package:mohra_project/features/register_screen/presentation/view/register_screen.dart';
 import 'package:mohra_project/features/splash_screens/presentation/views/splash_screen.dart';
-import 'package:mohra_project/features/user/company_documents/presentation/views/company_documents.dart';
-import 'package:mohra_project/features/user/upload_document/presentation/views/upload_documents.dart';
 import 'package:mohra_project/features/vreify_email/vreify_email.dart';
 
 class AppRouter {
-  static Route onGenrateRoute(RouteSettings settings) {
+  static Route<dynamic> onGenrateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RouterName.introScreenRoute:
         return MaterialPageRoute(
@@ -51,26 +47,26 @@ class AppRouter {
         );
 //
 //
-      case RouterName.homeScreenForUser:
-        return MaterialPageRoute(
-          builder: (_) => const HomeScreenForUser(),
-        );
+      // case RouterName.homeScreenForUser:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const HomeScreenForUser(),
+      //   );
       case RouterName.createCompany:
         return MaterialPageRoute(
           builder: (_) => const CreateCompany(),
         );
-      case RouterName.companyDocuments:
-        return MaterialPageRoute(
-          builder: (_) => const CompanyDocuments(),
-        );
-      case RouterName.uploadDocuments:
-        return MaterialPageRoute(
-          builder: (_) => const UploadDocuments(),
-        );
-      case RouterName.detailsDocuments:
-        return MaterialPageRoute(
-          builder: (_) => const DetailsDocuments(),
-        );
+      // case RouterName.companyDocuments:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const CompanyDocuments(),
+      //   );
+      // case RouterName.uploadDocuments:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const UploadDocuments(),
+      //   );
+      // case RouterName.detailsDocuments:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const DetailsDocuments(),
+      //   );
       case RouterName.auditorHomeScreen:
         return MaterialPageRoute(
           builder: (_) => const AuditorHomeScreen(),
@@ -119,6 +115,14 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const VreifyEmail(),
         );
+      // case RouterName.test:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const test(),
+      //   );
+      // case RouterName.test2:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const test2(),
+      //   );
 
       default:
         return _errorRoute();

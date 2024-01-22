@@ -1,5 +1,7 @@
-import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'auth_state.dart';
 
@@ -8,6 +10,11 @@ class AuthCubit extends Cubit<AuthState> {
 
   String emailCubit = "";
   String passwordCubit = "";
+  String firstName = "";
+  String lastName = "";
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  List<QueryDocumentSnapshot> personalUserInformation = [];
 
   Future userSignUP({
     required String email,
@@ -54,6 +61,7 @@ class AuthCubit extends Cubit<AuthState> {
       await FirebaseAuth.instance.currentUser!.delete();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
+        // ignore: avoid_print
         print(
             'The user must reauthenticate before this operation can be executed.');
       }
@@ -77,12 +85,40 @@ class AuthCubit extends Cubit<AuthState> {
     emit(VerifyAccount());
   }
 
-  // Future checkverifyEmail() async {
-  //   FirebaseAuth.instance.authStateChanges().listen((User? user) {
-  //     if (user != null && user.emailVerified) {
-  //       // Redirect to the homepage
-  //       Navigator.pushReplacementNamed(context, '/homepage');
-  //     }
-  //   });
-  // }
+  Future<void> addUser(
+      {required String firstName,
+      required String lastName,
+      required String email}) async {
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    DocumentReference users = firestore.collection('users').doc(user);
+
+    emit(SignupLoading());
+    try {
+      users.set({
+        'first_Name': firstName,
+        'last_Name': lastName,
+        'userID': user,
+        'email': email,
+      });
+      emit(SignupSuccess());
+    } catch (e) {
+      Signupfaild(error: "Failed to add user:${e.toString()}");
+    }
+  }
+
+  Future<void> getUserdata() async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where("userID", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      //
+      //
+      personalUserInformation.addAll(querySnapshot.docs);
+
+      emit(SignupSuccess());
+    } catch (e) {
+      Signupfaild(error: "Failed to get user:${e.toString()}");
+    }
+  }
 }

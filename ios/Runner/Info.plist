@@ -50,6 +50,11 @@
     <array>
     <string>en</string>
     <string>ar</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>We need permission to access the images in order to enable the user to upload accounting images.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>We need permission to access the images in order to enable the user to take a picture of the accounting file to be uploaded.</string>
+	
 </array>
 </dict>
 </plist>

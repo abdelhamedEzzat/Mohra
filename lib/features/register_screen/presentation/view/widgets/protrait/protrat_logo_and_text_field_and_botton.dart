@@ -1,13 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
-
 import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_button_with_icon_or_image.dart';
@@ -35,27 +32,28 @@ class _LogoAndTextFieldAndbuttonProtraitState
   GlobalKey<FormState> formKey = GlobalKey();
 
   @override
-  void initState() {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        user.reload();
-        if (user.emailVerified) {
-          WidgetsBinding.instance.addPostFrameCallback((_) => showSnackBar(
-              context,
-              "Congratulations, your email has been authenticated and your data will be reviewed by the administration within 24 hours.",
-              backgroundcolor: ColorManger.backGroundColorToSplashScreen,
-              duration: const Duration(days: 1)));
-        } else {}
-      } else if (user == null) {
-        // Handle the case where the user is null
-      }
-    } catch (e) {
-      print({"=======================error$e"});
-    }
 
-    super.initState();
-  }
+  // void initState() {
+  //   try {
+  //     final user = FirebaseAuth.instance.currentUser;
+  //     if (user != null) {
+  //       user.reload();
+  //       if (user.emailVerified) {
+  //         WidgetsBinding.instance.addPostFrameCallback((_) => showSnackBar(
+  //             context,
+  //             "Congratulations, your email has been authenticated and your data will be reviewed by the administration within 24 hours.",
+  //             backgroundcolor: ColorManger.backGroundColorToSplashScreen,
+  //             duration: const Duration(days: 1)));
+  //       } else {}
+  //     } else if (user == null) {
+  //       // Handle the case where the user is null
+  //     }
+  //   } catch (e) {
+  //     print({"=======================error$e"});
+  //   }
+
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +70,11 @@ class _LogoAndTextFieldAndbuttonProtraitState
               isLoading = true;
             } else if (state is SignupSuccess) {
               isLoading = false;
-              BlocProvider.of<AuthCubit>(context).verifyEmail();
+
+              // BlocProvider.of<AuthCubit>(context).verifyEmail();
 
               Navigator.of(context)
-                  .pushReplacementNamed(RouterName.vreifyEmail);
+                  .pushReplacementNamed(RouterName.homeScreenForUser);
             } else if (state is Signupfaild) {
               isLoading = false;
               showSnackBar(context, state.error);
@@ -97,10 +96,7 @@ class _LogoAndTextFieldAndbuttonProtraitState
                   ClassMorphismInsideScreen(
                       blur: 20,
                       opacity: 0.5,
-                      child:
-                          // SingleChildScrollView(
-                          //     child:
-                          Container(
+                      child: Container(
                         height: 400.h,
                         margin: const EdgeInsets.only(
                           right: 8,
@@ -146,6 +142,7 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                   //
                                   //
                                   CustomTextFormField(
+                                      obscureText: true,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return "* this Field is required You must enter data";
@@ -172,6 +169,18 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                   //
                                   //
                                   CustomTextFormField(
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please enter some text.';
+                                        } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                                            .hasMatch(value)) {
+                                          return 'Please enter only letters.';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        trigerCubit.firstName = value;
+                                      },
                                       labelText: S
                                           .of(context)
                                           .nameLabelTextInRegisterScreen,
@@ -183,6 +192,18 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                   //
                                   //
                                   CustomTextFormField(
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please enter some text.';
+                                        } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                                            .hasMatch(value)) {
+                                          return 'Please enter only letters.';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        trigerCubit.lastName = value;
+                                      },
                                       labelText: S
                                           .of(context)
                                           .nameLabelTextInRegisterScreen,
@@ -198,11 +219,18 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                           S.of(context).registerAccountBotton,
                                       onTap: () async {
                                         if (formKey.currentState!.validate()) {
+                                          formKey.currentState!.save();
                                           await trigerCubit.userSignUP(
                                             email: trigerCubit.emailCubit,
                                             password: trigerCubit.passwordCubit,
                                           );
                                         }
+                                        await trigerCubit.addUser(
+                                            email: trigerCubit.emailCubit,
+                                            firstName: trigerCubit.firstName,
+                                            lastName: trigerCubit.lastName);
+
+                                        await trigerCubit.getUserdata();
                                       }),
 
                                   //
@@ -222,7 +250,6 @@ class _LogoAndTextFieldAndbuttonProtraitState
                           ),
                         ),
                       )),
-                  // ),
                 ],
               ),
             ));

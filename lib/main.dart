@@ -10,6 +10,12 @@ import 'package:mohra_project/core/helpers/bloc_abserver.dart';
 import 'package:mohra_project/core/routes/app_router.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
+import 'package:mohra_project/features/user/company_documents/presentation/views/company_documents.dart';
+import 'package:mohra_project/features/user/create_company/presentation/manger/firebase_company/create_company_cubit.dart';
+import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
+import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/home_screen_for_user.dart';
+import 'package:mohra_project/features/user/upload_document/presentation/manger/upload_documents/upload_documents_cubit.dart';
+import 'package:mohra_project/features/user/upload_document/presentation/views/upload_documents.dart';
 import 'package:mohra_project/firebase_options.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
@@ -58,6 +64,12 @@ class MyApp extends StatelessWidget {
                 BlocProvider(
                   create: (context) => AuthCubit(),
                 ),
+                BlocProvider(
+                  create: (context) => FirebaseCreateCompanyCubit(),
+                ),
+                BlocProvider(
+                  create: (context) => UploadDocumentsCubit(),
+                ),
               ],
               child: MaterialApp(
                 theme: theme(),
@@ -78,6 +90,18 @@ class MyApp extends StatelessWidget {
                 // for Routing Screens
                 onGenerateRoute: AppRouter.onGenrateRoute,
                 initialRoute: RouterName.registerScreen,
+
+                routes: {
+                  RouterName.companyDocuments: (context) =>
+                      const CompanyDocuments(),
+                  RouterName.homeScreenForUser: (context) =>
+                      const HomeScreenForUser(),
+                  RouterName.uploadDocuments: (context) =>
+                      const UploadDocuments(),
+                  RouterName.detailsDocuments: (context) =>
+                      const DetailsDocuments(),
+                },
+                // home: test(),
                 // ),
               ));
         },
