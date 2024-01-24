@@ -41,16 +41,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter Your Email"),
         "emailLabelTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("Email"),
+        "firstnameLabelTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("first Name"),
         "forgetPassword":
             MessageLookupByLibrary.simpleMessage("Forget Password ?"),
+        "lastnameLabelTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("last Name"),
         "loginAccount": MessageLookupByLibrary.simpleMessage("Login "),
         "loginAccountBotton": MessageLookupByLibrary.simpleMessage("Login"),
         "loginAccountBottonByGoogle":
             MessageLookupByLibrary.simpleMessage("Login with google"),
         "nameHintTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("Enter Your Name"),
-        "nameLabelTextInRegisterScreen":
-            MessageLookupByLibrary.simpleMessage("Name"),
         "passwordHintTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("Enter Your Pasword"),
         "passwordLabelTextInRegisterScreen":

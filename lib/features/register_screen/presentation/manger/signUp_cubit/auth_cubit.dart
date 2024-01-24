@@ -97,8 +97,57 @@ class AuthCubit extends Cubit<AuthState> {
       users.set({
         'first_Name': firstName,
         'last_Name': lastName,
+        'fullName': firstName + lastName,
         'userID': user,
         'email': email,
+        'role': 'User',
+        'Email_status': 'disabled',
+      });
+      emit(SignupSuccess());
+    } catch (e) {
+      Signupfaild(error: "Failed to add user:${e.toString()}");
+    }
+  }
+
+  Future<void> addAuditor(
+      {required String firstName,
+      required String lastName,
+      required String email}) async {
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    DocumentReference users = firestore.collection('users').doc(user);
+
+    emit(SignupLoading());
+    try {
+      users.set({
+        'first_Name': firstName,
+        'last_Name': lastName,
+        'fullName': firstName + lastName,
+        'userID': user,
+        'email': email,
+        'role': 'Auditor',
+      });
+      emit(SignupSuccess());
+    } catch (e) {
+      Signupfaild(error: "Failed to add user:${e.toString()}");
+    }
+  }
+
+  Future<void> addAccountant(
+      {required String firstName,
+      required String lastName,
+      required String email}) async {
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    DocumentReference users = firestore.collection('users').doc(user);
+
+    emit(SignupLoading());
+    try {
+      users.set({
+        'first_Name': firstName,
+        'last_Name': lastName,
+        'fullName': firstName + lastName,
+        'userID': user,
+        'email': email,
+        'role': 'Accountant',
       });
       emit(SignupSuccess());
     } catch (e) {

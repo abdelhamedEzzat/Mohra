@@ -39,7 +39,7 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
             );
           } else {
             Navigator.of(context).pushNamedAndRemoveUntil(
-              RouterName.homeScreenForUser,
+              RouterName.auditorHomeScreen,
               (route) => false,
             );
             // Navigator.of(context).pushReplacementNamed(RouterName.vreifyEmail);

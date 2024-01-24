@@ -21,6 +21,7 @@ class RouterName {
   static const String manageAssignment = "ManageAssignment";
   static const String resetPasswordScreen = "resetPasswordScreen";
   static const String vreifyEmail = "VreifyEmail";
+  static const String acceptedMassageScreen = "acceptedMassageScreen";
   // static const String test = "test";
   // static const String test2 = "test1";
 }

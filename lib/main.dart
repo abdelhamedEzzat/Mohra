@@ -9,7 +9,9 @@ import 'package:mohra_project/core/constants/theme/themeManger.dart';
 import 'package:mohra_project/core/helpers/bloc_abserver.dart';
 import 'package:mohra_project/core/routes/app_router.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
+import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/manger/manage_assignment/manage_assignment_cubit.dart';
 import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
+import 'package:mohra_project/features/register_screen/presentation/view/widgets/protrait/accepted_massage_screen.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/company_documents.dart';
 import 'package:mohra_project/features/user/create_company/presentation/manger/firebase_company/create_company_cubit.dart';
 import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
@@ -70,6 +72,9 @@ class MyApp extends StatelessWidget {
                 BlocProvider(
                   create: (context) => UploadDocumentsCubit(),
                 ),
+                // BlocProvider(
+                //   create: (context) => MannageAssignmentCubit(),
+                // ),
               ],
               child: MaterialApp(
                 theme: theme(),
@@ -100,6 +105,8 @@ class MyApp extends StatelessWidget {
                       const UploadDocuments(),
                   RouterName.detailsDocuments: (context) =>
                       const DetailsDocuments(),
+                  RouterName.acceptedMassageScreen: (context) =>
+                      const AcceptedMassageScreen(),
                 },
                 // home: test(),
                 // ),

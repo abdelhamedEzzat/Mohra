@@ -48,7 +48,9 @@ class ContrallerTabBarScreen extends StatelessWidget {
               buttonTitle: "Mange Assignment",
               icon1: Icons.person,
               icon2: Icons.assignment_add,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(RouterName.manageAssignment);
+              },
             ),
             SizedBox(
               height: 15.h,

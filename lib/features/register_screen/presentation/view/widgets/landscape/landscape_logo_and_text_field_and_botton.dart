@@ -75,7 +75,7 @@ class LogoAndTextFieldAndbuttonlandscape extends StatelessWidget {
                               CustomTextFormField(
                                   labelText: S
                                       .of(context)
-                                      .nameLabelTextInRegisterScreen,
+                                      .firstnameLabelTextInRegisterScreen,
                                   hintText: S
                                       .of(context)
                                       .nameHintTextInRegisterScreen,

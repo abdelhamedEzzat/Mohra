@@ -180,11 +180,21 @@ class S {
     );
   }
 
-  /// `Name`
-  String get nameLabelTextInRegisterScreen {
+  /// `first Name`
+  String get firstnameLabelTextInRegisterScreen {
     return Intl.message(
-      'Name',
-      name: 'nameLabelTextInRegisterScreen',
+      'first Name',
+      name: 'firstnameLabelTextInRegisterScreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `last Name`
+  String get lastnameLabelTextInRegisterScreen {
+    return Intl.message(
+      'last Name',
+      name: 'lastnameLabelTextInRegisterScreen',
       desc: '',
       args: [],
     );

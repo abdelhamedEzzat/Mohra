@@ -1,5 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 
 class StaffTabBARScreens extends StatelessWidget {
   const StaffTabBARScreens({
@@ -8,71 +12,130 @@ class StaffTabBARScreens extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      padding: EdgeInsets.symmetric(horizontal: 20.h),
-      margin: EdgeInsets.only(top: 31.h),
-      child: SingleChildScrollView(
-        child: Column(children: [
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.h),
-                    topRight: Radius.circular(10.h))),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.07,
-            //  padding: EdgeInsets.all(8),
-            child: Row(
-              children: [
-                Expanded(
-                    child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10.h),
-                            topRight: Radius.circular(10.h))),
-                    child: Center(
-                      child: Text(
-                        "Accountant",
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
+    final Stream<QuerySnapshot> sttafList = FirebaseFirestore.instance
+        .collection("users")
+        .where('role', whereIn: ["Auditor", "Accountant"]).snapshots();
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: sttafList,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (BuildContext context, int index) {
+              return StaffShowWidget(
+                staffName: snapshot.data!.docs[index]["first_Name"],
+                staffTitle: snapshot.data!.docs[index]["role"],
+                staffemail: snapshot.data!.docs[index]["email"],
+              );
+            },
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Colors.black,
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return const Center(child: Text("You have an error."));
+        } else {
+          return const Center(
+            child: Text("You didn't have any documents."),
+          );
+        }
+      },
+    );
+  }
+}
+
+class StaffShowWidget extends StatelessWidget {
+  const StaffShowWidget({
+    Key? key,
+    required this.staffTitle,
+    required this.staffemail,
+    required this.staffName,
+  }) : super(key: key);
+  final String staffTitle;
+  final String staffemail;
+  final String staffName;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(horizontal: 20.h),
+        margin: EdgeInsets.only(top: 10.h, bottom: 15.h),
+        child: SingleChildScrollView(
+            child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white,
+          ),
+          height: 120.h,
+          width: 50,
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15)),
+                  color: ColorManger.darkGray,
+                ),
+                padding: EdgeInsets.only(left: 10.w),
+                alignment: Alignment.centerLeft,
+                height: 50.h,
+                child: Text(
+                  staffTitle,
+                  style: Theme.of(context).textTheme.displaySmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15)),
+                ),
+                padding: EdgeInsets.only(left: 10.w),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10.h,
                     ),
-                  ),
-                )),
-              ],
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10.h),
-                    bottomRight: Radius.circular(10.h))),
-            // margin: EdgeInsets.only(top: 15.h),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.10,
-            padding: const EdgeInsets.all(8),
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  children: [
-                    Text("email : "),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "email : $staffemail ",
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.displaySmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Text(
+                          "UserName :$staffName ",
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.displaySmall,
+                        )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
                   ],
                 ),
-                Row(
-                  children: [
-                    Text("UserName : "),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ]),
+        )),
       ),
     );
   }

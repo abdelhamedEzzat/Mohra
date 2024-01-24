@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -72,9 +74,32 @@ class _LogoAndTextFieldAndbuttonProtraitState
               isLoading = false;
 
               // BlocProvider.of<AuthCubit>(context).verifyEmail();
+              // Future<bool> checkEmailStatus() async {
+              //   try {
+              //     User? user = FirebaseAuth.instance.currentUser;
+              //     if (user != null) {
+              //       DocumentSnapshot<Map<String, dynamic>> userData =
+              //           await FirebaseFirestore.instance
+              //               .collection("users")
+              //               .doc(user.uid)
+              //               .get();
 
+              //       String emailStatus = userData["Email_status"] ?? "";
+
+              //       if (emailStatus.toLowerCase() == "disabled") {
+              //         Navigator.of(context).pushReplacementNamed(
+              //             RouterName.acceptedMassageScreen);
+              //       } else if (emailStatus.toLowerCase() == "enabled") {
               Navigator.of(context)
-                  .pushReplacementNamed(RouterName.homeScreenForUser);
+                  .pushReplacementNamed(RouterName.adminHomeScreen);
+              //       }
+              //     }
+              //     return false;
+              //   } catch (e) {
+              //     print("Error checking email status: $e");
+              //     return false;
+              //   }
+              // }
             } else if (state is Signupfaild) {
               isLoading = false;
               showSnackBar(context, state.error);
@@ -114,6 +139,53 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                   const SizedBox(
                                     height: 8,
                                   ),
+                                  CustomTextFormField(
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please enter some text.';
+                                        } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                                            .hasMatch(value)) {
+                                          return 'Please enter only letters.';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        trigerCubit.firstName = value;
+                                      },
+                                      labelText: S
+                                          .of(context)
+                                          .firstnameLabelTextInRegisterScreen,
+                                      hintText: S
+                                          .of(context)
+                                          .nameHintTextInRegisterScreen,
+                                      prefixIcon: const Icon(Icons.person)),
+                                  //
+                                  //
+                                  //
+                                  CustomTextFormField(
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please enter some text.';
+                                        } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                                            .hasMatch(value)) {
+                                          return 'Please enter only letters.';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        trigerCubit.lastName = value;
+                                      },
+                                      labelText: S
+                                          .of(context)
+                                          .lastnameLabelTextInRegisterScreen,
+                                      hintText: S
+                                          .of(context)
+                                          .nameHintTextInRegisterScreen,
+                                      prefixIcon: const Icon(Icons.person)),
+                                  //
+                                  //
+                                  //
+
                                   //
                                   //
                                   CustomTextFormField(
@@ -168,52 +240,7 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                   //
                                   //
                                   //
-                                  CustomTextFormField(
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter some text.';
-                                        } else if (!RegExp(r'^[a-zA-Z\s]+$')
-                                            .hasMatch(value)) {
-                                          return 'Please enter only letters.';
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (value) {
-                                        trigerCubit.firstName = value;
-                                      },
-                                      labelText: S
-                                          .of(context)
-                                          .nameLabelTextInRegisterScreen,
-                                      hintText: S
-                                          .of(context)
-                                          .nameHintTextInRegisterScreen,
-                                      prefixIcon: const Icon(Icons.person)),
-                                  //
-                                  //
-                                  //
-                                  CustomTextFormField(
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter some text.';
-                                        } else if (!RegExp(r'^[a-zA-Z\s]+$')
-                                            .hasMatch(value)) {
-                                          return 'Please enter only letters.';
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (value) {
-                                        trigerCubit.lastName = value;
-                                      },
-                                      labelText: S
-                                          .of(context)
-                                          .nameLabelTextInRegisterScreen,
-                                      hintText: S
-                                          .of(context)
-                                          .nameHintTextInRegisterScreen,
-                                      prefixIcon: const Icon(Icons.person)),
-                                  //
-                                  //
-                                  //
+
                                   CustomButton(
                                       nameOfButton:
                                           S.of(context).registerAccountBotton,

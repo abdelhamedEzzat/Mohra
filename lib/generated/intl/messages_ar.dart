@@ -46,8 +46,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تسجيل الدخول من خلال جوجل"),
         "nameHintTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("اكتب اسمك"),
-        "nameLabelTextInRegisterScreen":
-            MessageLookupByLibrary.simpleMessage("الاسم"),
         "passwordHintTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("اكتب الباسورد الخاص بك"),
         "passwordLabelTextInRegisterScreen":
