@@ -131,6 +131,7 @@ class ImageDocWidget extends StatelessWidget {
       required this.typeOfDocument});
   final Color color;
   final String? status;
+
   final String? typeOfDocument;
   final void Function()? onTap;
   final String? docImage;
@@ -344,6 +345,119 @@ class FilesDocWidget extends StatelessWidget {
           height: 15.h,
         ),
       ],
+    );
+  }
+}
+
+class DocumentForAuditor extends StatelessWidget {
+  const DocumentForAuditor(
+      {super.key,
+      required this.color,
+      this.docImage,
+      required this.status,
+      required this.onTap,
+      required this.typeOfDocument});
+  final Color color;
+  final String? status;
+
+  final String? typeOfDocument;
+  final void Function()? onTap;
+  final String? docImage;
+  @override
+  Widget build(BuildContext context) {
+    //   final trigerCubit = BlocProvider.of<UploadDocumentsCubit>(context);
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.25,
+              decoration: BoxDecoration(
+                  color: ColorManger.black,
+                  borderRadius: BorderRadius.circular(25)),
+              child: Stack(
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(left: 15.h),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: color,
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(25),
+                                topRight: Radius.circular(25))),
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: Text(
+                          status ?? "",
+                          style: Theme.of(context).textTheme.displaySmall,
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          // padding: EdgeInsets.only(left: 15.h),
+                          decoration: const BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(25),
+                                  bottomRight: Radius.circular(25))),
+                          child:
+
+                              //  Expanded(child: Container(
+                              //   width: MediaQuery.of(context).size.width,
+
+                              //   child: Text("asdsadasd")))
+                              Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                  flex: 4,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(24),
+                                        bottomRight: Radius.circular(24)),
+                                    child: Image.network(
+                                      // trigerCubit.url.toString(),
+                                      docImage.toString(),
+                                      fit: BoxFit.fitWidth,
+                                    ),
+                                  ))
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    top: 35.h,
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black87.withOpacity(0.8),
+                            borderRadius: const BorderRadius.only(
+                                //   topLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(25))),
+                        padding: EdgeInsets.only(left: 1.w),
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: MediaQuery.of(context).size.height * 0.065,
+                        child: Center(
+                            child: Text(typeOfDocument ?? "1",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayLarge!
+                                    .copyWith(color: Colors.white)))),
+                  ),
+                ],
+              )),
+          SizedBox(
+            height: 15.h,
+          ),
+        ],
+      ),
     );
   }
 }

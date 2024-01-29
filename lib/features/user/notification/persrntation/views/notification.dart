@@ -18,7 +18,7 @@ class NotificationScreen extends StatelessWidget {
                 companyName: "company Name",
                 boldText: "Accepted",
                 normalText: "decomented No.1 For company has been  ",
-                statusText: "User Notification",
+                statusText: "Accountant Notification",
               )
             ],
           ),

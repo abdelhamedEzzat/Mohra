@@ -53,3 +53,16 @@ final class AuthResetAccount extends AuthState {}
 // for Verify account
 //
 final class VerifyAccount extends AuthState {}
+
+//
+//
+//
+final class UserStutsLoading extends AuthState {}
+
+final class UserStutsSuccess extends AuthState {}
+
+final class UserStutsfaild extends AuthState {
+  final String error;
+
+  const UserStutsfaild({required this.error});
+}

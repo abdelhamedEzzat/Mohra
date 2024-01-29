@@ -75,7 +75,7 @@ class CompanyButton extends StatelessWidget {
                                     maxRadius: 28.h,
                                     minRadius: 22.h,
                                     child: Image.network(
-                                      logoCompany ?? "",
+                                      logoCompany ?? "No Image",
                                       fit: BoxFit.cover,
                                       width: MediaQuery.of(context).size.width,
                                       height:
@@ -118,9 +118,18 @@ class CompanyButton extends StatelessWidget {
                     style: Theme.of(context).textTheme.displayMedium,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: CircleAvatar(
-                    radius: 30.h,
-                    child: Image.asset(logoCompany ?? ""),
+                  trailing: ClipRRect(
+                    borderRadius: BorderRadius.circular(75),
+                    child: CircleAvatar(
+                      maxRadius: 28.h,
+                      minRadius: 22.h,
+                      child: Image.network(
+                        logoCompany ?? "",
+                        fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -128,31 +137,3 @@ class CompanyButton extends StatelessWidget {
     );
   }
 }
-
-
-
-// ListTile(
-                        //     title: Align(
-                        //       alignment: Alignment.centerLeft,
-                        //       child: Text(
-                        //         companyName,
-                        //         style: Theme.of(context).textTheme.displayMedium,
-                        //         overflow: TextOverflow.ellipsis,
-                        //       ),
-                        //     ),
-                        //     trailing:
-                        //         //  CircleAvatar(
-                        //         //     radius: 30.h,
-                        //         //     child:
-                        //         ClipRRect(
-                        //       borderRadius: BorderRadius.circular(26),
-                        //       child: CircleAvatar(
-                        //         radius: 22.h,
-                        //         child: Image.network(
-                        //           logoCompany ?? "",
-                        //           fit: BoxFit.cover,
-                        //           width: MediaQuery.of(context).size.width,
-                        //           height: MediaQuery.of(context).size.height,
-                        //         ),
-                        //       ),
-                        //     )),

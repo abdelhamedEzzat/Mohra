@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mohra_project/core/constants/constans_collections/collections.dart';
 
 class UsersTabBarScreens extends StatelessWidget {
   const UsersTabBarScreens({
@@ -36,6 +37,10 @@ class UsersTabBarScreens extends StatelessWidget {
                             .collection("users")
                             .doc(snapshot.data!.docs[index].id)
                             .update({'Email_status': 'enabled'});
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(snapshot.data!.docs[index].id)
+                            .update({'status': '2'});
                       },
                       rejectedOnTap: () async {
                         await FirebaseFirestore.instance
@@ -43,6 +48,11 @@ class UsersTabBarScreens extends StatelessWidget {
                             .doc(snapshot.data!.docs[index].id)
                             .delete();
                         await FirebaseAuth.instance.currentUser!.delete();
+
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(snapshot.data!.docs[index].id)
+                            .update({'status': '0'});
                       });
                 },
               );

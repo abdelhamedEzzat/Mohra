@@ -41,14 +41,18 @@ class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
         await companyImageRef.putFile(file);
         url = await companyImageRef.getDownloadURL();
         print("url:$url");
-
+        var compnydocID = Constanscollection.companyCollection.id;
         await Constanscollection.companyCollection.add(
           {
             'logo': url,
             'company_Name': companyName,
             'Company_Address': companyAddress,
             'Company_type': companyType,
-            'companyId': compnyCollectionID
+            'companyId': compnyCollectionID,
+            'companyDocId': compnydocID,
+            'userID': FirebaseAuth.instance.currentUser!.uid,
+            'additionalInformation': "",
+            'CompanyStatus': "Waiting for Accepted"
           },
         );
       }

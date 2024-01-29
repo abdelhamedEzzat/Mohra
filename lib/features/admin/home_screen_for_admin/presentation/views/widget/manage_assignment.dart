@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
+import 'package:mohra_project/core/constants/constans_collections/collections.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
@@ -34,8 +35,6 @@ class _ManageAssignmentState extends State<ManageAssignment> {
   List companySearchResults = [];
   getNameOfCompany() async {
     var companiesData = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('Companys')
         .orderBy("company_Name")
         .get();
@@ -314,83 +313,51 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                 CustomButton(
                   nameOfButton: "submitted",
                   onTap: () async {
-                    var addUserInformation =
-                        FirebaseFirestore.instance.collection('users');
+                    try {
+                      var addInformationStaffToCompany =
+                          FirebaseFirestore.instance.collection('Companys');
 
-                    var addUserInformationdata = await addUserInformation
-                        .where('role', isNotEqualTo: "User")
-                        .get();
-                    var staffInformation = addUserInformationdata.docs[0];
-                    var sttafuserID = staffInformation["userID"];
-                    print(await FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection("Companys")
-                        .get()
-                        .then((QuerySnapshot<Map<String, dynamic>> value) {
-                      value.docs.forEach((element) {
-                        var data = element.data();
-//
-                        // Assuming "1" is the key you're interested in
-                        var staffData = data[sttafuserID];
+                      var companySnapshot = await addInformationStaffToCompany
+                          .where('company_Name',
+                              isEqualTo: companyContraller.text.trim())
+                          .get();
 
-                        if (staffData != null) {
-                          var staffEmail = staffData['StaffEmail'];
-                          var staffRole = staffData['StaffRole'];
-                          var staffName = staffData['StaffName'];
+                      var addUserInformation =
+                          FirebaseFirestore.instance.collection('users');
 
-                          print("StaffEmail: $staffEmail");
-                          print("StaffRole: $staffRole");
-                          print("StaffName: $staffName");
-                        } else {}
-                      });
-                    }));
-                    // try {
-                    //   var addInformationStaffToCompany = FirebaseFirestore
-                    //       .instance
-                    //       .collection('users')
-                    //       .doc(FirebaseAuth.instance.currentUser!.uid)
-                    //       .collection('Companys');
+                      var addUserInformationdata = await addUserInformation
+                          .where('fullName',
+                              isEqualTo: searchContraller.text.trim())
+                          .get();
 
-                    //   var companySnapshot = await addInformationStaffToCompany
-                    //       .where('company_Name',
-                    //           isEqualTo: companyContraller.text.trim())
-                    //       .get();
+                      if (companySnapshot.docs.isNotEmpty) {
+                        var companyDocs = companySnapshot.docs[0];
+                        var companyID = companyDocs['companyId'];
+                        var companyName = companyDocs["company_Name"];
+                        var staffInformation = addUserInformationdata.docs[0];
+                        var sttafuserID = staffInformation["userID"];
+                        var sttafuserEmail = staffInformation["email"];
 
-                    //   var addUserInformation =
-                    //       FirebaseFirestore.instance.collection('users');
+                        await FirebaseFirestore.instance
+                            .collection('Staff')
+                            .doc(companyID)
+                            .set({
+                          'CompanyId': companyID,
+                          'companyName': companyName,
+                          "StaffEmail": sttafuserEmail,
+                          'Staffid': sttafuserID,
+                          'StaffRole': selectItem,
+                          'StaffName': searchContraller.text,
+                        });
 
-                    //   var addUserInformationdata = await addUserInformation
-                    //       .where('fullName',
-                    //           isEqualTo: searchContraller.text.trim())
-                    //       .get();
-
-                    //   if (companySnapshot.docs.isNotEmpty) {
-                    //     var companyDocs = companySnapshot.docs[0];
-                    //     var userId = companyDocs.id;
-                    //     var staffInformation = addUserInformationdata.docs[0];
-                    //     var sttafuserID = staffInformation["userID"];
-
-                    //     Map<String, dynamic> dataToUpdate = {
-                    //       "$sttafuserID": {
-                    //         'StaffEmail': sttafuserID,
-                    //         'StaffRole': selectItem,
-                    //         'StaffName': searchContraller.text,
-                    //       },
-                    //     };
-
-                    //     await addInformationStaffToCompany
-                    //         .doc(userId)
-                    //         .update(dataToUpdate);
-
-                    //     print(
-                    //         'تم تحديث المعلومات بنجاح للمستخدم ذو البريد الإلكتروني: $sttafuserID');
-                    //   } else {}
-                    // } on Exception catch (e) {
-                    //   print(
-                    //       'لم يتم العثور على مستخدم ذو الـ "first name" المحدد. ${e.toString()}');
-                    //   // TODO
-                    // }
+                        print(
+                            'تم تحديث المعلومات بنجاح للمستخدم ذو البريد الإلكتروني: $sttafuserID');
+                      } else {}
+                    } on Exception catch (e) {
+                      print(
+                          'لم يتم العثور على مستخدم ذو الـ "first name" المحدد. ${e.toString()}');
+                      // TODO
+                    }
                   },
                 ),
               ],
@@ -400,7 +367,91 @@ class _ManageAssignmentState extends State<ManageAssignment> {
       ),
     );
   }
-}
+}  
+
+
+  // var addUserInformation =
+                    //     FirebaseFirestore.instance.collection('users');
+
+                    // var addUserInformationdata = await addUserInformation
+                    //     .where('role', isNotEqualTo: "User")
+                    //     .get();
+                    // var staffInformation = addUserInformationdata.docs[0];
+                    // var sttafuserID = staffInformation["userID"];
+//                     print(await FirebaseFirestore.instance
+//                         .collection('users')
+//                         .doc(FirebaseAuth.instance.currentUser!.uid)
+//                         .collection("Companys")
+//                         .get()
+//                         .then((QuerySnapshot<Map<String, dynamic>> value) {
+//                       value.docs.forEach((element) {
+//                         var data = element.data();
+// //
+//                         // Assuming "1" is the key you're interested in
+//                         var staffData = data[sttafuserID];
+
+//                         if (staffData != null) {
+//                           var staffEmail = staffData['StaffEmail'];
+//                           var staffRole = staffData['StaffRole'];
+//                           var staffName = staffData['StaffName'];
+
+//                           print("StaffEmail: $staffEmail");
+//                           print("StaffRole: $staffRole");
+//                           print("StaffName: $staffName");
+//                         } else {}
+//                       });
+//                     }));
+ // Map<String, dynamic> dataToUpdate = {
+                        //   "$sttafuserID": {
+                            
+                        //   },
+                        // }; // var addUserInformation =
+                    //     FirebaseFirestore.instance.collection('users');
+
+                    // var addUserInformationdata = await addUserInformation
+                    //     .where('role', isNotEqualTo: "User")
+                    //     .get();
+                    // var staffInformation = addUserInformationdata.docs[0];
+                    // var staffUserID = staffInformation["userID"];
+
+                    // bool isEqual = false;
+
+                    // var results = await FirebaseFirestore.instance
+                    //     .collection('users')
+                    //     .doc(FirebaseAuth.instance.currentUser!.uid)
+                    //     .collection("Companys")
+                    //     .get()
+                    //     .then(
+                    //         (QuerySnapshot<Map<String, dynamic>> value) async {
+                    //   for (var element in value.docs) {
+                    //     var data = element.data();
+                    //     var staffData = data[staffUserID];
+
+                    //     if (staffData != null) {
+                    //       var staffEmail = staffData['StaffEmail'];
+
+                    //       // Now, let's compare 'staffEmail' with data from the 'users' table
+                    //       // var table1Snapshot = await FirebaseFirestore.instance
+                    //       //     .collection("users")
+                    //       //     .where("userID", isEqualTo: staffEmail)
+                    //       //     .get();
+
+                    //       if (staffEmail ==
+                    //           FirebaseAuth.instance.currentUser!.uid) {
+                    //         print(isEqual = false);
+
+                    //         print(FirebaseFirestore.instance
+                    //             .collection("users")
+                    //             .doc(FirebaseAuth.instance.currentUser!.uid));
+                    //         print(staffEmail);
+                    //         break; // Exit the loop if a match is found
+                    //       } else {
+                    //         print(isEqual = true);
+                    //       }
+                    //     }
+                    //   }
+                    // });
+
 
 
 //  var selectStaffType = FirebaseFirestore.instance

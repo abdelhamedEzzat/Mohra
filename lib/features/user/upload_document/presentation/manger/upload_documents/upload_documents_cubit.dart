@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -67,7 +69,8 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
 
         await uploadTask.whenComplete(() {});
         url = await refrance.getDownloadURL();
-
+        final docID =
+            FirebaseFirestore.instance.collection('Document').doc().id;
         await Constanscollection.compnyDocument.add(
           {
             "name": fileName,
@@ -76,7 +79,15 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
             "userid": userId,
             "companydocID": companydocID,
             "fileExtention": filePlatforme!.extension,
-            "status": "Wating for the accssept "
+            'DocID': docID,
+            "status": "Wating for the accssept ",
+            'companyName': "",
+            'invoiceDate': "",
+            'invoiceNumber': "",
+            'amountOfTheInvoice': "",
+            'selectItem': "",
+            'selectTypeItem': "",
+            'commentForAccountatnt': "",
           },
         );
       }
@@ -130,14 +141,24 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
         // Get the current counter value
 
         // Add information to Firestore
+        final docID =
+            FirebaseFirestore.instance.collection('Document').doc().id;
         await Constanscollection.compnyDocument.add(
           {
             "urlImage": imageurl,
             "comment": comment,
-            "id": userId,
+            "userid": userId,
             "companydocID": companydocID,
             "fileExtention": "image",
+            "DocID": docID,
             //"numberOfDocument": currentCounter + 1,
+            'companyName': "",
+            'invoiceDate': "",
+            'invoiceNumber': "",
+            'amountOfTheInvoice': "",
+            'selectItem': "",
+            'selectTypeItem': "",
+            'commentForAccountatnt': "",
           },
         );
 

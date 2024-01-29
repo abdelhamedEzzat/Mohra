@@ -25,15 +25,11 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
     var companyId = ModalRoute.of(context)?.settings.arguments;
 
     final Stream<QuerySnapshot> companyInFormation = FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("Companys")
         .where('companyId', isEqualTo: companyId)
         .snapshots();
 
     final Stream<QuerySnapshot> compnyDocument = FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("Document")
         .where('companydocID', isEqualTo: companyId)
         .snapshots();

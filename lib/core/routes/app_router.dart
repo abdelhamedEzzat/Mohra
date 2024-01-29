@@ -67,34 +67,34 @@ class AppRouter {
       //   return MaterialPageRoute(
       //     builder: (_) => const DetailsDocuments(),
       //   );
-      case RouterName.auditorHomeScreen:
-        return MaterialPageRoute(
-          builder: (_) => const AuditorHomeScreen(),
-        );
-      case RouterName.accountantHomeScreen:
-        return MaterialPageRoute(
-          builder: (_) => const AccountantHomeScreen(),
-        );
+      // case RouterName.auditorHomeScreen:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const AuditorHomeScreen(),
+      //   );
+      // case RouterName.accountantHomeScreen:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const AccountantHomeScreen(),
+      //   );
       case RouterName.adminHomeScreen:
         return MaterialPageRoute(
           builder: (_) => const AdminHomeScreen(),
         );
-      case RouterName.accuntantCompanyDocuments:
-        return MaterialPageRoute(
-          builder: (_) => const AccuntantCompanyDocuments(),
-        );
-      case RouterName.accountantDocumentDetails:
-        return MaterialPageRoute(
-          builder: (_) => const AccountantDocumentDetails(),
-        );
-      case RouterName.auditorDocumentDetails:
-        return MaterialPageRoute(
-          builder: (_) => const AuditorDocumentDetails(),
-        );
-      case RouterName.auditorCompanyDocuments:
-        return MaterialPageRoute(
-          builder: (_) => const AuditorCompanyDocuments(),
-        );
+      // case RouterName.accuntantCompanyDocuments:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const AccuntantCompanyDocuments(),
+      //   );
+      // case RouterName.accountantDocumentDetails:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const AccountantDocumentDetails(),
+      //   );
+      // case RouterName.auditorDocumentDetails:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const AuditorDocumentDetails(),
+      //   );
+      // case RouterName.auditorCompanyDocuments:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const AuditorCompanyDocuments(),
+      //   );
       case RouterName.addNewAccountant:
         return MaterialPageRoute(
           builder: (_) => const AddNewAccountant(),

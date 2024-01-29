@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,9 +64,8 @@ class _CompaniesListThatUserCreatedState
   @override
   Widget build(BuildContext context) {
     final Stream<QuerySnapshot> companyCollection = FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("Companys")
+        .where('userID', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .snapshots();
 
     return Expanded(
@@ -92,32 +92,48 @@ class _CompaniesListThatUserCreatedState
                   stream: companyCollection,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      // List<Massage> massageList = [];
-                      // for (int i = 0; i < snapshot.data!.docs.length; i++) {
-                      //   massageList
-                      //       .add(Massage.fromJson(snapshot.data!.docs[i]));
-                      // }
                       return ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return SingleChildScrollView(
-                            child: CompanyButton(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, RouterName.companyDocuments,
-                                    arguments: snapshot.data!.docs[index]
-                                        ["companyId"]);
-                              },
-                              withStatus: true,
-                              companyName: snapshot.data!.docs[index]
-                                  ["company_Name"],
-                              logoCompany: snapshot.data!.docs[index]["logo"],
-                              colorOfStatus: ColorManger.darkGray,
-                              statusText: "Waiting for Accepted",
-                            ),
-                          );
+                          return snapshot.data!.docs[index]["CompanyStatus"] ==
+                                  'Waiting for Accepted'
+                              ? SingleChildScrollView(
+                                  child: CompanyButton(
+                                    onTap: () {},
+                                    withStatus: true,
+                                    companyName: snapshot.data!.docs[index]
+                                        ["company_Name"],
+                                    logoCompany: snapshot.data!.docs[index]
+                                        ["logo"],
+                                    colorOfStatus: ColorManger.darkGray,
+                                    statusText: snapshot.data!.docs[index]
+                                        ["CompanyStatus"],
+                                  ),
+                                )
+                              : SingleChildScrollView(
+                                  child: CompanyButton(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, RouterName.companyDocuments,
+                                          arguments: snapshot.data!.docs[index]
+                                              ["companyId"]);
+                                    },
+                                    withStatus: true,
+                                    companyName: snapshot.data!.docs[index]
+                                        ["company_Name"],
+                                    logoCompany: snapshot.data!.docs[index]
+                                        ["logo"],
+                                    colorOfStatus: snapshot.data!.docs[index]
+                                                ["CompanyStatus"] ==
+                                            'Accepted'
+                                        ? Colors.green
+                                        : Colors.red,
+                                    statusText: snapshot.data!.docs[index]
+                                        ["CompanyStatus"],
+                                  ),
+                                );
                         },
                       );
                     } else if (snapshot.connectionState ==

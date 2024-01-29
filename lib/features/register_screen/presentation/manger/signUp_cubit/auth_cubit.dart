@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:mohra_project/core/routes/name_router.dart';
+import 'package:mohra_project/features/register_screen/data/user_auth.dart';
 
 part 'auth_state.dart';
 
@@ -44,6 +48,7 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
         password: password,
       );
+
       emit(LoginSuccess());
     } on FirebaseAuthException catch (e) {
       emit(Loginfaild(error: e.message.toString()));
@@ -101,6 +106,7 @@ class AuthCubit extends Cubit<AuthState> {
         'userID': user,
         'email': email,
         'role': 'User',
+        'status': '0',
         'Email_status': 'disabled',
       });
       emit(SignupSuccess());
@@ -125,6 +131,7 @@ class AuthCubit extends Cubit<AuthState> {
         'userID': user,
         'email': email,
         'role': 'Auditor',
+        'status': '2',
       });
       emit(SignupSuccess());
     } catch (e) {
@@ -148,6 +155,7 @@ class AuthCubit extends Cubit<AuthState> {
         'userID': user,
         'email': email,
         'role': 'Accountant',
+        'status': '2',
       });
       emit(SignupSuccess());
     } catch (e) {
@@ -168,6 +176,53 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignupSuccess());
     } catch (e) {
       Signupfaild(error: "Failed to get user:${e.toString()}");
+    }
+  }
+
+  // void updateUserStatus(int status) {
+  //   final userStatusBox = Hive.box<UserStatusModel>('userStatusBox');
+  //   final userStatus = UserStatusModel(emailStauts: status);
+  //   userStatusBox.put('userStatus', userStatus);
+  // }
+
+  // int getUserStatus() {
+  //   final userStatusBox = Hive.box<UserStatusModel>('userStatusBox');
+  //   final userStatus = userStatusBox.get('userStatus',
+  //       defaultValue: UserStatusModel(emailStauts: 0));
+  //   return userStatus!.emailStauts;
+  // }
+
+  void checkRole(context) async {
+    try {
+      emit(UserStutsLoading());
+      DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore
+          .instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      String userRole = userData['role']; // Access the 'role' field
+
+      // Now you can check the user's role and navigate accordingly
+      if (userRole == 'admin') {
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pushReplacementNamed(RouterName.adminHomeScreen);
+      } else if (userRole == 'Accountant') {
+        // ignore: use_build_context_synchronously
+        Navigator.of(context)
+            .pushReplacementNamed(RouterName.accountantHomeScreen);
+      } else if (userRole == 'Auditor') {
+        // ignore: use_build_context_synchronously
+        Navigator.of(context)
+            .pushReplacementNamed(RouterName.auditorHomeScreen);
+      } else if (userRole == 'Users') {
+        // ignore: use_build_context_synchronously
+        Navigator.of(context)
+            .pushReplacementNamed(RouterName.homeScreenForUser);
+      }
+      emit(UserStutsSuccess());
+    } catch (e) {
+      emit(UserStutsfaild(error: "Failed to get  user:${e.toString()}"));
     }
   }
 }
