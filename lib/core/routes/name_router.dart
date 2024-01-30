@@ -23,6 +23,7 @@ class RouterName {
   static const String vreifyEmail = "VreifyEmail";
   static const String acceptedMassageScreen = "acceptedMassageScreen";
   static const String addDocumetType = "addDocumetType";
-  static const String searchScreen = "SearchScreen";
+  static const String searchScreenForAdmin = "SearchScreenForAdmin";
+  static const String searchScreenForUser = "SearchScreenForUser";
   static const String test = "test";
 }

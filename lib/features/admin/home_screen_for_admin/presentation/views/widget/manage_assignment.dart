@@ -345,9 +345,20 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                           'CompanyId': companyID,
                           'companyName': companyName,
                           "StaffEmail": sttafuserEmail,
-                          'Staffid': sttafuserID,
+                          'userid': sttafuserID,
                           'StaffRole': selectItem,
                           'StaffName': searchContraller.text,
+                        }).then((value) {
+                          FirebaseFirestore.instance
+                              .collection('Notification')
+                              .add({
+                            'notificationMassage':
+                                "You added $companyName to be $selectItem to it",
+                            'role': selectItem,
+                            'MassgeSendBy': 'ManagerMassage',
+                            'NotificationCompanyID': companyID,
+                            'NotificationUserID': sttafuserID
+                          });
                         });
 
                         print(

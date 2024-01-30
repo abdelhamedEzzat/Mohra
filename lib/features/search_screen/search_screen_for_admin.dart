@@ -5,14 +5,14 @@ import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+class SearchScreenForAdmin extends StatefulWidget {
+  const SearchScreenForAdmin({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<SearchScreenForAdmin> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreenForAdmin> {
   String? selectTypeItem;
   final TextEditingController companyContraller = TextEditingController();
   List companySearchList = [];
@@ -135,7 +135,12 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: Text('Search')),
+      appBar: const CustomAppBar(
+        title: Text('Search'),
+        leading: BackButton(
+          color: Colors.white,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

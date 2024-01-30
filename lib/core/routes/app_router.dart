@@ -7,7 +7,7 @@ import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/add_new_accountant.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/add_new_auditor.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/manage_assignment.dart';
-import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_home_screen.dart';
+import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/auditor_home_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_detatils_documents_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/auditor_company_documents.dart';
 import 'package:mohra_project/features/login_screen/presentation/view/widgets/forget_password.dart';

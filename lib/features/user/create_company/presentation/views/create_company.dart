@@ -9,6 +9,7 @@ import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
+import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
 import 'package:mohra_project/features/user/create_company/presentation/manger/firebase_company/create_company_cubit.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/add_Image_widget.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/title_of_form_create_company.dart';
@@ -35,7 +36,7 @@ class _CreateCompanyState extends State<CreateCompany> {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: const CustomAppBarForUsers(
         leading: BackButton(color: Colors.white),
         title: Text(
           "Create Company",

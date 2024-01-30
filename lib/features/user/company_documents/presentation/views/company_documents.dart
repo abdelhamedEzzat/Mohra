@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
+import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/widget/document_and_number_after_upload.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/widget/upload_documents.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/widgets/details_profile.dart';
@@ -39,7 +40,7 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
     // final trigerCubit = BlocProvider.of<UploadDocumentsCubit>(context);
 
     return Scaffold(
-        appBar: const CustomAppBar(
+        appBar: const CustomAppBarForUsers(
           leading: BackButton(color: Colors.white),
           title: Text(
             "Company Documents",

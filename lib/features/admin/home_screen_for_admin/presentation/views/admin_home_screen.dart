@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/admin_home_screen_body.dart';
-import 'package:mohra_project/features/user/notification/persrntation/views/notification.dart';
+import 'package:mohra_project/features/user/notification/persrntation/views/notification_for_admin.dart';
 import 'package:mohra_project/features/user/settings_screen/settings_screen.dart';
 
 class AdminHomeScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class AdminHomeScreen extends StatefulWidget {
 class _AccountantHomeScreenState extends State<AdminHomeScreen> {
   List<Widget> pages = [
     const AdminHomeScreenBody(),
-    const NotificationScreen(),
+    const NotificationScreenForAdminAndUser(),
     const SettingsScreen(),
   ];
 

@@ -1,13 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
-import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
+import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/home_screen_for_user_body.dart';
-import 'package:mohra_project/features/user/notification/persrntation/views/notification.dart';
+import 'package:mohra_project/features/user/notification/persrntation/views/notification_for_admin.dart';
 import 'package:mohra_project/features/user/settings_screen/settings_screen.dart';
 
 class HomeScreenForUser extends StatefulWidget {
@@ -20,7 +22,7 @@ class HomeScreenForUser extends StatefulWidget {
 class _HomeScreenForUserState extends State<HomeScreenForUser> {
   List<Widget> pages = [
     const HomeScreenForUserBody(),
-    const NotificationScreen(),
+    const NotificationScreenForAdminAndUser(),
     const SettingsScreen(),
   ];
 
@@ -31,19 +33,32 @@ class _HomeScreenForUserState extends State<HomeScreenForUser> {
 
     return Scaffold(
         bottomNavigationBar: bottomNavigationBar(),
-        appBar: CustomAppBar(title: BlocBuilder<AuthCubit, AuthState>(
+        appBar: CustomAppBarForUsers(title: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {
-            final firstName = BlocProvider.of<AuthCubit>(context)
-                .personalUserInformation
-                .map((e) => e.get("first_Name"))
-                .join(' , ');
+            User? user = FirebaseAuth.instance.currentUser;
+            return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              future: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(user!.uid)
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Return a loading indicator or a placeholder while waiting for the data.
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  // Handle the error case.
+                  return Text("Error: ${snapshot.error}");
+                } else {
+                  // Access the data from the snapshot.
+                  Map<String, dynamic> userData = snapshot.data!.data() ?? {};
+                  String firstName = userData["first_Name"] ?? "";
 
-            return Text(
-              " Hello : $firstName ",
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium!
-                  .copyWith(color: ColorManger.white),
+                  return Text(
+                    "Hello: $firstName",
+                    style: Theme.of(context).textTheme.headline6,
+                  );
+                }
+              },
             );
           },
         )),

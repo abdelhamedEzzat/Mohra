@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
+import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
 
 class DetailsDocuments extends StatelessWidget {
   const DetailsDocuments({super.key});
@@ -13,7 +14,7 @@ class DetailsDocuments extends StatelessWidget {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: const CustomAppBar(
+        appBar: const CustomAppBarForUsers(
           leading: BackButton(color: Colors.white),
           title: Text(
             "Details Documents",

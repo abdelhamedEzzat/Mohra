@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
@@ -39,7 +40,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
 
   List<String> typeDocumentDropDown = [];
-  String? selectTypeItem;
+  String? selectTypeItem = "";
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> docDitails =
@@ -125,17 +126,11 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                         var accountantReview = document?['AccountantReview'];
 
                         var accountantReviews =
-                            (document?['AccountantReview'] as List<dynamic>)
-                                .where((review) =>
-                                    review['staffTypeReview'] == 'Accountant')
-                                .toList();
-
+                            (document?['AccountantReview'] as List<dynamic>?) ??
+                                [];
                         var auditorReviews =
-                            (document?['AuditorReview'] as List<dynamic>)
-                                .where((review) =>
-                                    review['staffTypeReview'] == 'Auditor')
-                                .toList();
-
+                            (document?['AuditorReview'] as List<dynamic>?) ??
+                                [];
                         List<Widget> accountantContainers =
                             _buildAccountantReviewContainers(
                                 accountantReviews, "Accountant Reviews");
@@ -573,6 +568,16 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                     ]),
                     'isAccountantReview': true
                     //  'accountant by':"email"
+                  }).then((value) {
+                    FirebaseFirestore.instance.collection('Notification').add({
+                      'notificationMassage':
+                          "Accountant added Document in $companyName with $selectTypeItem to review",
+                      'role': 'Accountant',
+                      'MassgeSendBy': 'AccountantReview',
+                      'NotificationCompanyID': docDitails['DocID'],
+                      'NotificationUserID':
+                          FirebaseAuth.instance.currentUser!.uid
+                    });
                   });
 
                   setState(() {

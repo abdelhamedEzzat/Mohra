@@ -1,5 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -224,8 +227,19 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                               ),
                             );
                           }
-
                           trigerCubit.clearData();
+                          await FirebaseFirestore.instance
+                              .collection('Notification')
+                              .add({
+                            'notificationMassage':
+                                "user in  $companyId add document number ${trigerCubit.fileName} to revjon",
+                            'role': 'user',
+                            'NotificationCompanyID': companyId,
+                            'NotificationUserID':
+                                FirebaseAuth.instance.currentUser!.uid,
+                            // 'idUserMassge': sttafuserID,
+                            'MassgeSendBy': 'UserNotification',
+                          });
                         })
                   ],
                 );

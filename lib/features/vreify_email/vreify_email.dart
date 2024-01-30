@@ -37,8 +37,8 @@ class VreifyEmail extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                GlassScreenForLoginScreen(),
-                VreifyEmailBody(),
+                Positioned(child: GlassScreenForLoginScreen()),
+                Positioned(child: VreifyEmailBody()),
               ],
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,18 +33,9 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
         if (state is LoginLoading) {
           isLoading = true;
         } else if (state is LoginSuccess) {
-          if (FirebaseAuth.instance.currentUser!.emailVerified) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              RouterName.homeScreenForUser,
-              (route) => false,
-            );
-          } else {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              RouterName.homeScreenForUser,
-              (route) => false,
-            );
-            // Navigator.of(context).pushReplacementNamed(RouterName.vreifyEmail);
-          }
+          handleEmailVerification(context);
+          Navigator.of(context)
+              .pushReplacementNamed(RouterName.adminHomeScreen);
         } else if (state is Loginfaild) {
           isLoading = false;
           showSnackBar(context, state.error);
@@ -182,6 +174,49 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> checkEmailAndNavigate(context) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        DocumentSnapshot<Map<String, dynamic>> userData =
+            await FirebaseFirestore.instance
+                .collection("users")
+                .doc(user.uid)
+                .get();
+
+        String emailStatus = userData["Email_status"] ?? "";
+        String role = userData["role"] ?? "";
+
+        if (emailStatus.toLowerCase() == "enabled") {
+          if (role == 'User') {
+            Navigator.of(context)
+                .pushReplacementNamed(RouterName.homeScreenForUser);
+          } else if (role == 'Auditor') {
+            Navigator.of(context)
+                .pushReplacementNamed(RouterName.auditorHomeScreen);
+          } else if (role == 'Accountant') {
+            Navigator.of(context)
+                .pushReplacementNamed(RouterName.accountantHomeScreen);
+          }
+        }
+      }
+    } catch (e) {
+      print("Error checking email status: $e");
+    }
+  }
+
+  void handleEmailVerification(context) {
+    if (FirebaseAuth.instance.currentUser!.emailVerified) {
+      checkEmailAndNavigate(context);
+    } else {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        RouterName.vreifyEmail,
+        (route) => false,
+      );
+    }
   }
 }
 

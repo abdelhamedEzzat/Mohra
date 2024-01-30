@@ -6,8 +6,10 @@ import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/auditor_home_screen_body.dart';
 import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
+import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
+import 'package:mohra_project/features/user/notification/notification_for_accountant.dart';
 
-import 'package:mohra_project/features/user/notification/persrntation/views/notification.dart';
+import 'package:mohra_project/features/user/notification/persrntation/views/notification_for_admin.dart';
 import 'package:mohra_project/features/user/settings_screen/settings_screen.dart';
 
 class AuditorHomeScreen extends StatefulWidget {
@@ -20,7 +22,7 @@ class AuditorHomeScreen extends StatefulWidget {
 class _AccountantHomeScreenState extends State<AuditorHomeScreen> {
   List<Widget> pages = [
     const AuditorHomeScreenBody(),
-    const NotificationScreen(),
+    const NotificationScreenFormAccountant(),
     const SettingsScreen(),
   ];
 
@@ -68,7 +70,7 @@ class _AccountantHomeScreenState extends State<AuditorHomeScreen> {
                 label: "Settings",
               ),
             ]),
-        appBar: CustomAppBar(
+        appBar: CustomAppBarForUsers(
             title: Text(
           "Hello : $firstName",
           style: Theme.of(context)

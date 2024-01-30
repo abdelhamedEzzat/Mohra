@@ -8,29 +8,30 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/theme/themeManger.dart';
 import 'package:mohra_project/core/helpers/bloc_abserver.dart';
-import 'package:mohra_project/core/helpers/snackBar.dart';
 import 'package:mohra_project/core/routes/app_router.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/accountant_home_screen.dart';
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/accuntant_company_documents.dart';
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/documents_detatils_for_accountant.dart';
+import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/admin_home_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_detatils_documents_screen.dart';
-import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_home_screen.dart';
+import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/auditor_home_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/add_type_of_document_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/auditor_company_documents.dart';
-import 'package:mohra_project/features/register_screen/data/user_auth.dart';
 import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
-import 'package:mohra_project/features/register_screen/presentation/view/widgets/protrait/accepted_massage_screen.dart';
-import 'package:mohra_project/features/search_screen/search_screen.dart';
+import 'package:mohra_project/features/register_screen/presentation/view/register_screen.dart';
+import 'package:mohra_project/features/search_screen/search_screen_for_admin.dart';
+import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
+import 'package:mohra_project/features/splash_screens/presentation/views/splash_screen.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/company_documents.dart';
 import 'package:mohra_project/features/user/create_company/presentation/manger/firebase_company/create_company_cubit.dart';
 import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/home_screen_for_user.dart';
 import 'package:mohra_project/features/user/upload_document/presentation/manger/upload_documents/upload_documents_cubit.dart';
 import 'package:mohra_project/features/user/upload_document/presentation/views/upload_documents.dart';
+import 'package:mohra_project/features/vreify_email/vreify_email.dart';
 import 'package:mohra_project/firebase_options.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
@@ -111,7 +112,7 @@ class MyApp extends StatelessWidget {
 
               // for Routing Screens
               onGenerateRoute: AppRouter.onGenrateRoute,
-              initialRoute: RouterName.registerScreen,
+              //  initialRoute: RouterName.loginScreen,
 
               routes: {
                 RouterName.companyDocuments: (context) =>
@@ -122,8 +123,6 @@ class MyApp extends StatelessWidget {
                     const UploadDocuments(),
                 RouterName.detailsDocuments: (context) =>
                     const DetailsDocuments(),
-                RouterName.acceptedMassageScreen: (context) =>
-                    const AcceptedMassageScreen(),
                 RouterName.addDocumetType: (context) => const AddDocumentType(),
                 RouterName.auditorCompanyDocuments: (context) =>
                     const AuditorCompanyDocuments(),
@@ -137,13 +136,104 @@ class MyApp extends StatelessWidget {
                     const AccuntantCompanyDocuments(),
                 RouterName.auditorDocumentDetails: (context) =>
                     const AuditorDocumentDetails(),
-                RouterName.searchScreen: (context) => const SearchScreen()
+                RouterName.searchScreenForAdmin: (context) =>
+                    const SearchScreenForAdmin(),
+                RouterName.searchScreenForUser: (context) => searchuser()
               },
-              // home: const test(),
+              home: const AuthUsers(),
             ),
           );
         },
       );
     });
+  }
+}
+
+class AuthUsers extends StatelessWidget {
+  const AuthUsers({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+        User? user = snapshot.data;
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Loading state
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (user == null) {
+          return const RegisterScreen();
+        } else {
+          return StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('users') // Replace with your users collection
+                .doc(user.uid)
+                .snapshots(),
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+              if (userSnapshot.connectionState == ConnectionState.waiting) {
+                // Loading user data
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (userSnapshot.hasData) {
+                // User data is available, check role
+                var userData = userSnapshot.data!.data();
+                String userRole =
+                    (userData as Map<String, dynamic>)['role'] ?? '';
+                String userStatus =
+                    (userData as Map<String, dynamic>)['status'] ?? '';
+
+                // Now you can use the userRole to decide where to navigate
+                if (userRole == 'admin') {
+                  return const AdminHomeScreen();
+                } else if (userRole == 'User') {
+                  if (userStatus == '0') {
+                    return const RegisterScreen();
+                  } else if (userStatus == '1') {}
+                  if (userStatus == '2') {
+                    if (FirebaseAuth.instance.currentUser!.emailVerified) {
+                      return const RegisterScreen();
+                    } else if (!FirebaseAuth
+                        .instance.currentUser!.emailVerified) {
+                      return const VreifyEmail();
+                    }
+                    return const HomeScreenForUser();
+                  }
+                } else if (userRole == "Accountant") {
+                  if (FirebaseAuth.instance.currentUser!.emailVerified) {
+                    return const RegisterScreen();
+                  } else if (!FirebaseAuth
+                      .instance.currentUser!.emailVerified) {
+                    return const VreifyEmail();
+                  } else {
+                    return const AccountantHomeScreen();
+                  }
+                } else if (userRole == "Auditor") {
+                  if (FirebaseAuth.instance.currentUser!.emailVerified) {
+                    return const RegisterScreen();
+                  } else if (!FirebaseAuth
+                      .instance.currentUser!.emailVerified) {
+                    return const VreifyEmail();
+                  } else {
+                    return const AuditorHomeScreen();
+                  }
+                }
+              }
+              return SplashScreen();
+            },
+          );
+        }
+      },
+    );
   }
 }

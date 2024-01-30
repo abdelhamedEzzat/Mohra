@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_button_with_icon_or_image.dart';
@@ -32,30 +33,73 @@ class LogoAndTextFieldAndbuttonProtrait extends StatefulWidget {
 class _LogoAndTextFieldAndbuttonProtraitState
     extends State<LogoAndTextFieldAndbuttonProtrait> {
   GlobalKey<FormState> formKey = GlobalKey();
-
+  bool isdesapled = false;
   @override
+  void initState() {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        user.reload();
+        if (user.emailVerified) {
+          checkEmail();
+          WidgetsBinding.instance
+              .addPostFrameCallback((_) => showEmailVerifiedSnackBar(context));
+        } else {
+          showWelcomeSnackBar(context);
+        }
+      }
+    } catch (e) {
+      print("Error in initState: $e");
+    }
+    super.initState();
+  }
 
-  // void initState() {
-  //   try {
-  //     final user = FirebaseAuth.instance.currentUser;
-  //     if (user != null) {
-  //       user.reload();
-  //       if (user.emailVerified) {
-  //         WidgetsBinding.instance.addPostFrameCallback((_) => showSnackBar(
-  //             context,
-  //             "Congratulations, your email has been authenticated and your data will be reviewed by the administration within 24 hours.",
-  //             backgroundcolor: ColorManger.backGroundColorToSplashScreen,
-  //             duration: const Duration(days: 1)));
-  //       } else {}
-  //     } else if (user == null) {
-  //       // Handle the case where the user is null
-  //     }
-  //   } catch (e) {
-  //     print({"=======================error$e"});
-  //   }
+  void didChangeDependencies() {
+    // Perform cleanup operations here before the widget is disposed.
+    // This is where you can add the cleanup code that was in initState
+    super.didChangeDependencies();
+  }
 
-  //   super.initState();
-  // }
+  void showEmailVerifiedSnackBar(BuildContext context) {
+    showSnackBar(
+      context,
+      "Congratulations, your email has been authenticated and your data will be reviewed by the administration within 24 hours.",
+      backgroundcolor: ColorManger.backGroundColorToSplashScreen,
+      duration: const Duration(days: 1),
+    );
+  }
+
+  void showWelcomeSnackBar(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => showSnackBar(
+        context, "Welcome , SignUp Now",
+        backgroundcolor: ColorManger.backGroundColorToSplashScreen,
+        duration: const Duration(seconds: 5)));
+  }
+
+  Future<void> checkEmail() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        DocumentSnapshot<Map<String, dynamic>> userData =
+            await FirebaseFirestore.instance
+                .collection("users")
+                .doc(user.uid)
+                .get();
+
+        String emailStatus = userData["Email_status"] ?? "";
+        String status = userData["status"] ?? "";
+        if (emailStatus.toLowerCase() == "disabled") {
+          isdesapled = false;
+        } else if (emailStatus.toLowerCase() == "enabled" && status == 2) {
+          isdesapled = true;
+          Navigator.of(context)
+              .pushReplacementNamed(RouterName.homeScreenForUser);
+        }
+      }
+    } catch (e) {
+      print("Error checking email status: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,35 +115,11 @@ class _LogoAndTextFieldAndbuttonProtraitState
             if (state is SignupLoading) {
               isLoading = true;
             } else if (state is SignupSuccess) {
+              if (!FirebaseAuth.instance.currentUser!.emailVerified) {
+                Navigator.of(context)
+                    .pushReplacementNamed(RouterName.vreifyEmail);
+              }
               isLoading = false;
-
-              // BlocProvider.of<AuthCubit>(context).verifyEmail();
-              // Future<bool> checkEmailStatus() async {
-              //   try {
-              //     User? user = FirebaseAuth.instance.currentUser;
-              //     if (user != null) {
-              //       DocumentSnapshot<Map<String, dynamic>> userData =
-              //           await FirebaseFirestore.instance
-              //               .collection("users")
-              //               .doc(user.uid)
-              //               .get();
-
-              //       String emailStatus = userData["Email_status"] ?? "";
-
-              //       if (emailStatus.toLowerCase() == "disabled") {
-              //         Navigator.of(context).pushReplacementNamed(
-              //             RouterName.acceptedMassageScreen);
-              //       } else if (emailStatus.toLowerCase() == "enabled") {
-              Navigator.of(context)
-                  .pushReplacementNamed(RouterName.homeScreenForUser);
-              //       }
-              //     }
-              //     return false;
-              //   } catch (e) {
-              //     print("Error checking email status: $e");
-              //     return false;
-              //   }
-              // }
             } else if (state is Signupfaild) {
               isLoading = false;
               showSnackBar(context, state.error);
@@ -109,175 +129,183 @@ class _LogoAndTextFieldAndbuttonProtraitState
             return Center(
                 child: ModalProgressHUD(
               inAsyncCall: isLoading,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    ImageManger.mohraLogo,
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  ClassMorphismInsideScreen(
-                      blur: 20,
-                      opacity: 0.5,
-                      child: Container(
-                        height: 400.h,
-                        margin: const EdgeInsets.only(
-                          right: 8,
-                          left: 8,
-                        ),
-                        padding: const EdgeInsets.only(
-                            top: 20, bottom: 20, right: 10, left: 10),
-                        child: SingleChildScrollView(
-                          child: Form(
-                            key: formKey,
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const RegisterAccountText(),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  CustomTextFormField(
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter some text.';
-                                        } else if (!RegExp(r'^[a-zA-Z\s]+$')
-                                            .hasMatch(value)) {
-                                          return 'Please enter only letters.';
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (value) {
-                                        trigerCubit.firstName = value;
-                                      },
-                                      labelText: S
-                                          .of(context)
-                                          .firstnameLabelTextInRegisterScreen,
-                                      hintText: S
-                                          .of(context)
-                                          .nameHintTextInRegisterScreen,
-                                      prefixIcon: const Icon(Icons.person)),
-                                  //
-                                  //
-                                  //
-                                  CustomTextFormField(
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter some text.';
-                                        } else if (!RegExp(r'^[a-zA-Z\s]+$')
-                                            .hasMatch(value)) {
-                                          return 'Please enter only letters.';
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (value) {
-                                        trigerCubit.lastName = value;
-                                      },
-                                      labelText: S
-                                          .of(context)
-                                          .lastnameLabelTextInRegisterScreen,
-                                      hintText: S
-                                          .of(context)
-                                          .nameHintTextInRegisterScreen,
-                                      prefixIcon: const Icon(Icons.person)),
-                                  //
-                                  //
-                                  //
-
-                                  //
-                                  //
-                                  CustomTextFormField(
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "* this Field is required You must enter data";
-                                        } else if (!RegExp(r'[a-zA-Z]')
-                                            .hasMatch(value)) {
-                                          return "The email must contain at least one letter.";
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (value) {
-                                        trigerCubit.emailCubit = value;
-                                      },
-                                      //
-
-                                      //
-                                      labelText: S
-                                          .of(context)
-                                          .emailLabelTextInRegisterScreen,
-                                      hintText: S
-                                          .of(context)
-                                          .emailHintTextInRegisterScreen,
-                                      prefixIcon: const Icon(Icons.email)),
-                                  //
-                                  //
-                                  CustomTextFormField(
-                                      obscureText: true,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "* this Field is required You must enter data";
-                                        } else if (!RegExp(
-                                                r'^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[\W_]).+$')
-                                            .hasMatch(value)) {
-                                          return "Password must contain  numbers, letters, and special character.";
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (value) {
-                                        trigerCubit.passwordCubit = value;
-                                      },
-                                      //
-                                      //
-                                      labelText: S
-                                          .of(context)
-                                          .passwordLabelTextInRegisterScreen,
-                                      hintText: S
-                                          .of(context)
-                                          .passwordHintTextInRegisterScreen,
-                                      prefixIcon: const Icon(Icons.lock)),
-                                  //
-                                  //
-                                  //
-
-                                  CustomButton(
-                                      nameOfButton:
-                                          S.of(context).registerAccountBotton,
-                                      onTap: () async {
-                                        if (formKey.currentState!.validate()) {
-                                          formKey.currentState!.save();
-                                          await trigerCubit.userSignUP(
-                                            email: trigerCubit.emailCubit,
-                                            password: trigerCubit.passwordCubit,
-                                          );
-                                        }
-                                        await trigerCubit.addUser(
-                                            email: trigerCubit.emailCubit,
-                                            firstName: trigerCubit.firstName,
-                                            lastName: trigerCubit.lastName);
-
-                                        await trigerCubit.getUserdata();
-                                      }),
-
-                                  //
-                                  //
-                                  //
-                                  CustomBottonWithIconOrImage(
-                                      onTap: () {},
-                                      imageIconButton: ImageManger.googleLogo,
-                                      nameOfButton: S
-                                          .of(context)
-                                          .registerAccountBottonByGoogle),
-                                  //
-                                  //
-                                  //
-                                  const UserIfAlreadyHaveAccount()
-                                ]),
+              child: AbsorbPointer(
+                absorbing: isdesapled,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      ImageManger.mohraLogo,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    ClassMorphismInsideScreen(
+                        blur: 20,
+                        opacity: 0.5,
+                        child: Container(
+                          height: 400.h,
+                          margin: const EdgeInsets.only(
+                            right: 8,
+                            left: 8,
                           ),
-                        ),
-                      )),
-                ],
+                          padding: const EdgeInsets.only(
+                              top: 20, bottom: 20, right: 10, left: 10),
+                          child: SingleChildScrollView(
+                            child: Form(
+                              key: formKey,
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const RegisterAccountText(),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    CustomTextFormField(
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter some text.';
+                                          } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                                              .hasMatch(value)) {
+                                            return 'Please enter only letters.';
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+                                          trigerCubit.firstName = value;
+                                        },
+                                        labelText: S
+                                            .of(context)
+                                            .firstnameLabelTextInRegisterScreen,
+                                        hintText: S
+                                            .of(context)
+                                            .nameHintTextInRegisterScreen,
+                                        prefixIcon: const Icon(Icons.person)),
+                                    //
+                                    //
+                                    //
+                                    CustomTextFormField(
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter some text.';
+                                          } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                                              .hasMatch(value)) {
+                                            return 'Please enter only letters.';
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+                                          trigerCubit.lastName = value;
+                                        },
+                                        labelText: S
+                                            .of(context)
+                                            .lastnameLabelTextInRegisterScreen,
+                                        hintText: S
+                                            .of(context)
+                                            .nameHintTextInRegisterScreen,
+                                        prefixIcon: const Icon(Icons.person)),
+                                    //
+                                    //
+                                    //
+
+                                    //
+                                    //
+                                    CustomTextFormField(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return "* this Field is required You must enter data";
+                                          } else if (!RegExp(r'[a-zA-Z]')
+                                              .hasMatch(value)) {
+                                            return "The email must contain at least one letter.";
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+                                          trigerCubit.emailCubit = value;
+                                        },
+                                        //
+
+                                        //
+                                        labelText: S
+                                            .of(context)
+                                            .emailLabelTextInRegisterScreen,
+                                        hintText: S
+                                            .of(context)
+                                            .emailHintTextInRegisterScreen,
+                                        prefixIcon: const Icon(Icons.email)),
+                                    //
+                                    //
+                                    CustomTextFormField(
+                                        obscureText: true,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return "* this Field is required You must enter data";
+                                          } else if (!RegExp(
+                                                  r'^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[\W_]).+$')
+                                              .hasMatch(value)) {
+                                            return "Password must contain  numbers, letters, and special character.";
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+                                          trigerCubit.passwordCubit = value;
+                                        },
+                                        //
+                                        //
+                                        labelText: S
+                                            .of(context)
+                                            .passwordLabelTextInRegisterScreen,
+                                        hintText: S
+                                            .of(context)
+                                            .passwordHintTextInRegisterScreen,
+                                        prefixIcon: const Icon(Icons.lock)),
+                                    //
+                                    //
+                                    //
+
+                                    CustomButton(
+                                        nameOfButton:
+                                            S.of(context).registerAccountBotton,
+                                        onTap: () async {
+                                          if (formKey.currentState!
+                                              .validate()) {
+                                            formKey.currentState!.save();
+                                            await trigerCubit.userSignUP(
+                                              email: trigerCubit.emailCubit,
+                                              password:
+                                                  trigerCubit.passwordCubit,
+                                            );
+                                          }
+                                          await trigerCubit.addUser(
+                                              email: trigerCubit.emailCubit,
+                                              firstName: trigerCubit.firstName,
+                                              lastName: trigerCubit.lastName);
+
+                                          BlocProvider.of<AuthCubit>(context)
+                                              .verifyEmail();
+
+                                          await trigerCubit.getUserdata();
+                                        }),
+
+                                    //
+                                    //
+                                    //
+                                    CustomBottonWithIconOrImage(
+                                        onTap: () {},
+                                        imageIconButton: ImageManger.googleLogo,
+                                        nameOfButton: S
+                                            .of(context)
+                                            .registerAccountBottonByGoogle),
+                                    //
+                                    //
+                                    //
+                                    const UserIfAlreadyHaveAccount()
+                                  ]),
+                            ),
+                          ),
+                        )),
+                  ],
+                ),
               ),
             ));
           },
@@ -663,3 +691,27 @@ class _LogoAndTextFieldAndbuttonProtraitState
 //                 //   );
 //                 // }
 
+ // Future<bool> checkEmailStatus() async {
+              //   try {
+              //     User? user = FirebaseAuth.instance.currentUser;
+              //     if (user != null) {
+              //       DocumentSnapshot<Map<String, dynamic>> userData =
+              //           await FirebaseFirestore.instance
+              //               .collection("users")
+              //               .doc(user.uid)
+              //               .get();
+
+              //       String emailStatus = userData["Email_status"] ?? "";
+              //       String status = userData["status"] ?? "";
+
+              //       if (emailStatus.toLowerCase() == "enabled" && status == 2) {
+              //         Navigator.of(context)
+              //             .pushReplacementNamed(RouterName.homeScreenForUser);
+              //       }
+              //     }
+              //     return false;
+              //   } catch (e) {
+              //     print("Error checking email status: $e");
+              //     return false;
+              //   }
+              // }

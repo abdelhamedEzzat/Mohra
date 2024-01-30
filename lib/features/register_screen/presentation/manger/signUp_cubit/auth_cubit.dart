@@ -90,20 +90,29 @@ class AuthCubit extends Cubit<AuthState> {
     emit(VerifyAccount());
   }
 
-  Future<void> addUser(
-      {required String firstName,
-      required String lastName,
-      required String email}) async {
-    final user = FirebaseAuth.instance.currentUser!.uid;
-    DocumentReference users = firestore.collection('users').doc(user);
+  Future<void> addUser({
+    required String firstName,
+    required String lastName,
+    required String email,
+  }) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      // Handle the case where the user is null (not signed in)
+      emit(Signupfaild(error: "User is not signed in."));
+      return;
+    }
+
+    DocumentReference users = firestore.collection('users').doc(user.uid);
 
     emit(SignupLoading());
+
     try {
       users.set({
         'first_Name': firstName,
         'last_Name': lastName,
         'fullName': firstName + lastName,
-        'userID': user,
+        'userID': user.uid,
         'email': email,
         'role': 'User',
         'status': '0',
@@ -111,7 +120,7 @@ class AuthCubit extends Cubit<AuthState> {
       });
       emit(SignupSuccess());
     } catch (e) {
-      Signupfaild(error: "Failed to add user:${e.toString()}");
+      emit(Signupfaild(error: "Failed to add user: ${e.toString()}"));
     }
   }
 

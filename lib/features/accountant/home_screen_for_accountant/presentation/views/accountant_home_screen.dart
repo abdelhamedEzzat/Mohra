@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/accountant_home_screen_body.dart';
+import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
+import 'package:mohra_project/features/user/notification/notification_for_accountant.dart';
 
-import 'package:mohra_project/features/user/notification/persrntation/views/notification.dart';
+import 'package:mohra_project/features/user/notification/persrntation/views/notification_for_admin.dart';
 import 'package:mohra_project/features/user/settings_screen/settings_screen.dart';
 
 class AccountantHomeScreen extends StatefulWidget {
@@ -18,7 +20,7 @@ class AccountantHomeScreen extends StatefulWidget {
 class _AccountantHomeScreenState extends State<AccountantHomeScreen> {
   List<Widget> pages = [
     const AccountantHomeScreenBody(),
-    const NotificationScreen(),
+    const NotificationScreenFormAuditor(),
     const SettingsScreen(),
   ];
 
@@ -62,7 +64,7 @@ class _AccountantHomeScreenState extends State<AccountantHomeScreen> {
                 label: "Settings",
               ),
             ]),
-        appBar: CustomAppBar(
+        appBar: CustomAppBarForUsers(
             title: Text(
           "Hello : Mr Mohmed",
           style: Theme.of(context)

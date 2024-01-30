@@ -29,15 +29,18 @@ class HomeScreenForUserBody extends StatelessWidget {
   });
 
   @override
-  @override
   Widget build(BuildContext context) {
-    return const Column(
+    String searchQuery = "";
+    return Column(
       children: [
-        Stack(clipBehavior: Clip.none, alignment: Alignment.center, children: [
-          NumberOfCompaniesAndDocuments(),
-          ClickToCreateCampany(),
-        ]),
-        CompaniesListThatUserCreated(),
+        const Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              NumberOfCompaniesAndDocuments(),
+              ClickToCreateCampany(),
+            ]),
+        CompaniesListThatUserCreated(searchQuery: searchQuery),
       ],
     );
   }
@@ -46,6 +49,7 @@ class HomeScreenForUserBody extends StatelessWidget {
 class CompaniesListThatUserCreated extends StatefulWidget {
   const CompaniesListThatUserCreated({
     super.key,
+    required String searchQuery,
   });
 
   @override

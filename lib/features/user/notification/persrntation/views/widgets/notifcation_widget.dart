@@ -6,14 +6,14 @@ class CompanyNotificationForUser extends StatelessWidget {
   const CompanyNotificationForUser({
     super.key,
     required this.statusText,
-    required this.companyName,
+    this.companyName,
     required this.normalText,
-    required this.boldText,
+    this.boldText,
   });
   final String statusText;
-  final String companyName;
+  final String? companyName;
   final String normalText;
-  final String boldText;
+  final String? boldText;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +31,7 @@ class CompanyNotificationForUser extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           child: ListTile(
               title: Text(
-                companyName,
+                companyName ?? "",
                 style: Theme.of(context).textTheme.displayMedium,
               ),
               subtitle: Text.rich(TextSpan(children: [

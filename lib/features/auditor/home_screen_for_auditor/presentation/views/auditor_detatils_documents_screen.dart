@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
@@ -392,7 +393,20 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                       "statusDoc": selectItem,
                       'isAccountantReview': false,
                       //  'accountant by':"email"
+                    }).then((value) {
+                      FirebaseFirestore.instance
+                          .collection('Notification')
+                          .add({
+                        'notificationMassage':
+                            "Auditor Review Document in ${docDitails['company_Name']} with $selectItem ",
+                        'role': "Auditor",
+                        'MassgeSendBy': 'AuditorReview',
+                        'NotificationCompanyID': docDitails['DocID'],
+                        'NotificationUserID':
+                            FirebaseAuth.instance.currentUser!.uid
+                      });
                     });
+                    ;
 
                     setState(() {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

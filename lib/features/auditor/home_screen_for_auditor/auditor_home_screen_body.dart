@@ -136,8 +136,12 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
                                       onTap: () {
                                         Navigator.of(context).pushNamed(
                                             RouterName.auditorCompanyDocuments,
-                                            arguments: companySnapshot.data!
-                                                .docs[index]['companyId']);
+                                            arguments: {
+                                              companySnapshot.data!.docs[index]
+                                                  ['companyId'],
+                                              companySnapshot.data!.docs[index]
+                                                  ['company_Name']
+                                            });
                                       },
                                       withStatus: false,
                                       companyName: companyData['company_Name'],
