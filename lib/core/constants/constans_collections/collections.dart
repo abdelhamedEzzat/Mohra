@@ -1,14 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:mohra_project/features/register_screen/data/user_auth.dart';
-import 'package:uuid/uuid.dart';
-
-var uuid = const Uuid();
-
-String docid = uuid.v4();
 
 int counter = 0;
+DateTime now = DateTime.now();
+Timestamp timestamp = Timestamp.fromDate(now);
+
+String formattedStamp(timestamp) {
+  var datefromTimeStamp =
+      DateTime.fromMillisecondsSinceEpoch(timestamp.seconds * 1000);
+  return DateFormat('dd-MM-yyyy hh:mm a').format(datefromTimeStamp);
+}
 
 const companyID = 2;
 const docID = 2;
@@ -47,16 +51,16 @@ class Constanscollection {
     return addInformationStaffToCompany;
   }
 
-  // static void updateUserStatus(int status) {
-  //   final userStatusBox = Hive.box<UserStatusModel>('userStatusBox');
-  //   final userStatus = UserStatusModel(emailStauts: status);
-  //   userStatusBox.put('userStatus', userStatus);
-  // }
+  static void updateUserStatus(int status) {
+    final userStatusBox = Hive.box<UserStatusModel>('userStatusBox');
+    final userStatus = UserStatusModel(emailStauts: status);
+    userStatusBox.put('userStatus', userStatus);
+  }
 
-  // static int getUserStatus() {
-  //   final userStatusBox = Hive.box<UserStatusModel>('userStatusBox');
-  //   final userStatus = userStatusBox.get('userStatus',
-  //       defaultValue: UserStatusModel(emailStauts: 0));
-  //   return userStatus!.emailStauts;
-  // }
+  static int getUserStatus() {
+    final userStatusBox = Hive.box<UserStatusModel>('userStatusBox');
+    final userStatus = userStatusBox.get('userStatus',
+        defaultValue: UserStatusModel(emailStauts: 0));
+    return userStatus!.emailStauts;
+  }
 }

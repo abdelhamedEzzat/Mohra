@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/icon_and_text_company.dart';
@@ -9,22 +11,77 @@ class NumberOfCompaniesAndDocuments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      child: Container(
-        color: ColorManger.backGroundColorToSplashScreen,
-        height: MediaQuery.of(context).size.height * 0.20,
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconsAndTextToCompany(
-              text: "Companies",
-            ),
-            IconsAndTextToDoc(
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+      StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('Companys')
+              .where('userID',
+                  isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return IconsAndTextToCompany(
+                numberOfCompany: snapshot.data!.docs.length,
+                text: "Companies",
+              );
+            } else {
+              return const CircularProgressIndicator(
+                color: Colors.black,
+              );
+            }
+          }),
+      StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Companys')
+            .where('userID', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(color: Colors.black);
+          }
+
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+
+          List<String> companyId = snapshot.data?.docs.map((doc) {
+                return doc['companyId'] as String;
+              }).toList() ??
+              [];
+          print(companyId);
+
+          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+            return StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('Document')
+                  .where('companydocID', whereIn: companyId)
+                  .snapshots(),
+              builder: (BuildContext context, AsyncSnapshot docSnapshot) {
+                if (docSnapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator(color: Colors.black);
+                }
+
+                if (docSnapshot.hasError) {
+                  return Text('Error: ${docSnapshot.error}');
+                }
+                print(
+                  docSnapshot.data!.docs.length,
+                );
+
+                return IconsAndTextToCompany(
+                  numberOfCompany: docSnapshot.data!.docs.length ?? 0,
+                  text: "Documents",
+                );
+              },
+            );
+          } else {
+            return const IconsAndTextToCompany(
+              numberOfCompany: 0,
               text: "Documents",
-            ),
-          ],
-        ),
-      ),
-    );
+            );
+          }
+        },
+      )
+    ]);
   }
 }

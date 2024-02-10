@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 
@@ -8,10 +10,12 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     Key? key,
     required this.title,
     this.leading,
+    required this.onPressed,
   }) : super(key: key);
 
   final Widget title;
   final Widget? leading;
+  final void Function()? onPressed;
 
   @override
   _CustomAppBarState createState() => _CustomAppBarState();
@@ -21,8 +25,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  bool isSearch = false;
-
+  bool? isSearch = false;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -39,26 +42,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
       backgroundColor: ColorManger.appbarColor,
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: IconButton(
-            icon: Icon(
-              isSearch == false ? Icons.search : Icons.clear,
-              color: ColorManger.white,
-            ),
-            onPressed: () {
-              setState(() {
-                isSearch == true;
-              });
-
-              if (isSearch = true) {
-                Navigator.of(context)
-                    .pushNamed(RouterName.searchScreenForAdmin);
-              } else {
-                Navigator.pop(context);
-              }
-            },
-          ),
-        ),
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+                icon: Icon(
+                  Icons.search,
+                  color: ColorManger.white,
+                ),
+                onPressed: widget.onPressed))
       ],
     );
   }

@@ -50,11 +50,19 @@
     <array>
     <string>en</string>
     <string>ar</string>
+	<!-- <key>NSCameraUsageDescription</key>
+    <string>We need access to your camera for XYZ</string>
+	<key>NSPhotoLibraryUsageDescription</key> -->
+    
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>We need permission to access the images in order to enable the user to upload accounting images.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>We need permission to access the images in order to enable the user to take a picture of the accounting file to be uploaded.</string>
-	
+    <string> this app needs permission for choosing image from your library.</string>
+
+	<key>NSCameraUsageDescription </key>
+    <string>app needs access to the camera to capture image.</string>
+
+	<key>NSMicrophoneUsageDescription</key>
+    <string>app needs access to the microphone.</string>
+
 </array>
 </dict>
 </plist>

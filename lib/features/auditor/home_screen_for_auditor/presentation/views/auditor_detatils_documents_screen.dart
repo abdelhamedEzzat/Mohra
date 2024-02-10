@@ -7,9 +7,11 @@ import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
+import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/comment.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/data_from_accountant.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/title_of_form_create_company.dart';
+import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
 
 class AuditorDocumentDetails extends StatefulWidget {
   const AuditorDocumentDetails({super.key});
@@ -52,7 +54,10 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: const CustomAppBar(
+        appBar: CustomAppBar(
+          onPressed: () {
+            Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
+          },
           leading: BackButton(color: Colors.white),
           title: Text(
             "Details Documents",
@@ -79,16 +84,62 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                       borderRadius: BorderRadius.circular(10)),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        docDitails['urlImage'],
-                        fit: BoxFit.fill,
-                      )),
+                      child: docDitails['urlImage'] == null
+                          ? GestureDetector(
+                              onTap: () => openFile(
+                                      url: docDitails['url'],
+                                      fileName: docDitails['name'])
+                                  .toString(),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                height: mediaQueryHeight,
+                                color: Colors.grey.withOpacity(0.3),
+                                child: Center(
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor:
+                                            ColorManger.white.withOpacity(0.5),
+                                        radius: 30.h,
+                                        child: Text(
+                                            docDitails['fileExtention']
+                                                .toString(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium!
+                                                .copyWith(color: Colors.black)),
+                                      ),
+                                      SizedBox(
+                                        width: 15.w,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 3,
+                                            docDitails['name'].toString(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium!),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () => navigateToFullScreenImage(
+                                  context, docDitails['urlImage'].toString()),
+                              child: Image.network(
+                                docDitails['urlImage'].toString(),
+                                fit: BoxFit.fill,
+                              ),
+                            )),
                 ),
                 SizedBox(
                   height: 10.h,
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 15.w, top: 10.h, bottom: 10.h),
+                  padding: EdgeInsets.only(left: 5.w, top: 10.h, bottom: 10.h),
                   decoration: BoxDecoration(
                       color: ColorManger.white,
                       borderRadius: BorderRadius.circular(10)),
@@ -118,17 +169,22 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                       var document = snapshot.data.docs[0].data();
                       var accountantReview = document?['AccountantReview'];
 
-                      var accountantReviews =
-                          (document?['AccountantReview'] as List<dynamic>)
+                      var accountantReviews = (accountantReview != null &&
+                              accountantReview is List<dynamic>)
+                          ? accountantReview
                               .where((review) =>
                                   review['staffTypeReview'] == 'Accountant')
-                              .toList();
+                              .toList()
+                          : [];
 
-                      var auditorReviews =
-                          (document?['AuditorReview'] as List<dynamic>)
+                      var auditorReview = document?['AuditorReview'];
+                      var auditorReviews = (auditorReview != null &&
+                              auditorReview is List<dynamic>)
+                          ? auditorReview
                               .where((review) =>
                                   review['staffTypeReview'] == 'Auditor')
-                              .toList();
+                              .toList()
+                          : [];
 
                       List<Widget> accountantContainers =
                           _buildAccountantReviewContainers(
@@ -198,9 +254,10 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
       decoration: BoxDecoration(
-          color: ColorManger.white,
-          borderRadius: BorderRadius.circular(15.h),
-          border: Border.all(color: ColorManger.darkGray)),
+        color: ColorManger.white,
+        borderRadius: BorderRadius.circular(15.h),
+        border: Border.all(color: ColorManger.darkGray),
+      ),
       child: DropdownButton<String>(
         hint: Text(
           "Select Status Of Document",
@@ -211,17 +268,18 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
         ),
         borderRadius: BorderRadius.circular(10),
         isExpanded: true,
-        value: selectItem,
+        value: selectItem ?? stutsDocumentDropDown.first,
         items: stutsDocumentDropDown
             .map((item) => DropdownMenuItem(
-                value: item,
-                child: Text(
-                  item,
-                  style: Theme.of(context).textTheme.displayMedium,
-                )))
+                  value: item,
+                  child: Text(
+                    item,
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                ))
             .toList(),
         onChanged: (item) => setState(() {
-          selectItem = item!;
+          selectItem = item;
         }),
       ),
     );
@@ -394,18 +452,34 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                       'isAccountantReview': false,
                       //  'accountant by':"email"
                     }).then((value) {
-                      FirebaseFirestore.instance
-                          .collection('Notification')
-                          .add({
-                        'notificationMassage':
-                            "Auditor Review Document in ${docDitails['company_Name']} with $selectItem ",
-                        'role': "Auditor",
-                        'MassgeSendBy': 'AuditorReview',
-                        'NotificationCompanyID': docDitails['DocID'],
-                        'NotificationUserID':
-                            FirebaseAuth.instance.currentUser!.uid
-                      });
+                      if (selectItem == 'Canceled' ||
+                          selectItem == 'Finished') {
+                        FirebaseFirestore.instance
+                            .collection('Notification')
+                            .add({
+                          'notificationMassage':
+                              "Auditor Review your Document in ${docDitails['company_Name']} with $selectItem ",
+                          'role': "forUser",
+                          'MassgeSendBy': 'AuditorReview',
+                          'NotificationCompanyID': docDitails['DocID'],
+                          'NotificationUserID':
+                              FirebaseAuth.instance.currentUser!.uid
+                        });
+                      } else {
+                        FirebaseFirestore.instance
+                            .collection('Notification')
+                            .add({
+                          'notificationMassage':
+                              "Auditor Review Document in ${docDitails['company_Name']} with $selectItem ",
+                          'role': "Auditor",
+                          'MassgeSendBy': 'AuditorReview',
+                          'NotificationCompanyID': docDitails['DocID'],
+                          'NotificationUserID':
+                              FirebaseAuth.instance.currentUser!.uid
+                        });
+                      }
                     });
+
                     ;
 
                     setState(() {

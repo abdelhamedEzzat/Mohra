@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 
 class UploadDocumentsBotton extends StatelessWidget {
   const UploadDocumentsBotton({
@@ -11,7 +12,8 @@ class UploadDocumentsBotton extends StatelessWidget {
     final double mediaQueryHeight = MediaQuery.of(context).size.height;
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(25.h)),
+          color: ColorManger.backGroundColorToSplashScreen.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(25.h)),
       height: mediaQueryHeight * 0.15,
       child: Row(
         children: [

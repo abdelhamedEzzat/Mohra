@@ -16,7 +16,7 @@ class AccountantHomeScreenBody extends StatelessWidget {
         FirebaseFirestore.instance
             .collection("Staff")
             .where('StaffRole', isEqualTo: 'Accountant')
-            .where('Staffid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .where('userid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
             .snapshots();
 
     return Column(
@@ -24,19 +24,112 @@ class AccountantHomeScreenBody extends StatelessWidget {
         Container(
           color: ColorManger.backGroundColorToSplashScreen,
           height: MediaQuery.of(context).size.height * 0.15,
-          child: const Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconsAndTextToCompany(
-                    text: "Companies",
-                  ),
-                  IconsAndTextToDoc(
-                    text: "Documents",
-                  ),
+                  StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('Companys')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<String> companyId =
+                              snapshot.data?.docs.map((doc) {
+                                    return doc['companyId'] as String;
+                                  }).toList() ??
+                                  [];
+                          return StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('Staff')
+                                .where('userid',
+                                    isEqualTo:
+                                        FirebaseAuth.instance.currentUser!.uid)
+                                // .where('CompanyId', isEqualTo: companyId)
+                                .snapshots(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData) {
+                                return IconsAndTextToCompany(
+                                  numberOfCompany:
+                                      snapshot.data!.docs.length ?? 0,
+                                  text: "Companies",
+                                );
+                              } else {
+                                print('no Company Found');
+                                return const IconsAndTextToCompany(
+                                  numberOfCompany: 0,
+                                  text: "Companies",
+                                );
+                              }
+                            },
+                          );
+                        } else {
+                          return const CircularProgressIndicator(
+                            color: Colors.black,
+                          );
+                        }
+                      }),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Staff')
+                        .where('userid',
+                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(color: Colors.black);
+                      }
+
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      List<String> companyId = snapshot.data?.docs.map((doc) {
+                            return doc['CompanyId'] as String;
+                          }).toList() ??
+                          [];
+                      print(companyId);
+
+                      if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                        return StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection('Document')
+                              .where('companydocID', whereIn: companyId)
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot docSnapshot) {
+                            if (docSnapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator(
+                                  color: Colors.black);
+                            }
+
+                            if (docSnapshot.hasError) {
+                              return Text('Error: ${docSnapshot.error}');
+                            }
+                            print(
+                              docSnapshot.data!.docs.length,
+                            );
+
+                            return IconsAndTextToCompany(
+                              numberOfCompany:
+                                  docSnapshot.data!.docs.length ?? 0,
+                              text: "Documents",
+                            );
+                          },
+                        );
+                      } else {
+                        return const IconsAndTextToCompany(
+                          //numberOfCompany: 1,
+                          text: "Documents",
+                        );
+                      }
+                    },
+                  )
                 ],
               ),
             ],

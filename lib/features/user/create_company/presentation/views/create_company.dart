@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:mohra_project/core/constants/constans_collections/collections.dart';
 import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
@@ -30,6 +31,7 @@ class _CreateCompanyState extends State<CreateCompany> {
       .collection("Document")
       .doc()
       .id;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final trigerCubit = BlocProvider.of<FirebaseCreateCompanyCubit>(context);
@@ -42,178 +44,191 @@ class _CreateCompanyState extends State<CreateCompany> {
           "Create Company",
         ),
       ),
-      body: Container(
-        height: mediaQueryHeight,
-        width: mediaQueryWidth,
-        padding: EdgeInsets.symmetric(
-          horizontal: 20.h,
-        ),
-        child: SingleChildScrollView(
-          child: BlocBuilder<FirebaseCreateCompanyCubit,
-              FirebaseCreateCompanyState>(
-            builder: (context, state) {
-              return Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    const TitleOfFormCreateCompany(
-                      titleText: "Add Logo",
-                    ),
-                    AddImageWidget(
-                      ontap: () {
-                        showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ShowModelBottomSheet(
-                              onPressedForCamera: () async {
-                                await trigerCubit.getFilesFromCamera();
-                                trigerCubit.isIcon = true;
-                                Navigator.pop(context);
-                              },
-                              onPressedForGalarey: () async {
-                                //
-                                await trigerCubit.getimagefromGallery();
-                                trigerCubit.isIcon = true;
-                                // ignore: use_build_context_synchronously
-                                Navigator.pop(context);
-                              },
-                            );
+      body: ModalProgressHUD(
+        inAsyncCall: isLoading,
+        child: Container(
+          height: mediaQueryHeight,
+          width: mediaQueryWidth,
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.h,
+          ),
+          child: SingleChildScrollView(
+            child: BlocBuilder<FirebaseCreateCompanyCubit,
+                FirebaseCreateCompanyState>(
+              builder: (context, state) {
+                return Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      const TitleOfFormCreateCompany(
+                        titleText: "Add Logo",
+                      ),
+                      AddImageWidget(
+                        ontap: () {
+                          showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ShowModelBottomSheet(
+                                onPressedForCamera: () async {
+                                  await trigerCubit.getFilesFromCamera();
+                                  trigerCubit.isIcon = true;
+                                  Navigator.pop(context);
+                                },
+                                onPressedForGalarey: () async {
+                                  //
+                                  await trigerCubit.getimagefromGallery();
+                                  trigerCubit.isIcon = true;
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.pop(context);
+                                },
+                              );
+                            },
+                          );
+                        },
+                        image: trigerCubit.file == null
+                            ? Image.asset(ImageManger.mohraLogo)
+                            : ClipRRect(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(24)),
+                                child: Image.file(
+                                  trigerCubit.file!,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                      ),
+
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      const TitleOfFormCreateCompany(
+                        titleText: "Company Name",
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      CustomTextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return '*this Field is Requierd';
+                            } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                                .hasMatch(value)) {
+                              return 'Please enter only letters.';
+                            }
+                            return null;
                           },
-                        );
-                      },
-                      image: trigerCubit.file == null
-                          ? Image.asset(ImageManger.mohraLogo)
-                          : ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(24)),
-                              child: Image.file(
-                                trigerCubit.file!,
-                                fit: BoxFit.fitWidth,
-                              ),
-                            ),
-                    ),
+                          onChanged: (value) {
+                            trigerCubit.companyName = value;
+                          },
+                          hintText: "Write Your Company Name",
+                          prefixIcon: Icon(
+                            Icons.post_add_rounded,
+                            size: 25.h,
+                          )),
+                      //
+                      //
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      const TitleOfFormCreateCompany(
+                        titleText: "Company Adrdress",
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      CustomTextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return '*this Field is Requierd';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            trigerCubit.companyAddress = value;
+                          },
+                          hintText: "Write  Your Company Address",
+                          prefixIcon: Icon(
+                            Icons.location_searching,
+                            size: 25.h,
+                          )),
+                      //
+                      //
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      const TitleOfFormCreateCompany(
+                        titleText: " Company Type",
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      CustomTextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return '*this Field is Requierd';
+                            } else if (!RegExp(r'^[a-zA-Z\s\W]+$')
+                                .hasMatch(value)) {
+                              return 'Please enter only letters.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            trigerCubit.companyType = value;
+                          },
+                          hintText: "Write  Your Company Type",
+                          prefixIcon: Icon(
+                            Icons.today_rounded,
+                            size: 25.h,
+                          )),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      CustomButton(
+                          nameOfButton: "Submit",
+                          onTap: () async {
+                            setState(() {
+                              isLoading == true;
+                            });
 
-                    SizedBox(
-                      height: 15.h,
-                    ),
-                    const TitleOfFormCreateCompany(
-                      titleText: "Company Name",
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    CustomTextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return '*this Field is Requierd';
-                          } else if (!RegExp(r'^[a-zA-Z\s]+$')
-                              .hasMatch(value)) {
-                            return 'Please enter only letters.';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          trigerCubit.companyName = value;
-                        },
-                        hintText: "Write Your Company Name",
-                        prefixIcon: Icon(
-                          Icons.post_add_rounded,
-                          size: 25.h,
-                        )),
-                    //
-                    //
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    const TitleOfFormCreateCompany(
-                      titleText: "Company Adrdress",
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    CustomTextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return '*this Field is Requierd';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          trigerCubit.companyAddress = value;
-                        },
-                        hintText: "Write  Your Company Address",
-                        prefixIcon: Icon(
-                          Icons.location_searching,
-                          size: 25.h,
-                        )),
-                    //
-                    //
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    const TitleOfFormCreateCompany(
-                      titleText: " Company Type",
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    CustomTextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return '*this Field is Requierd';
-                          } else if (!RegExp(r'^[a-zA-Z\s\W]+$')
-                              .hasMatch(value)) {
-                            return 'Please enter only letters.';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          trigerCubit.companyType = value;
-                        },
-                        hintText: "Write  Your Company Type",
-                        prefixIcon: Icon(
-                          Icons.today_rounded,
-                          size: 25.h,
-                        )),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    CustomButton(
-                        nameOfButton: "Submit",
-                        onTap: () async {
-                          if (trigerCubit.file == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please select an image.'),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                            return;
-                          }
-                          if (formKey.currentState!.validate()) {
-                            formKey.currentState!.save();
+                            await Future.delayed(Duration(seconds: 2));
+                            if (trigerCubit.file == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Please select an image.'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                              return;
+                            }
+                            if (formKey.currentState!.validate()) {
+                              formKey.currentState!.save();
 
-                            await trigerCubit
-                                .addCompany(
-                                    compnyCollectionID: compnyDocument,
-                                    docid: docid,
-                                    file: trigerCubit.file,
-                                    companyName: trigerCubit.companyName,
-                                    companyAddress: trigerCubit.companyAddress,
-                                    companyType: trigerCubit.companyType)
-                                .then((value) => counter++);
+                              await trigerCubit.addCompany(
+                                  compnyCollectionID: compnyDocument,
+                                  // docid: docid,
+                                  file: trigerCubit.file,
+                                  companyName: trigerCubit.companyName,
+                                  companyAddress: trigerCubit.companyAddress,
+                                  companyType: trigerCubit.companyType);
 
-                            // ignore: use_build_context_synchronously
-                            Navigator.of(context).pop();
-                          }
-                        }),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                  ],
-                ),
-              );
-            },
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context).pop();
+                              trigerCubit.clearData();
+                            }
+                            setState(() {
+                              isLoading == false;
+                            });
+                          }),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

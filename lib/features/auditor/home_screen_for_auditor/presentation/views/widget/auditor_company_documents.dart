@@ -11,10 +11,10 @@ class AuditorCompanyDocuments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var companyId = ModalRoute.of(context)?.settings.arguments;
+    var companyDocId = ModalRoute.of(context)?.settings.arguments;
     final Stream<QuerySnapshot> documentCompany = FirebaseFirestore.instance
         .collection('Document')
-        .where("companydocID", isEqualTo: companyId)
+        .where("companydocID", isEqualTo: companyDocId)
         .snapshots();
 
     return Scaffold(
@@ -23,6 +23,9 @@ class AuditorCompanyDocuments extends StatelessWidget {
         leading: BackButton(
           color: ColorManger.white,
         ),
+        onPressed: () {
+          Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
+        },
       ),
       body: Container(
         margin: EdgeInsets.only(top: 5.h),
@@ -36,7 +39,7 @@ class AuditorCompanyDocuments extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed(RouterName.addDocumetType,
-                      arguments: companyId);
+                      arguments: companyDocId);
                 },
                 child: Container(
                   decoration: const BoxDecoration(
@@ -68,42 +71,90 @@ class AuditorCompanyDocuments extends StatelessWidget {
                 height: 10.h,
               ),
               StreamBuilder<QuerySnapshot>(
-                  stream: documentCompany,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Container(
-                        height: MediaQuery.of(context).size.height * 0.90,
-                        width: MediaQuery.of(context).size.width,
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final doc = snapshot.data!.docs[index];
-                            return DocumentForAuditor(
-                              onTap: () {
-                                Navigator.of(context).pushNamed(
-                                  RouterName.auditorDocumentDetails,
-                                  arguments: {
-                                    'urlImage': doc["urlImage"],
-                                    'comment': doc["comment"],
-                                    'companydocID': doc['companydocID'],
-                                    'DocID': doc['DocID']
-                                  },
-                                );
+                stream: documentCompany,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<Widget> itemList = [];
+
+                    List<DocumentSnapshot> allDocs = [];
+
+                    snapshot.data!.docs.forEach((doc) {
+                      allDocs.add(doc);
+                    });
+
+                    Comparator<DocumentSnapshot> compareByDocNumer =
+                        (doc1, doc2) =>
+                            doc2["docNumer"].compareTo(doc1["docNumer"]);
+
+                    allDocs.sort(compareByDocNumer);
+
+                    allDocs.forEach((doc) {
+                      String fileExtension =
+                          doc["fileExtention"].toLowerCase() ?? "";
+
+                      if (fileExtension == "image") {
+                        itemList.add(ImageDocWidget(
+                          docImage: doc["urlImage"],
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                              RouterName.auditorDocumentDetails,
+                              arguments: {
+                                'urlImage': doc["urlImage"],
+                                'comment': doc['comment']
                               },
-                              status: snapshot.data!.docs[index]['comment'],
-                              typeOfDocument: snapshot.data!.docs[index]
-                                  ['selectItem'],
-                              docImage: snapshot.data!.docs[index]['urlImage'],
-                              color: ColorManger.darkGray,
                             );
                           },
-                        ),
-                      );
-                    }
-                    return Container(
-                      color: Colors.black,
+                          typeOfDocument: doc["docNumer"].toString(),
+                          color: ColorManger.darkGray,
+                          status: doc['status'],
+                        ));
+                      } else {
+                        itemList.add(FilesDocWidget(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                              RouterName.auditorDocumentDetails,
+                              arguments: {
+                                'companydocID': doc["companydocID"],
+                                'url': doc["url"],
+                                'name': doc["name"],
+                                'fileExtention': doc["fileExtention"],
+                                'comment': doc['comment']
+                              },
+                            );
+                          },
+                          pdfFileExtention: doc["fileExtention"],
+                          pdfFileName: doc["name"],
+                          color: ColorManger.darkGray,
+                          status: doc['status'],
+                          typeOfDocument: doc["docNumer"].toString(),
+                        ));
+                      }
+                    });
+
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: itemList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return itemList[index];
+                      },
                     );
-                  }),
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text("You have an error."));
+                  } else {
+                    return const Center(
+                      child: Text("You didn't have any documents."),
+                    );
+                  }
+                },
+              )
             ],
           ),
         ),

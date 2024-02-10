@@ -69,7 +69,7 @@ class StaffShowWidget extends StatelessWidget {
             child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Colors.white,
+            color: ColorManger.introScreenBackgroundColor,
           ),
           height: 120.h,
           width: 50,

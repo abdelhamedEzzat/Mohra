@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
+import 'package:mohra_project/core/routes/name_router.dart';
 
 class SearchScreenForAdmin extends StatefulWidget {
   const SearchScreenForAdmin({super.key});
@@ -57,10 +58,13 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
 
   // Function to handle the selection of a company
   void onCompanySelected(String companyId) {
-    setState(() {
-      selectedCompanyId = companyId;
-      fetchAdditionalInfo();
-    });
+    if (mounted) {
+      setState(() {
+        selectedCompanyId = companyId;
+        fetchAdditionalInfo();
+        fetchCompanyDocuments();
+      });
+    }
   }
 
   // Function to fetch additional information based on the selected company
@@ -94,6 +98,8 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
   }
 
   Future<void> fetchCompanyDocuments() async {
+    print(
+        "Fetching documents for Company ID: $selectedCompanyId, Type: $selectTypeItem");
     if (selectedCompanyId.isNotEmpty && selectTypeItem != null) {
       var documentsSnapshot = await FirebaseFirestore.instance
           .collection("Document")
@@ -123,6 +129,8 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
   void dispose() {
     companyContraller.removeListener(onSearchChanged);
     companyContraller.dispose();
+    //fetchCompanyDocuments();
+    //myStreamSubscription?.cancel();
     super.dispose();
   }
 
@@ -135,11 +143,14 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: Text('Search'),
-        leading: BackButton(
+      appBar: CustomAppBar(
+        title: const Text('Search'),
+        leading: const BackButton(
           color: Colors.white,
         ),
+        onPressed: () {
+          Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -199,10 +210,17 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
                             ),
                           );
                         }).toList(),
-                  onChanged: (item) => setState(() {
-                    selectTypeItem = item!;
-                    fetchCompanyDocuments();
-                  }),
+                  onChanged: (item) {
+                    print("Dropdown onChanged: $item");
+                    setState(() {
+                      selectTypeItem = item as String?;
+                      if (selectTypeItem != null) {
+                        print(
+                            "Fetching documents for Company ID: $selectedCompanyId, Type: $selectTypeItem");
+                        fetchCompanyDocuments();
+                      }
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -291,43 +309,41 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
         itemCount: companyDocuments.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
-              onTap: () {
-                setState(() {
-                  fetchCompanyDocuments();
-                });
-
-                istype = false;
-              },
-              child: Container(
-                height: 200.h,
-                width: double.infinity,
-                margin: const EdgeInsets.all(8),
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: companySearchResults.isEmpty
-                      ? const CircularProgressIndicator()
-                      : Image.network(
-                          companyDocuments[index]["urlImage"],
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            } else {
-                              return const CircularProgressIndicator(
-                                color: Colors.black,
-                              );
-                            }
-                          },
-                          errorBuilder: (BuildContext context, Object error,
-                              StackTrace? stackTrace) {
-                            return const CircularProgressIndicator();
-                          },
-                        ),
-                ),
-              ));
+            onTap: () {
+              // Handle any action needed when tapping on an item
+              // This block is optional, you can remove it if not needed
+            },
+            child: Container(
+              height: 200.h,
+              width: double.infinity,
+              margin: const EdgeInsets.all(8),
+              padding: EdgeInsets.symmetric(vertical: 8.h),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: companySearchResults.isEmpty
+                    ? const CircularProgressIndicator()
+                    : Image.network(
+                        companyDocuments[index]["urlImage"],
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return const CircularProgressIndicator(
+                              color: Colors.black,
+                            );
+                          }
+                        },
+                        errorBuilder: (BuildContext context, Object error,
+                            StackTrace? stackTrace) {
+                          return const CircularProgressIndicator();
+                        },
+                      ),
+              ),
+            ),
+          );
         },
       ),
     );

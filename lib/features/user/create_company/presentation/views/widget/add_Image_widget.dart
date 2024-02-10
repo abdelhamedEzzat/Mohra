@@ -20,10 +20,7 @@ class AddImageWidget extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 15.h,
-        ),
-        SizedBox(
-          height: 5.h,
+          height: 1.h,
         ),
         GestureDetector(
             onTap: ontap,

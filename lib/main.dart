@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mohra_project/core/constants/constans_collections/collections.dart';
 import 'package:mohra_project/core/constants/theme/themeManger.dart';
 import 'package:mohra_project/core/helpers/bloc_abserver.dart';
 import 'package:mohra_project/core/routes/app_router.dart';
@@ -20,6 +22,8 @@ import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentat
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/auditor_home_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/add_type_of_document_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/auditor_company_documents.dart';
+import 'package:mohra_project/features/login_screen/presentation/view/login_screen.dart';
+import 'package:mohra_project/features/register_screen/data/user_auth.dart';
 import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
 import 'package:mohra_project/features/register_screen/presentation/view/register_screen.dart';
 import 'package:mohra_project/features/search_screen/search_screen_for_admin.dart';
@@ -34,14 +38,16 @@ import 'package:mohra_project/features/user/upload_document/presentation/views/u
 import 'package:mohra_project/features/vreify_email/vreify_email.dart';
 import 'package:mohra_project/firebase_options.dart';
 import 'package:mohra_project/generated/l10n.dart';
+import 'package:mohra_project/search.dart';
 
 void main() async {
   Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
-  // Hive.registerAdapter<UserStatusModel>(UserStatusModelAdapter());
-  // await Hive.openBox<UserStatusModel>('userStatusBox');
+  Hive.registerAdapter(UserStatusModelAdapter());
+  await Hive.openBox<UserStatusModel>('userStatusBox');
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -96,7 +102,6 @@ class MyApp extends StatelessWidget {
             ],
             child: MaterialApp(
               theme: theme(),
-
               debugShowCheckedModeBanner: false,
               // for Responcive Screens
               builder: DevicePreview.appBuilder,
@@ -112,7 +117,7 @@ class MyApp extends StatelessWidget {
 
               // for Routing Screens
               onGenerateRoute: AppRouter.onGenrateRoute,
-              //  initialRoute: RouterName.loginScreen,
+              // initialRoute: RouterName.loginScreen,
 
               routes: {
                 RouterName.companyDocuments: (context) =>
@@ -123,7 +128,7 @@ class MyApp extends StatelessWidget {
                     const UploadDocuments(),
                 RouterName.detailsDocuments: (context) =>
                     const DetailsDocuments(),
-                RouterName.addDocumetType: (context) => const AddDocumentType(),
+                RouterName.addDocumetType: (context) => AddDocumentType(),
                 RouterName.auditorCompanyDocuments: (context) =>
                     const AuditorCompanyDocuments(),
                 RouterName.auditorHomeScreen: (context) =>
@@ -140,7 +145,10 @@ class MyApp extends StatelessWidget {
                     const SearchScreenForAdmin(),
                 RouterName.searchScreenForUser: (context) => searchuser()
               },
-              home: const AuthUsers(),
+              home:
+                  // AddDocumentType(),
+
+                  const AuthUsers(),
             ),
           );
         },
@@ -156,24 +164,21 @@ class AuthUsers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         User? user = snapshot.data;
-
+        var status = Constanscollection.getUserStatus();
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Loading state
           return const Center(
             child: CircularProgressIndicator(),
           );
-        }
-
-        if (user == null) {
-          return const RegisterScreen();
-        } else {
+        } else if (user != null) {
+          print("==================================User sign in ");
           return StreamBuilder(
             stream: FirebaseFirestore.instance
-                .collection('users') // Replace with your users collection
+                .collection('users')
                 .doc(user.uid)
                 .snapshots(),
             builder: (BuildContext context,
@@ -188,52 +193,61 @@ class AuthUsers extends StatelessWidget {
               if (userSnapshot.hasData) {
                 // User data is available, check role
                 var userData = userSnapshot.data!.data();
-                String userRole =
-                    (userData as Map<String, dynamic>)['role'] ?? '';
-                String userStatus =
-                    (userData as Map<String, dynamic>)['status'] ?? '';
 
-                // Now you can use the userRole to decide where to navigate
-                if (userRole == 'admin') {
-                  return const AdminHomeScreen();
-                } else if (userRole == 'User') {
-                  if (userStatus == '0') {
-                    return const RegisterScreen();
-                  } else if (userStatus == '1') {}
-                  if (userStatus == '2') {
-                    if (FirebaseAuth.instance.currentUser!.emailVerified) {
+                if (userData != null && userData is Map<String, dynamic>) {
+                  String userRole = userData['role'] ?? '';
+                  String userStatus =
+                      userData.containsKey('status') ? userData['status'] : '';
+
+                  // Now you can use the userRole to decide where to navigate
+                  if (userRole == 'admin') {
+                    return const AdminHomeScreen();
+                  } else if (userRole == 'User') {
+                    if (userStatus == '0') {
                       return const RegisterScreen();
-                    } else if (!FirebaseAuth
-                        .instance.currentUser!.emailVerified) {
-                      return const VreifyEmail();
+                    } else if (userStatus == '1') {
+                      return const RegisterScreen();
+                    } else if (userStatus == '2') {
+                      if (FirebaseAuth.instance.currentUser!.emailVerified) {
+                        return const HomeScreenForUser();
+                      } else if (!FirebaseAuth
+                          .instance.currentUser!.emailVerified) {
+                        return const VreifyEmail();
+                      }
+                      return const HomeScreenForUser();
                     }
-                    return const HomeScreenForUser();
+                  } else if (userRole == "Accountant") {
+                    return AccountantHomeScreen();
+                  } else if (userRole == "Auditor") {
+                    return AuditorHomeScreen();
+                    // Add logic for userRole == "Auditor"
                   }
-                } else if (userRole == "Accountant") {
-                  if (FirebaseAuth.instance.currentUser!.emailVerified) {
-                    return const RegisterScreen();
-                  } else if (!FirebaseAuth
-                      .instance.currentUser!.emailVerified) {
-                    return const VreifyEmail();
-                  } else {
-                    return const AccountantHomeScreen();
-                  }
-                } else if (userRole == "Auditor") {
-                  if (FirebaseAuth.instance.currentUser!.emailVerified) {
-                    return const RegisterScreen();
-                  } else if (!FirebaseAuth
-                      .instance.currentUser!.emailVerified) {
-                    return const VreifyEmail();
-                  } else {
-                    return const AuditorHomeScreen();
-                  }
+                } else {
+                  print(
+                      "User data is null or not of type Map<String, dynamic>");
                 }
+              } else if (userSnapshot.data == null) {
+                return const RegisterScreen();
               }
-              return SplashScreen();
+
+              return const SplashScreen();
             },
           );
+        } else {
+          print("==================================User sign out ");
+          // هنا يمكنك إجراء الإجراءات المناسبة عند تسجيل الخروج
+          return status == 0 ? SplashScreen() : LoginScreen();
         }
       },
     );
   }
 }
+   // if (user != null) {
+            //   // المستخدم قام بتسجيل الدخول
+            //   print("User signed in");
+            //   // handleUserSignIn(user);
+            // } else {
+            //   // المستخدم قام بتسجيل الخروج أو غير مسجل
+            //   print("User signed out or not signed in");
+            //   // handleUserSignOut();
+            // }

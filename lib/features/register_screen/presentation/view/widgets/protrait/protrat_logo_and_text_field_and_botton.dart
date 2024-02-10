@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,7 @@ class _LogoAndTextFieldAndbuttonProtraitState
     extends State<LogoAndTextFieldAndbuttonProtrait> {
   GlobalKey<FormState> formKey = GlobalKey();
   bool isdesapled = false;
+  Timer _timer = Timer(Duration.zero, () {});
   @override
   void initState() {
     try {
@@ -41,7 +44,9 @@ class _LogoAndTextFieldAndbuttonProtraitState
       if (user != null) {
         user.reload();
         if (user.emailVerified) {
-          checkEmail();
+          _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+            checkEmail(); // قم بتنفيذ الوظيفة التي تريدها هنا
+          });
           WidgetsBinding.instance
               .addPostFrameCallback((_) => showEmailVerifiedSnackBar(context));
         } else {
@@ -54,26 +59,46 @@ class _LogoAndTextFieldAndbuttonProtraitState
     super.initState();
   }
 
+  void dispose() {
+    _timer.cancel(); // للتأكد من إلغاء الـ Timer عند إغلاق الصفحة
+    super.dispose();
+  }
+
   void didChangeDependencies() {
     // Perform cleanup operations here before the widget is disposed.
     // This is where you can add the cleanup code that was in initState
     super.didChangeDependencies();
   }
 
-  void showEmailVerifiedSnackBar(BuildContext context) {
-    showSnackBar(
-      context,
-      "Congratulations, your email has been authenticated and your data will be reviewed by the administration within 24 hours.",
-      backgroundcolor: ColorManger.backGroundColorToSplashScreen,
-      duration: const Duration(days: 1),
-    );
+  void showEmailVerifiedSnackBar(BuildContext context) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore
+          .instance
+          .collection("users")
+          .doc(user.uid)
+          .get();
+
+      String emailStatus = userData["Email_status"];
+      if (emailStatus == "disabled") {
+        isdesapled = true;
+        return showSnackBar(
+          context,
+          "Congratulations, your email has been authenticated and your data will be reviewed by the administration within 24 hours you cant do anythink after accepted. ",
+          backgroundcolor: ColorManger.backGroundColorToSplashScreen,
+          duration: const Duration(days: 1),
+        );
+      } else {
+        return;
+      }
+    }
   }
 
   void showWelcomeSnackBar(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => showSnackBar(
-        context, "Welcome , SignUp Now",
+        context, "Welcome ,You Must Verify your email login Now ",
         backgroundcolor: ColorManger.backGroundColorToSplashScreen,
-        duration: const Duration(seconds: 5)));
+        duration: const Duration(seconds: 15)));
   }
 
   Future<void> checkEmail() async {
@@ -89,11 +114,17 @@ class _LogoAndTextFieldAndbuttonProtraitState
         String emailStatus = userData["Email_status"] ?? "";
         String status = userData["status"] ?? "";
         if (emailStatus.toLowerCase() == "disabled") {
-          isdesapled = false;
+          setState(() {
+            isdesapled == true;
+          });
         } else if (emailStatus.toLowerCase() == "enabled" && status == 2) {
-          isdesapled = true;
+          print(status);
           Navigator.of(context)
               .pushReplacementNamed(RouterName.homeScreenForUser);
+          setState(() {
+            isdesapled == false;
+          });
+          print(emailStatus);
         }
       }
     } catch (e) {
@@ -122,8 +153,24 @@ class _LogoAndTextFieldAndbuttonProtraitState
               isLoading = false;
             } else if (state is Signupfaild) {
               isLoading = false;
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.error),
+                backgroundColor: Colors.redAccent,
+              ));
+
               showSnackBar(context, state.error);
+            } else if (state is AuthLoading) {
+              isLoading = true;
+            } else if (state is AuthAuthenticated) {
+              checkEmail();
+            } else if (state is AuthUnauthenticated) {
+              isLoading = false;
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.error),
+                backgroundColor: Colors.redAccent,
+              ));
             }
+            ;
           },
           builder: (context, state) {
             return Center(
@@ -291,7 +338,16 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                     //
                                     //
                                     CustomBottonWithIconOrImage(
-                                        onTap: () {},
+                                        onTap: () async {
+                                          await trigerCubit.signInWithGoogle();
+
+                                          final user = trigerCubit.user;
+
+                                          if (user != null) {
+                                            await trigerCubit
+                                                .storeUserInfoInFirestore(user);
+                                          }
+                                        },
                                         imageIconButton: ImageManger.googleLogo,
                                         nameOfButton: S
                                             .of(context)

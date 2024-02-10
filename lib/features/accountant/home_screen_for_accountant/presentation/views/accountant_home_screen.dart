@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
+import 'package:mohra_project/core/helpers/user_name.dart';
+import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/accountant_home_screen_body.dart';
-import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
-import 'package:mohra_project/features/user/notification/notification_for_accountant.dart';
+import 'package:mohra_project/features/notification/notification_for_auditor.dart';
 
-import 'package:mohra_project/features/user/notification/persrntation/views/notification_for_admin.dart';
 import 'package:mohra_project/features/user/settings_screen/settings_screen.dart';
 
 class AccountantHomeScreen extends StatefulWidget {
@@ -64,14 +64,20 @@ class _AccountantHomeScreenState extends State<AccountantHomeScreen> {
                 label: "Settings",
               ),
             ]),
-        appBar: CustomAppBarForUsers(
-            title: Text(
-          "Hello : Mr Mohmed",
-          style: Theme.of(context)
-              .textTheme
-              .displayMedium!
-              .copyWith(color: ColorManger.white),
-        )),
+        appBar: CustomAppBar(
+          title: GetNameForUser(),
+          onPressed: () {
+            Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
+          },
+
+          //      Text(
+          //   "Hello : Mr Mohmed",
+          //   style: Theme.of(context)
+          //       .textTheme
+          //       .displayMedium!
+          //       .copyWith(color: ColorManger.white),
+          // )
+        ),
         body: pages[currentIndex]);
   }
 }

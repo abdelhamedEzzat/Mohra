@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
-import 'package:mohra_project/features/register_screen/data/user_auth.dart';
 
 part 'auth_state.dart';
 
@@ -17,7 +15,7 @@ class AuthCubit extends Cubit<AuthState> {
   String firstName = "";
   String lastName = "";
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  User? user;
   List<QueryDocumentSnapshot> personalUserInformation = [];
 
   Future userSignUP({
@@ -99,7 +97,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     if (user == null) {
       // Handle the case where the user is null (not signed in)
-      emit(Signupfaild(error: "User is not signed in."));
+      emit(const Signupfaild(error: "User is not signed in."));
       return;
     }
 
@@ -141,6 +139,7 @@ class AuthCubit extends Cubit<AuthState> {
         'email': email,
         'role': 'Auditor',
         'status': '2',
+        'Email_status': 'enabled',
       });
       emit(SignupSuccess());
     } catch (e) {
@@ -165,6 +164,7 @@ class AuthCubit extends Cubit<AuthState> {
         'email': email,
         'role': 'Accountant',
         'status': '2',
+        'Email_status': 'enabled',
       });
       emit(SignupSuccess());
     } catch (e) {
@@ -181,25 +181,13 @@ class AuthCubit extends Cubit<AuthState> {
       //
       //
       personalUserInformation.addAll(querySnapshot.docs);
+      // Print the data in the console
 
       emit(SignupSuccess());
     } catch (e) {
       Signupfaild(error: "Failed to get user:${e.toString()}");
     }
   }
-
-  // void updateUserStatus(int status) {
-  //   final userStatusBox = Hive.box<UserStatusModel>('userStatusBox');
-  //   final userStatus = UserStatusModel(emailStauts: status);
-  //   userStatusBox.put('userStatus', userStatus);
-  // }
-
-  // int getUserStatus() {
-  //   final userStatusBox = Hive.box<UserStatusModel>('userStatusBox');
-  //   final userStatus = userStatusBox.get('userStatus',
-  //       defaultValue: UserStatusModel(emailStauts: 0));
-  //   return userStatus!.emailStauts;
-  // }
 
   void checkRole(context) async {
     try {
@@ -215,23 +203,80 @@ class AuthCubit extends Cubit<AuthState> {
       // Now you can check the user's role and navigate accordingly
       if (userRole == 'admin') {
         // ignore: use_build_context_synchronously
-        Navigator.of(context).pushReplacementNamed(RouterName.adminHomeScreen);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          RouterName.adminHomeScreen,
+          (route) => false,
+        );
       } else if (userRole == 'Accountant') {
         // ignore: use_build_context_synchronously
-        Navigator.of(context)
-            .pushReplacementNamed(RouterName.accountantHomeScreen);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          RouterName.accountantHomeScreen,
+          (route) => false,
+        );
       } else if (userRole == 'Auditor') {
         // ignore: use_build_context_synchronously
-        Navigator.of(context)
-            .pushReplacementNamed(RouterName.auditorHomeScreen);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          RouterName.auditorHomeScreen,
+          (route) => false,
+        );
       } else if (userRole == 'Users') {
         // ignore: use_build_context_synchronously
-        Navigator.of(context)
-            .pushReplacementNamed(RouterName.homeScreenForUser);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          RouterName.homeScreenForUser,
+          (route) => false,
+        );
       }
       emit(UserStutsSuccess());
     } catch (e) {
       emit(UserStutsfaild(error: "Failed to get  user:${e.toString()}"));
+    }
+  }
+
+  Future signInWithGoogle() async {
+    try {
+      emit(AuthLoading());
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        return;
+      }
+      // Obtain the auth details from the request
+      else {
+        final GoogleSignInAuthentication? googleAuth =
+            await googleUser?.authentication;
+
+        // Create a new credential
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+
+        // Once signed in, return the UserCredential
+        final UserCredential authResult =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        user = authResult.user!;
+        emit(AuthAuthenticated(user!));
+      }
+    } on Exception catch (e) {
+      emit(AuthUnauthenticated(error: e.toString()));
+    }
+  }
+
+  Future<void> storeUserInfoInFirestore(User user) async {
+    //  final user = FirebaseAuth.instance.currentUser;
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
+        'fullName': user.displayName,
+        'email': user.email,
+        'first_Name': user.displayName?.split(" ").first,
+        'last_Name': user.displayName?.split(" ").last,
+        'role': 'User',
+        'status': '0',
+        'Email_status': 'disabled',
+        // Add more fields as needed
+      });
+    } catch (e) {
+      print('Error storing user information in Firestore: $e');
     }
   }
 }

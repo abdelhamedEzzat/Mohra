@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/constans_collections/collections.dart';
 
 class UsersTabBarScreens extends StatelessWidget {
@@ -118,7 +119,7 @@ class AcceptedUsersWifget extends StatelessWidget {
         ),
         Container(
           decoration: BoxDecoration(
-              color: Colors.white,
+              color: ColorManger.introScreenBackgroundColor,
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(10.h),
                   bottomRight: Radius.circular(10.h))),

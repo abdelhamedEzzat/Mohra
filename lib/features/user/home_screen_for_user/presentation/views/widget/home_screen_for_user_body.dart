@@ -7,21 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
+import 'package:mohra_project/core/helpers/custom_button_with_icon_or_image.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/user/create_company/presentation/manger/firebase_company/create_company_cubit.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/click_to_create_company.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/number_of_companies_and_documents.dart';
-
-// class Massage {
-//   String massage;
-//   Massage(
-//     this.massage,
-//   );
-//   factory Massage.fromJson(jsondata) {
-//     return Massage(jsondata["companyId"]);
-//   }
-// }
 
 class HomeScreenForUserBody extends StatelessWidget {
   const HomeScreenForUserBody({
@@ -31,16 +22,27 @@ class HomeScreenForUserBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String searchQuery = "";
-    return Column(
+    return Stack(
       children: [
-        const Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.center,
-            children: [
-              NumberOfCompaniesAndDocuments(),
-              ClickToCreateCampany(),
-            ]),
-        CompaniesListThatUserCreated(searchQuery: searchQuery),
+        Column(
+          children: [
+            Expanded(
+                flex: 3,
+                child: Container(
+                  color: ColorManger.backGroundColorToSplashScreen,
+                  child: const NumberOfCompaniesAndDocuments(),
+                )),
+            Expanded(
+                flex: 8,
+                child: Container(
+                  padding: EdgeInsets.only(top: 70.h, right: 20, left: 20),
+                  alignment: Alignment.topLeft,
+                  child: CompaniesListThatUserCreated(searchQuery: searchQuery),
+                )),
+          ],
+        ),
+        Positioned(
+            top: 70.h, right: 0, left: 0, child: const ClickToCreateCampany())
       ],
     );
   }
@@ -72,39 +74,67 @@ class _CompaniesListThatUserCreatedState
         .where('userID', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .snapshots();
 
-    return Expanded(
-        child: Container(
-      margin: EdgeInsets.only(top: 80.h),
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "My Company :",
               style: Theme.of(context).textTheme.displayLarge,
             ),
             SizedBox(
-              height: 10.h,
+              height: 20.h,
             ),
             BlocBuilder<FirebaseCreateCompanyCubit, FirebaseCreateCompanyState>(
               builder: (context, state) {
                 return StreamBuilder<QuerySnapshot>(
                   stream: companyCollection,
                   builder: (context, snapshot) {
+                    print('Documents: ${snapshot.data?.docs}');
                     if (snapshot.hasData) {
-                      return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return snapshot.data!.docs[index]["CompanyStatus"] ==
-                                  'Waiting for Accepted'
-                              ? SingleChildScrollView(
-                                  child: CompanyButton(
+                      if (snapshot.data!.docs.isEmpty) {
+                        return Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 25.h,
+                              ),
+                              Icon(
+                                Icons.business_sharp,
+                                color: Colors.black87,
+                                size: 45.h,
+                              ),
+                              SizedBox(
+                                height: 25.h,
+                              ),
+                              Center(
+                                child: Text(
+                                    "You haven't created any companies yet. Click to create one!",
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return ListView.separated(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          reverse: true,
+                          itemCount: snapshot.data!.docs.length,
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(height: 10);
+                          },
+                          itemBuilder: (BuildContext context, int index) {
+                            return snapshot.data!.docs[index]
+                                        ["CompanyStatus"] ==
+                                    'Waiting for Accepted'
+                                ? CompanyButton(
                                     onTap: () {},
                                     withStatus: true,
                                     companyName: snapshot.data!.docs[index]
@@ -114,15 +144,15 @@ class _CompaniesListThatUserCreatedState
                                     colorOfStatus: ColorManger.darkGray,
                                     statusText: snapshot.data!.docs[index]
                                         ["CompanyStatus"],
-                                  ),
-                                )
-                              : SingleChildScrollView(
-                                  child: CompanyButton(
+                                  )
+                                : CompanyButton(
                                     onTap: () {
                                       Navigator.pushNamed(
-                                          context, RouterName.companyDocuments,
-                                          arguments: snapshot.data!.docs[index]
-                                              ["companyId"]);
+                                        context,
+                                        RouterName.companyDocuments,
+                                        arguments: snapshot.data!.docs[index]
+                                            ["companyId"],
+                                      );
                                     },
                                     withStatus: true,
                                     companyName: snapshot.data!.docs[index]
@@ -136,16 +166,17 @@ class _CompaniesListThatUserCreatedState
                                         : Colors.red,
                                     statusText: snapshot.data!.docs[index]
                                         ["CompanyStatus"],
-                                  ),
-                                );
-                        },
-                      );
+                                  );
+                          },
+                        );
+                      }
                     } else if (snapshot.connectionState ==
-                        snapshot.connectionState) {
+                        ConnectionState.waiting) {
                       return const Center(
-                          child: CircularProgressIndicator(
-                        color: Colors.black,
-                      ));
+                        child: CircularProgressIndicator(
+                          color: Colors.black,
+                        ),
+                      );
                     }
                     return Container();
                   },
@@ -153,8 +184,6 @@ class _CompaniesListThatUserCreatedState
               },
             ),
           ],
-        ),
-      ),
-    ));
+        ));
   }
 }

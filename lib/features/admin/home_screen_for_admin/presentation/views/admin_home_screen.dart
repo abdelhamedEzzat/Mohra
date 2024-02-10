@@ -1,10 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
+import 'package:mohra_project/core/helpers/user_name.dart';
+import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/admin_home_screen_body.dart';
-import 'package:mohra_project/features/user/notification/persrntation/views/notification_for_admin.dart';
+import 'package:mohra_project/features/notification/notification_for_admin.dart';
 import 'package:mohra_project/features/user/settings_screen/settings_screen.dart';
 
 class AdminHomeScreen extends StatefulWidget {
@@ -25,19 +30,16 @@ class _AccountantHomeScreenState extends State<AdminHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-          bottomNavigationBar: bottomNavigationForAdmin(),
-          appBar: CustomAppBar(
-              title: Text(
-            "Hello : Abdelhameed Ezzat",
-            style: Theme.of(context)
-                .textTheme
-                .displayMedium!
-                .copyWith(color: ColorManger.white),
-          )),
-          body: pages[currentIndex]),
-    );
+        length: 4,
+        child: Scaffold(
+            bottomNavigationBar: bottomNavigationForAdmin(),
+            appBar: CustomAppBar(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(RouterName.searchScreenForAdmin);
+                },
+                title: const GetNameForUser()),
+            body: pages[currentIndex]));
   }
 
   BottomNavigationBar bottomNavigationForAdmin() {

@@ -86,22 +86,48 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
           Container(
             padding: const EdgeInsets.all(8.0),
             margin: EdgeInsets.only(top: 15.h),
-            decoration: const BoxDecoration(
-                color: Colors.white,
+            decoration: BoxDecoration(
+                color: ColorManger.introScreenBackgroundColor,
                 borderRadius: BorderRadius.all(Radius.circular(15))),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.10,
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                IconsAndTextToCompany(
-                  text: "Companies",
-                  color: Colors.black,
-                ),
-                IconsAndTextToDoc(
-                  color: Colors.black,
-                  text: "Documents",
-                ),
+                StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Companys')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return IconsAndTextToCompany(
+                          color: Colors.black,
+                          numberOfCompany: snapshot.data!.docs.length,
+                          text: "Companies",
+                        );
+                      } else {
+                        return const CircularProgressIndicator(
+                          color: Colors.black,
+                        );
+                      }
+                    }),
+                StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Document')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return IconsAndTextToCompany(
+                          color: Colors.black,
+                          numberOfCompany: snapshot.data!.docs.length,
+                          text: "Documents",
+                        );
+                      } else {
+                        return const CircularProgressIndicator(
+                          color: Colors.black,
+                        );
+                      }
+                    }),
               ],
             ),
           ),
@@ -162,7 +188,8 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                               child: Container(
                                   height: 135.h,
                                   decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: ColorManger.darkGray
+                                          .withOpacity(0.08),
                                       borderRadius: BorderRadius.circular(25)),
                                   margin: EdgeInsets.all(8.0),
                                   child: Column(children: [

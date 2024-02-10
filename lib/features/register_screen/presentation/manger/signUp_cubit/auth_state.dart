@@ -66,3 +66,23 @@ final class UserStutsfaild extends AuthState {
 
   const UserStutsfaild({required this.error});
 }
+//
+//
+//
+
+class AuthLoading extends AuthState {}
+
+class AuthAuthenticated extends AuthState {
+  final User user;
+
+  const AuthAuthenticated(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
+class AuthUnauthenticated extends AuthState {
+  final String error;
+
+  const AuthUnauthenticated({required this.error});
+}

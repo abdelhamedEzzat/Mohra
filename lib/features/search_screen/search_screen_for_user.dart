@@ -13,12 +13,13 @@ class CustomAppBarForUsers extends StatefulWidget
     this.title,
     this.leading,
     this.searchController,
+    this.onTap,
   }) : super(key: key);
 
   final Widget? title;
   final Widget? leading;
   final TextEditingController? searchController;
-
+  final void Function()? onTap;
   @override
   _CustomAppBarState createState() => _CustomAppBarState();
 
@@ -47,14 +48,11 @@ class _CustomAppBarState extends State<CustomAppBarForUsers> {
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  Navigator.of(context)
-                      .pushNamed(RouterName.searchScreenForUser);
-
-                  // Check if there's anything to pop before calling Navigator.pop
-                });
-              },
+              onTap: widget.onTap ??
+                  () {
+                    Navigator.of(context)
+                        .pushNamed(RouterName.searchScreenForUser);
+                  },
               child: isSearching
                   ? const Icon(
                       Icons.delete,
@@ -88,6 +86,7 @@ class _searchuserState extends State<searchuser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBarForUsers(
+        onTap: () {},
         leading: BackButton(color: Colors.white),
         title: buildSearchBar(),
         searchController: _searchController, // Pass the searchController
@@ -140,10 +139,15 @@ class _searchuserState extends State<searchuser> {
                         );
                         return CompanyButton(
                           onTap: () {
-                            Navigator.pushNamed(
-                                context, RouterName.companyDocuments,
-                                arguments: snapshot.data.docs[index]
-                                    ["companyId"]);
+                            if (snapshot.data.docs[index]['CompanyStatus'] ==
+                                "Accepted") {
+                              Navigator.pushNamed(
+                                  context, RouterName.companyDocuments,
+                                  arguments: snapshot.data.docs[index]
+                                      ["companyId"]);
+                            } else {
+                              return;
+                            }
                           },
                           withStatus: true,
                           companyName: snapshot.data.docs[index]

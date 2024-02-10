@@ -25,8 +25,11 @@ class _AddNewAuditorState extends State<AddNewAccountant> {
     final trigerCubit = BlocProvider.of<AuthCubit>(context);
     bool isLoading = false;
     return Scaffold(
-      appBar: const CustomAppBar(
-          title: Text("New Auditor"),
+      appBar: CustomAppBar(
+          onPressed: () {
+            Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
+          },
+          title: const Text("New Accountant"),
           leading: BackButton(
             color: Colors.white,
           )),

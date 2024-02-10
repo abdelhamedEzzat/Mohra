@@ -35,5 +35,5 @@ ThemeData theme() {
           headlineMedium: const TextStyle(
             fontWeight: FontWeightManager.semibold,
           )),
-      scaffoldBackgroundColor: ColorManger.introScreenBackgroundColor);
+      scaffoldBackgroundColor: ColorManger.white);
 }

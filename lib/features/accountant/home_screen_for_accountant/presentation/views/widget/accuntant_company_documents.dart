@@ -20,6 +20,9 @@ class AccuntantCompanyDocuments extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(
+        onPressed: () {
+          Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
+        },
         title: const Text("Documents"),
         leading: BackButton(
           color: ColorManger.white,
@@ -37,53 +40,59 @@ class AccuntantCompanyDocuments extends StatelessWidget {
                   if (snapshot.hasData) {
                     List<Widget> itemList = [];
 
-                    List<DocumentSnapshot> imageDocs = [];
-                    List<DocumentSnapshot> fileDocs = [];
+                    List<DocumentSnapshot> allDocs = [];
 
                     snapshot.data!.docs.forEach((doc) {
+                      allDocs.add(doc);
+                    });
+
+                    Comparator<DocumentSnapshot> compareByDocNumer =
+                        (doc1, doc2) =>
+                            doc2["docNumer"].compareTo(doc1["docNumer"]);
+
+                    allDocs.sort(compareByDocNumer);
+
+                    allDocs.forEach((doc) {
                       String fileExtension =
                           doc["fileExtention"].toLowerCase() ?? "";
 
                       if (fileExtension == "image") {
-                        return imageDocs.add(doc);
+                        itemList.add(ImageDocWidget(
+                          docImage: doc["urlImage"],
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                              RouterName.accountantDocumentDetails,
+                              arguments: {
+                                'urlImage': doc["urlImage"],
+                                'comment': doc['comment']
+                              },
+                            );
+                          },
+                          typeOfDocument: doc["docNumer"].toString(),
+                          color: ColorManger.darkGray,
+                          status: doc['status'],
+                        ));
                       } else {
-                        return fileDocs.add(doc);
+                        itemList.add(FilesDocWidget(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                              RouterName.accountantDocumentDetails,
+                              arguments: {
+                                'companydocID': doc["companydocID"],
+                                'url': doc["url"],
+                                'comment': doc['comment'],
+                                'fileExtention': doc['fileExtention'],
+                                'name': doc['name']
+                              },
+                            );
+                          },
+                          pdfFileExtention: doc["fileExtention"],
+                          pdfFileName: doc["name"],
+                          color: ColorManger.darkGray,
+                          status: doc['status'],
+                          typeOfDocument: doc["docNumer"].toString(),
+                        ));
                       }
-                    });
-
-                    // print(
-                    //     "==============================${imageDocs.length}");
-                    // print("==============================${fileDocs.length}");
-                    // Add ImageDocWidget for image documents
-                    imageDocs.forEach((doc) {
-                      itemList.add(ImageDocWidget(
-                        docImage: doc["urlImage"],
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                            RouterName.accountantDocumentDetails,
-                            arguments: {
-                              'urlImage': doc["urlImage"],
-                              'comment': doc["comment"],
-                              'companydocID': doc['companydocID'],
-                              'DocID': doc['DocID']
-                            },
-                          );
-                        },
-                        typeOfDocument: "1",
-                        color: ColorManger.darkGray,
-                        status: doc['comment'],
-                      ));
-                    });
-
-                    // Add FilesDocWidget for file documents
-                    fileDocs.forEach((doc) {
-                      itemList.add(FilesDocWidget(
-                        pdfFileExtention: doc["fileExtention"],
-                        pdfFileName: doc["name"],
-                        color: ColorManger.darkGray,
-                        status: "doc[status]",
-                        typeOfDocument: "1",
-                      ));
                     });
 
                     return ListView.builder(

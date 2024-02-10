@@ -7,8 +7,10 @@ import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
+import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/add_new_auditor.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/title_of_form_create_company.dart';
+import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
 
 class AccountantDocumentDetails extends StatefulWidget {
   const AccountantDocumentDetails({super.key});
@@ -33,14 +35,14 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
   String? invoiceNumber;
   String? amountOfTheInvoice;
   String? comment = "";
-  String? selectItem;
+  String? selectItem = "new Document";
   bool isAccountantReviewDoc = false;
   bool accountantReview = false;
 
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
 
   List<String> typeDocumentDropDown = [];
-  String? selectTypeItem = "";
+  String? selectTypeItem;
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> docDitails =
@@ -59,7 +61,10 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: const CustomAppBar(
+        appBar: CustomAppBar(
+          onPressed: () {
+            Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
+          },
           leading: BackButton(color: Colors.white),
           title: Text(
             "Details Documents",
@@ -83,10 +88,57 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                         borderRadius: BorderRadius.circular(10)),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          docDitails['urlImage'],
-                          fit: BoxFit.fill,
-                        )),
+                        child: docDitails['urlImage'] == null
+                            ? GestureDetector(
+                                onTap: () => openFile(
+                                        url: docDitails['url'],
+                                        fileName: docDitails['name'])
+                                    .toString(),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  height: mediaQueryHeight,
+                                  color: Colors.grey.withOpacity(0.3),
+                                  child: Center(
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: ColorManger.white
+                                              .withOpacity(0.5),
+                                          radius: 30.h,
+                                          child: Text(
+                                              docDitails['fileExtention']
+                                                  .toString(),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displayMedium!
+                                                  .copyWith(
+                                                      color: Colors.black)),
+                                        ),
+                                        SizedBox(
+                                          width: 15.w,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                              docDitails['name'].toString(),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displayMedium!),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : GestureDetector(
+                                onTap: () => navigateToFullScreenImage(
+                                    context, docDitails['urlImage'].toString()),
+                                child: Image.network(
+                                  docDitails['urlImage'].toString(),
+                                  fit: BoxFit.fill,
+                                ),
+                              )),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -419,78 +471,87 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
         //
         //
         StreamBuilder<QuerySnapshot>(
-            stream: documentCompany,
-            builder: (context, snapshot) {
-              List<String> dropdownItems = [];
-              if (snapshot.hasData) {
-                dropdownItems = snapshot.data!.docs
-                    .map((DocumentSnapshot<Object?> item) =>
-                        item['additionalInformation'])
-                    .where((info) => info != null)
-                    .map((info) {
-                      if (info is List) {
-                        // If additionalInformation is a list, concatenate its items
-                        return info.map((item) => item.toString()).join(', ');
-                      } else {
-                        return info.toString();
-                      }
-                    })
-                    .expand((info) => info.split(','))
-                    .map((item) => item.trim())
-                    .toList();
-                return Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
-                  decoration: BoxDecoration(
-                      color: ColorManger.white,
-                      borderRadius: BorderRadius.circular(15.w),
-                      border: Border.all(color: ColorManger.darkGray)),
-                  child: DropdownButton<String>(
-                    hint: Text(
-                      "Select Type Of Document",
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium!
-                          .copyWith(
-                              color: ColorManger.backGroundColorToSplashScreen),
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                    isExpanded: true,
-                    value: selectTypeItem,
-                    items: dropdownItems.map((String item) {
-                      return DropdownMenuItem(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: Theme.of(context).textTheme.displayMedium,
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (item) => setState(() {
-                      selectTypeItem = item!;
-                    }),
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                print("you have error in type of document");
-              } else if (ConnectionState == ConnectionState.waiting) {
-                const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return Container();
+          stream: documentCompany,
+          builder: (context, snapshot) {
+            List<String> dropdownItems = [
+              'Select'
+            ]; // Initialize with a default value
+            if (snapshot.hasData) {
+              // Use a set to ensure unique values and generate unique keys
+              Set<String> uniqueItems = Set();
 
-              //   print(snapshot.data!.docs['additionalInformation']);
-            }),
+              snapshot.data!.docs.forEach((DocumentSnapshot<Object?> item) {
+                var additionalInformation = item['additionalInformation'];
+                if (additionalInformation != null) {
+                  if (additionalInformation is List) {
+                    uniqueItems.addAll(
+                        additionalInformation.map((item) => item.toString()));
+                  } else {
+                    uniqueItems.add(additionalInformation.toString());
+                  }
+                }
+              });
+
+              dropdownItems.addAll(uniqueItems.toList());
+
+              // Initialize selectTypeItem with the first item if the list is not empty
+              selectTypeItem ??= dropdownItems.first;
+
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
+                decoration: BoxDecoration(
+                  color: ColorManger.white,
+                  borderRadius: BorderRadius.circular(15.w),
+                  border: Border.all(color: ColorManger.darkGray),
+                ),
+                child: DropdownButton<String>(
+                  hint: Text(
+                    "Select Type Of Document",
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                        color: ColorManger.backGroundColorToSplashScreen),
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  isExpanded: true,
+                  value: selectTypeItem!.isNotEmpty
+                      ? selectTypeItem
+                      : "No items Selected",
+                  items: dropdownItems.map((String item) {
+                    return DropdownMenuItem(
+                      value: item,
+                      key: UniqueKey(), // Use UniqueKey for each item
+                      child: Text(
+                        item,
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (item) {
+                    setState(() {
+                      selectTypeItem = item;
+                    });
+                  },
+                ),
+              );
+            } else if (snapshot.hasError) {
+              print("Error fetching type of document data: ${snapshot.error}");
+            } else if (ConnectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return Container();
+          },
+        ),
         SizedBox(
           height: 15.h,
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
           decoration: BoxDecoration(
-              color: ColorManger.white,
-              borderRadius: BorderRadius.circular(15.h),
-              border: Border.all(color: ColorManger.darkGray)),
+            color: ColorManger.white,
+            borderRadius: BorderRadius.circular(15.w),
+            border: Border.all(color: ColorManger.darkGray),
+          ),
           child: DropdownButton<String>(
             hint: Text(
               "Select Status Of Document",
@@ -504,11 +565,12 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
             value: selectItem,
             items: stutsDocumentDropDown
                 .map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(
-                      item,
-                      style: Theme.of(context).textTheme.displayMedium,
-                    )))
+                      value: item,
+                      child: Text(
+                        item,
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                    ))
                 .toList(),
             onChanged: (item) => setState(() {
               selectItem = item!;

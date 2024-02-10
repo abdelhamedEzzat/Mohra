@@ -27,11 +27,11 @@ class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
       required String companyAddress,
       required String companyType,
       required File? file,
-      required String docid,
+      // required String docid,
       required String compnyCollectionID}) async {
     try {
       emit(FirestoreStorageLoading());
-
+      List additionalInformation = [];
       if (file != null) {
         var imageName = basename(file.path);
         final storage = FirebaseStorage.instanceFor(
@@ -51,8 +51,9 @@ class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
             'companyId': compnyCollectionID,
             'companyDocId': compnydocID,
             'userID': FirebaseAuth.instance.currentUser!.uid,
-            'additionalInformation': "",
-            'CompanyStatus': "Waiting for Accepted"
+            'additionalInformation': additionalInformation,
+            'CompanyStatus': "Waiting for Accepted",
+            'timesTamp': formattedStamp(timestamp),
           },
         );
       }
@@ -135,7 +136,7 @@ class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
     file = null;
     url = "";
     isIcon = false;
-    userId = uuid.v4();
+
     emit(clearDataStorage());
   }
 }

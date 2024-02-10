@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FoontManger {
-  static const String fontFamily = "Kanit";
+  static const String fontFamily = "Traditional Arabic";
 }
 
 class FontWeightManager {

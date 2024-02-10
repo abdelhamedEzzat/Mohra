@@ -28,6 +28,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
   String userId = FirebaseAuth.instance.currentUser!.uid;
   PlatformFile? fileExtention;
   String? nameOfImage;
+  int docNumber = 1;
 
   Future uploadFile() async {
     emit(UploadDocumentLoading());
@@ -45,11 +46,30 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
 
       emit(UploadDocumentSuccess());
     } catch (e) {
-      emit(UploadDocumentfaild(error: "Failed to add file:${e.toString()}"));
+      emit(UploadDocumentfaild(error: "You Didnt Upload Any Files "));
+    }
+  }
+
+  Future<int> getNextDocumentNumber(String companyId) async {
+    QuerySnapshot documentsSnapshot = await Constanscollection.compnyDocument
+        .where('companydocID', isEqualTo: companyId)
+        .get();
+
+    // If there are previous documents, get the maximum document number
+    if (documentsSnapshot.docs.isNotEmpty) {
+      int maxDocumentNumber = documentsSnapshot.docs
+          .map<int>((doc) => doc['docNumer'] as int)
+          .reduce((value, element) => value > element ? value : element);
+
+      return maxDocumentNumber + 1;
+    } else {
+      // If no previous documents, start from 1
+      return 1;
     }
   }
 
   Future pickFile({
+    required int docNumber,
     required String filename,
     required File file,
     required String comment,
@@ -71,6 +91,8 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
         url = await refrance.getDownloadURL();
         final docID =
             FirebaseFirestore.instance.collection('Document').doc().id;
+
+        int nextDocumentNumber = await getNextDocumentNumber(companydocID);
         await Constanscollection.compnyDocument.add(
           {
             "name": fileName,
@@ -80,7 +102,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
             "companydocID": companydocID,
             "fileExtention": filePlatforme!.extension,
             'DocID': docID,
-            "status": "Wating for the accssept ",
+            "status": "Wating for Review ",
             'companyName': "",
             'invoiceDate': "",
             'invoiceNumber': "",
@@ -88,6 +110,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
             'selectItem': "",
             'selectTypeItem': "",
             'commentForAccountatnt': "",
+            'docNumer': nextDocumentNumber,
           },
         );
       }
@@ -113,15 +136,16 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
 
       emit(UploadDocumentSuccess());
     } catch (e) {
-      emit(
-          UploadDocumentfaild(error: "Failed to open camera: ${e.toString()}"));
+      emit(const UploadDocumentfaild(error: "You Didnt Upload Any Document "));
     }
   }
 
 // Function to upload image to Firebase Storage and add information to Firestore
+
   Future<void> uploadImageAndAddInfoToFirestore({
     required String comment,
     required String companydocID,
+    required int docNumber,
   }) async {
     emit(UploadDocumentLoading());
 
@@ -143,6 +167,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
         // Add information to Firestore
         final docID =
             FirebaseFirestore.instance.collection('Document').doc().id;
+        int nextDocumentNumber = await getNextDocumentNumber(companydocID);
         await Constanscollection.compnyDocument.add(
           {
             "urlImage": imageurl,
@@ -151,7 +176,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
             "companydocID": companydocID,
             "fileExtention": "image",
             "DocID": docID,
-            //"numberOfDocument": currentCounter + 1,
+            "status": "Wating for Review ",
             'companyName': "",
             'invoiceDate': "",
             'invoiceNumber': "",
@@ -159,6 +184,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
             'selectItem': "",
             'selectTypeItem': "",
             'commentForAccountatnt': "",
+            'docNumer': nextDocumentNumber,
           },
         );
 

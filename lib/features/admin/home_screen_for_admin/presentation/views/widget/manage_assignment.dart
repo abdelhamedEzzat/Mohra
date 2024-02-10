@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/constans_collections/collections.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
+import 'package:mohra_project/core/routes/name_router.dart';
 
 class ManageAssignment extends StatefulWidget {
   const ManageAssignment({super.key});
@@ -126,252 +128,284 @@ class _ManageAssignmentState extends State<ManageAssignment> {
     super.didChangeDependencies();
   }
 
-  bool isItemSearchSelected = false;
-
+  bool isItemSearchSelected = true;
+  bool isItemSearchnameSelected = true;
   int number = 0;
   List<String> filterCompanyDropDown = ['Auditor', 'Accountant'];
   String? selectItem;
+
   @override
   Widget build(BuildContext context) {
+    bool isLoading = false;
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
+        onPressed: () {
+          Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
+        },
         title: Text(
           "Assignment",
         ),
         leading: BackButton(color: Colors.white),
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        padding: EdgeInsets.symmetric(horizontal: 20.h),
-        margin: EdgeInsets.only(top: 15.h),
-        child: SingleChildScrollView(
-          child: Form(
-            key: textFeildkey,
-            child: Column(
-              children: [
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
-                  decoration: BoxDecoration(
-                      color: ColorManger.white,
-                      borderRadius: BorderRadius.circular(15.h),
-                      border: Border.all(color: ColorManger.darkGray)),
-                  child: DropdownButton<String>(
-                    hint: Text(
-                      "Select Type",
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium!
-                          .copyWith(
-                              color: ColorManger.backGroundColorToSplashScreen),
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                    isExpanded: true,
-                    value: selectItem,
-                    items: filterCompanyDropDown
-                        .map((item) => DropdownMenuItem(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: Theme.of(context).textTheme.displayMedium,
-                            )))
-                        .toList(),
-                    onChanged: (item) => setState(() {
-                      selectItem = item!;
-                    }),
-                  ),
-                ),
-
-                //
-                //
-                //
-                SizedBox(
-                  height: 10.h,
-                ),
-
-                CustomTextFormField(
-                  validator: (value) {},
-                  controller: searchContraller,
-                  hintText: "Write Name to Accountant or Auditor",
-                  prefixIcon: const Icon(Icons.email),
-                  labelText: "name",
-                  onChanged: (value) {
-                    setState(() {
-                      searchResultList();
-                    });
-                  },
-                ),
-                SizedBox(
-                  height: searchContraller.text.isEmpty
-                      ? 0
-                      : MediaQuery.of(context).size.height * 0.25,
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    // Use Column or Row as a parent
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: nameResultList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(25)),
-                                color: Colors.white,
-                              ),
-                              margin: const EdgeInsets.all(8),
-                              padding: EdgeInsets.symmetric(vertical: 8.h),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    searchContraller.text =
-                                        "${nameResultList[index]["fullName"]} ";
-                                  });
-                                },
-                                child: ListTile(
-                                    title: Text(
-                                        "${nameResultList[index]["first_Name"] + nameResultList[index]["last_Name"]}"),
-                                    subtitle:
-                                        Text(nameResultList[index]["email"])),
-                              ),
-                            );
-                          },
-                        ),
+      body: ModalProgressHUD(
+        inAsyncCall: isLoading,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.symmetric(horizontal: 20.h),
+          margin: EdgeInsets.only(top: 15.h),
+          child: SingleChildScrollView(
+            child: Form(
+              key: textFeildkey,
+              child: Column(
+                children: [
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
+                    decoration: BoxDecoration(
+                        color: ColorManger.white,
+                        borderRadius: BorderRadius.circular(15.h),
+                        border: Border.all(color: ColorManger.darkGray)),
+                    child: DropdownButton<String>(
+                      hint: Text(
+                        "Select Type",
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayMedium!
+                            .copyWith(
+                                color:
+                                    ColorManger.backGroundColorToSplashScreen),
                       ),
-                    ],
+                      borderRadius: BorderRadius.circular(10),
+                      isExpanded: true,
+                      value: selectItem,
+                      items: filterCompanyDropDown
+                          .map((item) => DropdownMenuItem(
+                              value: item,
+                              child: Text(
+                                item,
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
+                              )))
+                          .toList(),
+                      onChanged: (item) => setState(() {
+                        selectItem = item!;
+                      }),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                CustomTextFormField(
-                  controller: companyContraller,
-                  hintText: "Company Name",
-                  prefixIcon: const Icon(Icons.add_business),
-                  labelText: "Search For Company",
-                  onChanged: (value) {
-                    setState(() {
-                      searchResultListCompanys();
-                    });
-                  },
-                ),
-                SizedBox(
-                  height: companyContraller.text.isEmpty
-                      ? 0
-                      : MediaQuery.of(context).size.height * 0.25,
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    // Use Column or Row as a parent
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                            itemCount: companySearchResults.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(25)),
-                                  color: Colors.white,
-                                ),
-                                margin: EdgeInsets.all(8),
-                                padding: EdgeInsets.symmetric(vertical: 8.h),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      companyContraller.text =
-                                          "${companySearchResults[index]['company_Name']}";
-                                    });
-                                  },
-                                  child: ListTile(
-                                    title: Text(
-                                      "${companySearchResults[index]['company_Name']}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall,
+
+                  //
+                  //
+                  //
+                  SizedBox(
+                    height: 10.h,
+                  ),
+
+                  CustomTextFormField(
+                    validator: (value) {},
+                    controller: searchContraller,
+                    hintText: "Write Name to Accountant or Auditor",
+                    prefixIcon: const Icon(Icons.email),
+                    labelText: "name",
+                    onChanged: (value) {
+                      setState(() {
+                        searchResultList();
+                        isItemSearchnameSelected = true;
+                      });
+                    },
+                  ),
+                  Visibility(
+                    visible: isItemSearchnameSelected,
+                    child: SizedBox(
+                      height: searchContraller.text.isEmpty
+                          ? 0
+                          : MediaQuery.of(context).size.height * 0.25,
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        // Use Column or Row as a parent
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: nameResultList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(25)),
+                                    color: Colors.white,
+                                  ),
+                                  margin: const EdgeInsets.all(8),
+                                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        searchContraller.text =
+                                            "${nameResultList[index]["fullName"]} ";
+                                        isItemSearchnameSelected = false;
+                                      });
+                                    },
+                                    child: ListTile(
+                                        title: Text(
+                                            "${nameResultList[index]["first_Name"] + nameResultList[index]["last_Name"]}"),
+                                        subtitle: Text(
+                                            nameResultList[index]["email"])),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  CustomTextFormField(
+                    controller: companyContraller,
+                    hintText: "Company Name",
+                    prefixIcon: const Icon(Icons.add_business),
+                    labelText: "Search For Company",
+                    onChanged: (value) {
+                      setState(() {
+                        searchResultListCompanys();
+                        isItemSearchSelected = true;
+                      });
+                    },
+                  ),
+                  Visibility(
+                    visible: isItemSearchSelected,
+                    child: SizedBox(
+                      height: companyContraller.text.isEmpty
+                          ? 0
+                          : MediaQuery.of(context).size.height * 0.25,
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        // Use Column or Row as a parent
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                                itemCount: companySearchResults.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    decoration: const BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(25)),
+                                      color: Colors.white,
                                     ),
-                                    trailing: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        companySearchResults[index]["logo"],
+                                    margin: EdgeInsets.all(8),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.h),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isItemSearchSelected = false;
+                                          companyContraller.text =
+                                              "${companySearchResults[index]['company_Name']}";
+                                        });
+                                      },
+                                      child: ListTile(
+                                        title: Text(
+                                          "${companySearchResults[index]['company_Name']}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall,
+                                        ),
+                                        trailing: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Image.network(
+                                            companySearchResults[index]["logo"],
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            }),
+                                  );
+                                }),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CustomButton(
-                  nameOfButton: "submitted",
-                  onTap: () async {
-                    try {
-                      var addInformationStaffToCompany =
-                          FirebaseFirestore.instance.collection('Companys');
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  CustomButton(
+                    nameOfButton: "submitted",
+                    onTap: () async {
+                      setState(() {
+                        isLoading = true; // Start loading
+                      });
+                      try {
+                        var addInformationStaffToCompany =
+                            FirebaseFirestore.instance.collection('Companys');
 
-                      var companySnapshot = await addInformationStaffToCompany
-                          .where('company_Name',
-                              isEqualTo: companyContraller.text.trim())
-                          .get();
+                        var companySnapshot = await addInformationStaffToCompany
+                            .where('company_Name',
+                                isEqualTo: companyContraller.text.trim())
+                            .get();
 
-                      var addUserInformation =
-                          FirebaseFirestore.instance.collection('users');
+                        var addUserInformation =
+                            FirebaseFirestore.instance.collection('users');
 
-                      var addUserInformationdata = await addUserInformation
-                          .where('fullName',
-                              isEqualTo: searchContraller.text.trim())
-                          .get();
+                        var addUserInformationdata = await addUserInformation
+                            .where('fullName',
+                                isEqualTo: searchContraller.text.trim())
+                            .get();
 
-                      if (companySnapshot.docs.isNotEmpty) {
-                        var companyDocs = companySnapshot.docs[0];
-                        var companyID = companyDocs['companyId'];
-                        var companyName = companyDocs["company_Name"];
-                        var staffInformation = addUserInformationdata.docs[0];
-                        var sttafuserID = staffInformation["userID"];
-                        var sttafuserEmail = staffInformation["email"];
-
-                        await FirebaseFirestore.instance
-                            .collection('Staff')
-                            .doc(companyID)
-                            .set({
-                          'CompanyId': companyID,
-                          'companyName': companyName,
-                          "StaffEmail": sttafuserEmail,
-                          'userid': sttafuserID,
-                          'StaffRole': selectItem,
-                          'StaffName': searchContraller.text,
-                        }).then((value) {
-                          FirebaseFirestore.instance
-                              .collection('Notification')
-                              .add({
-                            'notificationMassage':
-                                "You added $companyName to be $selectItem to it",
-                            'role': selectItem,
-                            'MassgeSendBy': 'ManagerMassage',
-                            'NotificationCompanyID': companyID,
-                            'NotificationUserID': sttafuserID
+                        if (companySnapshot.docs.isNotEmpty) {
+                          var companyDocs = companySnapshot.docs[0];
+                          var companyID = companyDocs['companyId'];
+                          var companyName = companyDocs["company_Name"];
+                          var staffInformation = addUserInformationdata.docs[0];
+                          var sttafuserID = staffInformation["userID"];
+                          var sttafuserEmail = staffInformation["email"];
+                          print(sttafuserID);
+                          await FirebaseFirestore.instance
+                              .collection('Staff')
+                              .doc()
+                              .set(
+                            {
+                              'CompanyId': companyID,
+                              'companyName': companyName,
+                              "StaffEmail": sttafuserEmail,
+                              'userid': sttafuserID,
+                              'StaffRole': selectItem,
+                              'StaffName': searchContraller.text,
+                            },
+                            SetOptions(merge: true),
+                          ).then((value) {
+                            FirebaseFirestore.instance
+                                .collection('Notification')
+                                .add({
+                              'notificationMassage':
+                                  "You added $companyName to be $selectItem to it",
+                              'role': selectItem,
+                              'MassgeSendBy': 'ManagerMassage',
+                              'NotificationCompanyID': companyID,
+                              'NotificationUserID': sttafuserID
+                            });
                           });
-                        });
 
+                          print(
+                              'تم تحديث المعلومات بنجاح للمستخدم ذو البريد الإلكتروني: $sttafuserID');
+                        } else {}
+                      } on Exception catch (e) {
                         print(
-                            'تم تحديث المعلومات بنجاح للمستخدم ذو البريد الإلكتروني: $sttafuserID');
-                      } else {}
-                    } on Exception catch (e) {
-                      print(
-                          'لم يتم العثور على مستخدم ذو الـ "first name" المحدد. ${e.toString()}');
-                      // TODO
-                    }
-                  },
-                ),
-              ],
+                            'لم يتم العثور على مستخدم ذو الـ "first name" المحدد. ${e.toString()}');
+                        // TODO
+                      } finally {
+                        setState(() {
+                          isLoading = false; // Stop loading
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

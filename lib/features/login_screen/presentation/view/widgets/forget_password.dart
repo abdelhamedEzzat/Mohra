@@ -174,8 +174,11 @@ class ResetPasswordBody extends StatelessWidget {
                                   onTap: () async {
                                     if (trigerCubit.emailCubit.isNotEmpty) {
                                       await trigerCubit.resetAccount().then(
-                                          (value) =>
-                                              Navigator.of(context).pop());
+                                          (value) => Navigator.of(context)
+                                                  .pushNamedAndRemoveUntil(
+                                                RouterName.loginScreen,
+                                                (route) => false,
+                                              ));
                                     }
                                   }),
                             ])),

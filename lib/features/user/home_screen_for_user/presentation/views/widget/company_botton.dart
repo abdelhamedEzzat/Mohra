@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/features/user/create_company/presentation/manger/firebase_company/create_company_cubit.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/status_company.dart';
 
@@ -45,7 +46,8 @@ class CompanyButton extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 10.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
-                          color: Colors.black12,
+                          color: ColorManger.backGroundColorToSplashScreen
+                              .withOpacity(0.1),
                         ),
                         height: MediaQuery.of(context).size.height * 0.13,
                         padding:
@@ -102,7 +104,8 @@ class CompanyButton extends StatelessWidget {
               margin: EdgeInsets.only(top: 15.h),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
-                color: Colors.black12,
+                color:
+                    ColorManger.backGroundColorToSplashScreen.withOpacity(0.1),
               ),
               height: MediaQuery.of(context).size.height * 0.12,
               padding: EdgeInsets.only(

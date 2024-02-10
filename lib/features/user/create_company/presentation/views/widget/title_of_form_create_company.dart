@@ -15,8 +15,8 @@ class TitleOfFormCreateCompany extends StatelessWidget {
         titleText,
         style: Theme.of(context)
             .textTheme
-            .displayLarge!
-            .copyWith(color: ColorManger.backGroundColorToSplashScreen),
+            .headlineSmall!
+            .copyWith(color: ColorManger.black.withOpacity(0.66)),
       ),
     );
   }

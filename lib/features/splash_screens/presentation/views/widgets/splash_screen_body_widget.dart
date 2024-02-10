@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/splash_screens/presentation/views/widgets/widget_build_splash_screen.dart';
