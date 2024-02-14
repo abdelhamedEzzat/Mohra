@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
-import 'package:mohra_project/core/constants/constans_collections/collections.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class UsersTabBarScreens extends StatelessWidget {
   const UsersTabBarScreens({
@@ -66,8 +66,8 @@ class UsersTabBarScreens extends StatelessWidget {
             } else if (snapshot.hasError) {
               return const Center(child: Text("You have an error."));
             } else {
-              return const Center(
-                child: Text("You didn't have any documents."),
+              return Center(
+                child: Text(S.of(context).Youdidnthaveanydocuments),
               );
             }
           },
@@ -106,12 +106,12 @@ class AcceptedUsersWifget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text("email :$email"),
+                  Text("${S.of(context).email} :$email"),
                 ],
               ),
               Row(
                 children: [
-                  Text("UserName :$userName "),
+                  Text("${S.of(context).UserName}:$userName "),
                 ],
               ),
             ],
@@ -133,8 +133,8 @@ class AcceptedUsersWifget extends StatelessWidget {
                 onTap: acceptedOnTap,
                 child: Container(
                   color: Colors.green,
-                  child: const Center(
-                    child: Text("Accepted"),
+                  child: Center(
+                    child: Text(S.of(context).Accepted),
                   ),
                 ),
               )),
@@ -146,8 +146,8 @@ class AcceptedUsersWifget extends StatelessWidget {
                 onTap: rejectedOnTap,
                 child: Container(
                   color: Colors.red,
-                  child: const Center(
-                    child: Text("Rejected"),
+                  child: Center(
+                    child: Text(S.of(context).Rejected),
                   ),
                 ),
               ))

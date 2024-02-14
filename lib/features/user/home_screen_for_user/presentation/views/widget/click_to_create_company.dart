@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_button_with_icon_or_image.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class ClickToCreateCampany extends StatelessWidget {
   const ClickToCreateCampany({
@@ -23,7 +24,7 @@ class ClickToCreateCampany extends StatelessWidget {
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Text(
-          "Create Company To Start",
+          S.of(context).CreateCompanyToStart,
           style: Theme.of(context).textTheme.displayLarge,
         ),
         CustomBottonWithIconOrImage(
@@ -33,7 +34,7 @@ class ClickToCreateCampany extends StatelessWidget {
 
             Navigator.of(context).pushNamed(RouterName.createCompany);
           },
-          nameOfButton: "Click to Create your Company",
+          nameOfButton: S.of(context).CreateCompany,
           width: MediaQuery.of(context).size.width * 0.75,
         )
       ]),

@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
-import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/icon_and_text_company.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 // class AllCampanyWithStatus extends StatelessWidget {
 //   const AllCampanyWithStatus({
@@ -103,7 +102,7 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                         return IconsAndTextToCompany(
                           color: Colors.black,
                           numberOfCompany: snapshot.data!.docs.length,
-                          text: "Companies",
+                          text: S.of(context).Companies,
                         );
                       } else {
                         return const CircularProgressIndicator(
@@ -120,7 +119,7 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                         return IconsAndTextToCompany(
                           color: Colors.black,
                           numberOfCompany: snapshot.data!.docs.length,
-                          text: "Documents",
+                          text: S.of(context).Documents,
                         );
                       } else {
                         return const CircularProgressIndicator(
@@ -142,7 +141,7 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                 border: Border.all(color: ColorManger.darkGray)),
             child: DropdownButton<String>(
               hint: Text(
-                "Choose Filter",
+                S.of(context).ChooseFilter,
                 style: Theme.of(context)
                     .textTheme
                     .displayMedium!
@@ -283,7 +282,7 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                     .collection('Notification')
                     .add({
                   'notificationMassage':
-                      "your Company ${companyDocument['company_Name']} Has been Rejected ",
+                      "${S.of(context).yourCompany} ${companyDocument['company_Name']}${S.of(context).HasbeenRejected}",
                   'role': "admin",
                   'MassgeSendBy': 'Review',
                   'NotificationCompanyID': companyDocument['DocID'],
@@ -343,7 +342,7 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                           .collection('Notification')
                           .add({
                         'notificationMassage':
-                            "your Company ${companyDocument['company_Name']} Has been Accepted ",
+                            "${S.of(context).yourCompany} ${companyDocument['company_Name']}${S.of(context).HasbeenAccepted}",
                         'role': "admin",
                         'MassgeSendBy': 'adminstration',
                         'NotificationCompanyID': companyDocument['DocID'],

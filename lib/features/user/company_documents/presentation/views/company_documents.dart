@@ -2,20 +2,17 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive/hive.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/widget/document_and_number_after_upload.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/widget/upload_documents.dart';
-import 'package:mohra_project/features/user/create_company/data/add_company_hive.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/widgets/details_profile.dart';
-import 'package:mohra_project/features/user/upload_document/data/company_document_model.dart';
+import 'package:mohra_project/generated/l10n.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -39,10 +36,10 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
     var comment = ModalRoute.of(context)?.settings.arguments;
 
     return Scaffold(
-        appBar: const CustomAppBarForUsers(
-          leading: BackButton(color: Colors.white),
+        appBar: CustomAppBarForUsers(
+          leading: const BackButton(color: Colors.white),
           title: Text(
-            "Company Documents",
+            S.of(context).CompanyDocuments,
           ),
         ),
         body: Container(
@@ -52,12 +49,12 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
             child: Column(
               children: [
                 DetailsPeofileAndCompanyWidget(
-                  profile: "Company Details",
-                  key1: "Name : ",
+                  profile: S.of(context).CompanyDetails,
+                  key1: S.of(context).Name,
                   value1: companyData["companyName"],
-                  key2: "Address :",
+                  key2: S.of(context).Address,
                   value2: companyData["companyAddress"],
-                  key3: "Type :",
+                  key3: S.of(context).Type,
                   value3: companyData["companyType"],
                 ),
                 SizedBox(
@@ -83,7 +80,7 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "My Document :",
+                    S.of(context).MyDocument,
                     style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
@@ -116,6 +113,15 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
                           DefaultCacheManager().getSingleFile(imageUrl);
                           if (imageUrl.isEmpty) {
                             itemList.add(ImageDocWidget(
+                              ontapForNavToDetailsScreen: () {
+                                Navigator.of(context).pushNamed(
+                                  RouterName.detailsDocuments,
+                                  arguments: {
+                                    'urlImage': doc["urlImage"],
+                                    'comment': doc['comment'],
+                                  },
+                                );
+                              },
                               docImage: doc["urlImage"],
                               onTap: () {
                                 Navigator.of(context)
@@ -162,6 +168,15 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
                             ));
                           } else {
                             itemList.add(ImageDocWidget(
+                              ontapForNavToDetailsScreen: () {
+                                Navigator.of(context).pushNamed(
+                                  RouterName.detailsDocuments,
+                                  arguments: {
+                                    'urlImage': doc["urlImage"],
+                                    'comment': doc['comment'],
+                                  },
+                                );
+                              },
                               docImage: imageUrl,
                               onTap: () {
                                 Navigator.of(context)
@@ -248,7 +263,7 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
                             SizedBox(height: 30.h),
                             Center(
                               child: Text(
-                                "You didn't have any documents.",
+                                S.of(context).DidntHaveDocument,
                                 style: Theme.of(context).textTheme.displaySmall,
                               ),
                             ),
@@ -276,12 +291,12 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
                     } else if (snapshot.hasError) {
                       return const Center(child: Text("You have an error."));
                     } else {
-                      return const Center(
-                        child: Text("You didn't have any documents."),
+                      return Center(
+                        child: Text(
+                          S.of(context).DidntHaveDocument,
+                        ),
                       );
                     }
-
-                    return Container();
                   },
                 )
               ],

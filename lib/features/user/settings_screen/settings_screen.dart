@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/widgets/Language_wiget.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/widgets/delete_account.dart';
@@ -19,26 +21,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DetailsPeofileAndCompanyWidget(
-                profile: "Profile",
-                key1: "Name :",
-                value1: "Abdelhameed Ezzat ",
-                key2: "Email :",
-                value2: "amAbdo@gmail.com ",
-              ),
-              LanguageWidget(),
-              SizedBox(
-                height: 10,
-              ),
-              LogOutBotton(),
-              SizedBox(
-                height: 10,
-              ),
-              DeleteAccount()
-            ]),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              future: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(
+                      FirebaseAuth.instance.currentUser?.uid) // Null check here
+                  .get(),
+              builder: (context, snapshot) {
+                Map<String, dynamic> userData = snapshot.data!.data() ?? {};
+                String fullName = userData["fullName"] ?? "";
+                String email = userData["email"] ?? "";
+                return DetailsPeofileAndCompanyWidget(
+                  profile: "Profile",
+                  key1: "Name :",
+                  value1: fullName,
+                  key2: "Email :",
+                  value2: email,
+                );
+              }),
+          const LanguageWidget(),
+          const SizedBox(
+            height: 10,
+          ),
+          const LogOutBotton(),
+          const SizedBox(
+            height: 10,
+          ),
+          const DeleteAccount()
+        ]),
       ),
     );
   }

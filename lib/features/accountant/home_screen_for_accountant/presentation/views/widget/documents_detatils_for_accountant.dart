@@ -3,14 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
-import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
-import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/add_new_auditor.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/title_of_form_create_company.dart';
 import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class AccountantDocumentDetails extends StatefulWidget {
   const AccountantDocumentDetails({super.key});
@@ -67,7 +66,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
           },
           leading: BackButton(color: Colors.white),
           title: Text(
-            "Details Documents",
+            S.of(context).DetailsDocuments,
           ),
         ),
         body: Container(
@@ -151,7 +150,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(children: [
                       Text(
-                        "Comment : ",
+                        S.of(context).Comments,
                         style: Theme.of(context).textTheme.displayMedium,
                       ),
                       Text(docDitails['comment'],
@@ -293,20 +292,34 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      data(review, context,
-                          "Company Name: ${review['companyName']}"),
-                      data(review, context,
-                          "invoice Date: ${review['invoiceDate']}"),
-                      data(review, context,
-                          "invoice Number: ${review['invoiceNumber']}"),
-                      data(review, context,
-                          "select Item: ${review['selectItem']}"),
-                      data(review, context,
-                          "select Type Item: ${review['selectTypeItem']}"),
-                      data(review, context,
-                          "amount Of The Invoice: ${review['amountOfTheInvoice']}"),
-                      data(review, context, "comment: ${review['comment']}"),
-                      // Add more UI elements for each review
+                      if (review['companyName'] != null &&
+                          review['companyName'].isNotEmpty)
+                        data(review, context,
+                            "${S.of(context).CompanyName} ${review['companyName']}"),
+                      if (review['invoiceDate'] != null &&
+                          review['invoiceDate'].isNotEmpty)
+                        data(review, context,
+                            "${S.of(context).invoiceDate} ${review['invoiceDate']}"),
+                      if (review['invoiceNumber'] != null &&
+                          review['invoiceNumber'].isNotEmpty)
+                        data(review, context,
+                            "${S.of(context).invoiceNumber} ${review['invoiceNumber']}"),
+                      if (review['selectItem'] != null &&
+                          review['selectItem'].isNotEmpty)
+                        data(review, context,
+                            "${S.of(context).selectItem} ${review['selectItem']}"),
+                      if (review['selectTypeItem'] != null &&
+                          review['selectTypeItem'].isNotEmpty)
+                        data(review, context,
+                            "${S.of(context).selectTypeItem} ${review['selectTypeItem']}"),
+                      if (review['amountOfTheInvoice'] != null &&
+                          review['amountOfTheInvoice'].isNotEmpty)
+                        data(review, context,
+                            "${S.of(context).amountOfTheInvoice}: ${review['amountOfTheInvoice']}"),
+                      if (review['comment'] != null &&
+                          review['comment'].isNotEmpty)
+                        data(review, context,
+                            "${S.of(context).Comments} ${review['comment']}"),
                     ],
                   ),
                 ),
@@ -349,7 +362,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                     children: [
                       data(review, context, "comment: ${review['comment']}"),
                       data(review, context,
-                          "staff Type Review: ${review['staffTypeReview']}"),
+                          "${S.of(context).StaffTypeReview} ${review['staffTypeReview']}"),
                       // Add more UI elements for auditors
                     ],
                   ),
@@ -388,19 +401,19 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
     return Column(
       children: [
         CustomTextFormField(
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "* this Company Name is required You must enter data";
-            }
-          },
+          // validator: (value) {
+          //   if (value == null || value.isEmpty) {
+          //     return S.of(context).FeildRequierd;
+          //   }
+          // },
           onChanged: (value) {
             setState(() {
               companyName = value;
             });
           },
           fontStyle: FontStyle.normal,
-          hintText: "Write Company name",
-          labelText: "Company name",
+          hintText: S.of(context).WriteCompanyname,
+          labelText: S.of(context).CompanyName,
           prefixIcon: Icon(Icons.home_work),
         ),
         SizedBox(
@@ -408,15 +421,15 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
         ),
         CustomTextFormField(
           fontStyle: FontStyle.normal,
-          labelText: "Invoice date",
-          hintText: "Type Invoice date",
+          labelText: S.of(context).invoiceDate,
+          hintText: S.of(context).TypeInvoicedate,
           prefixIcon: Icon(Icons.date_range),
           keyboardType: TextInputType.number,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "* this Invoice data is required You must enter data";
-            }
-          },
+          // validator: (value) {
+          //   if (value == null || value.isEmpty) {
+          //     return "* this Invoice data is required You must enter data";
+          //   }
+          // },
           onChanged: (value) {
             setState(() {
               invoiceDate = value;
@@ -428,14 +441,14 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
         ),
         CustomTextFormField(
           fontStyle: FontStyle.normal,
-          labelText: "invoice number",
-          hintText: "Type invoice number",
+          labelText: S.of(context).invoiceNumber,
+          hintText: S.of(context).Typeinvoicenumber,
           prefixIcon: Icon(Icons.numbers),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "* this Invoice Number is required You must enter data";
-            }
-          },
+          // validator: (value) {
+          //   if (value == null || value.isEmpty) {
+          //     return "* this Invoice Number is required You must enter data";
+          //   }
+          // },
           onChanged: (value) {
             setState(() {
               invoiceNumber = value;
@@ -447,15 +460,15 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
         ),
         CustomTextFormField(
           fontStyle: FontStyle.normal,
-          labelText: "Amount of the invoice",
-          hintText: "Type Amount of the invoice",
+          labelText: S.of(context).amountOfTheInvoice,
+          hintText: S.of(context).TypeAmountoftheinvoice,
           prefixIcon: Icon(Icons.price_check),
           keyboardType: TextInputType.number,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "* this Amount of Invoice data is required You must enter data";
-            }
-          },
+          // validator: (value) {
+          //   if (value == null || value.isEmpty) {
+          //     return "* this Amount of Invoice data is required You must enter data";
+          //   }
+          // },
           onChanged: (value) {
             setState(() {
               amountOfTheInvoice = value;
@@ -506,7 +519,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                 ),
                 child: DropdownButton<String>(
                   hint: Text(
-                    "Select Type Of Document",
+                    S.of(context).SelectTypeOfDocument,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(
                         color: ColorManger.backGroundColorToSplashScreen),
                   ),
@@ -554,7 +567,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
           ),
           child: DropdownButton<String>(
             hint: Text(
-              "Select Status Of Document",
+              S.of(context).SelectStatusOfDocument,
               style: Theme.of(context)
                   .textTheme
                   .displayMedium!
@@ -580,20 +593,20 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
         SizedBox(
           height: 15.h,
         ),
-        const TitleOfFormCreateCompany(titleText: "Comments"),
+        TitleOfFormCreateCompany(titleText: S.of(context).Comments),
         SizedBox(
           height: 10.h,
         ),
         CustomTextFormField(
           hight: mediaQueryHeight * 0.10,
-          hintText: "Add any Comment Here",
+          hintText: S.of(context).hintComments,
           prefixIcon: const Icon(Icons.comment),
           onChanged: (value) {
             comment = value;
           },
         ),
         CustomButton(
-            nameOfButton: "Submitted",
+            nameOfButton: S.of(context).Submit,
             onTap: () async {
               // if (selectItem == 'new Document' || selectItem == 'registered'||selectItem == 'ready'||selectItem == 'redundant'){
               //   return
@@ -633,7 +646,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                   }).then((value) {
                     FirebaseFirestore.instance.collection('Notification').add({
                       'notificationMassage':
-                          "Accountant added Document in $companyName with $selectTypeItem to review",
+                          "${S.of(context).AccountantaddedDocumentin} $companyName ${S.of(context).witha} $selectTypeItem ${S.of(context).toReview}",
                       'role': 'Accountant',
                       'MassgeSendBy': 'AccountantReview',
                       'NotificationCompanyID': docDitails['DocID'],
@@ -653,12 +666,12 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                 }
               } else if (selectItem == null) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: const Text("You Must add Status Of Document"),
+                  content: Text(S.of(context).YouMustaddStatusOfDocument),
                   backgroundColor: ColorManger.backGroundColorToSplashScreen,
                 ));
               } else if (selectTypeItem == null) {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("You Must add Type Of Document")));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(S.of(context).YouMustaddTypeOfDocument)));
               }
             }),
         SizedBox(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class StaffTabBARScreens extends StatelessWidget {
   const StaffTabBARScreens({
@@ -39,8 +40,8 @@ class StaffTabBARScreens extends StatelessWidget {
         } else if (snapshot.hasError) {
           return const Center(child: Text("You have an error."));
         } else {
-          return const Center(
-            child: Text("You didn't have any documents."),
+          return Center(
+            child: Text(S.of(context).Youdidnthaveanydocuments),
           );
         }
       },
@@ -107,7 +108,7 @@ class StaffShowWidget extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            "email : $staffemail ",
+                            "${S.of(context).email}  : $staffemail ",
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.displaySmall,
                           ),
@@ -121,7 +122,7 @@ class StaffShowWidget extends StatelessWidget {
                       children: [
                         Expanded(
                             child: Text(
-                          "UserName :$staffName ",
+                          "${S.of(context).UserName}  :$staffName ",
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.displaySmall,
                         )),

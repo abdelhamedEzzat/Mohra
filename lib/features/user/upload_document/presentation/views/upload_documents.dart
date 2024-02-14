@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +16,7 @@ import 'package:mohra_project/features/user/create_company/presentation/views/cr
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/add_Image_widget.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/title_of_form_create_company.dart';
 import 'package:mohra_project/features/user/upload_document/presentation/manger/upload_documents/upload_documents_cubit.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class UploadDocuments extends StatefulWidget {
   const UploadDocuments({super.key});
@@ -40,8 +40,8 @@ class _UploadDocumentsState extends State<UploadDocuments> {
             Navigator.of(context).pushNamed(RouterName.searchScreenForUser);
           },
           leading: const BackButton(color: Colors.white),
-          title: const Text(
-            "Upload Documents",
+          title: Text(
+            S.of(context).UploadDocuments,
           ),
         ),
         body: SizedBox(
@@ -74,8 +74,9 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                         SizedBox(
                           height: 10.h,
                         ),
-                        const TitleOfFormCreateCompany(
-                            titleText: "Upload Documents"),
+                        TitleOfFormCreateCompany(
+                          titleText: S.of(context).UploadDocuments,
+                        ),
                         GestureDetector(
                           onTap: () {
                             showModalBottomSheet<void>(
@@ -124,7 +125,7 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                                               padding:
                                                   EdgeInsets.only(left: 12.w),
                                               child: Text(
-                                                "${trigerCubit.filePlatforme!.name}",
+                                                trigerCubit.filePlatforme!.name,
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .displayMedium,
@@ -199,7 +200,8 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                         SizedBox(
                           height: 15.h,
                         ),
-                        const TitleOfFormCreateCompany(titleText: "Comments"),
+                        TitleOfFormCreateCompany(
+                            titleText: S.of(context).Comments),
                         SizedBox(
                           height: 10.h,
                         ),
@@ -212,7 +214,7 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                             min: 1,
                             max: 2,
                             hight: mediaQueryHeight * 0.08,
-                            hintText: "Add any Comment Here",
+                            hintText: S.of(context).hintComments,
                             prefixIcon: Padding(
                               padding: EdgeInsets.all(8.0.w),
                               child: Icon(
@@ -254,23 +256,30 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                                 SnackBar(
                                   backgroundColor:
                                       ColorManger.backGroundColorToSplashScreen,
-                                  content: const Text("Upload any Document"),
+                                  content:
+                                      Text(S.of(context).UploadanyDocument),
                                 ),
                               );
                             }
                             trigerCubit.clearData();
+
+                            //todo ================================================
                             await FirebaseFirestore.instance
                                 .collection('Notification')
                                 .add({
                               'notificationMassage':
-                                  "user in  $companyId add document number ${trigerCubit.fileName} to revjon",
-                              'role': 'user',
+                                  // ignore: use_build_context_synchronously
+                                  "${S.of(context).userin}  $companyId ${S.of(context).addDocumentName} ${trigerCubit.fileName} ${S.of(context).toReview}",
+                              // ignore: use_build_context_synchronously
+                              'role': "User",
                               'NotificationCompanyID': companyId,
                               'NotificationUserID':
                                   FirebaseAuth.instance.currentUser!.uid,
                               // 'idUserMassge': sttafuserID,
-                              'MassgeSendBy': 'UserNotification',
+                              // ignore: use_build_context_synchronously
+                              'MassgeSendBy': "UserNotification",
                             });
+                            //todo ================================================
                           },
                         ),
                       ],

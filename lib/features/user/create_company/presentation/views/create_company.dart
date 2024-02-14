@@ -12,6 +12,7 @@ import 'package:mohra_project/features/search_screen/search_screen_for_user.dart
 import 'package:mohra_project/features/user/create_company/presentation/manger/firebase_company/create_company_cubit.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/add_Image_widget.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/title_of_form_create_company.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class CreateCompany extends StatefulWidget {
   const CreateCompany({super.key});
@@ -36,10 +37,10 @@ class _CreateCompanyState extends State<CreateCompany> {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: const CustomAppBarForUsers(
-        leading: BackButton(color: Colors.white),
+      appBar: CustomAppBarForUsers(
+        leading: const BackButton(color: Colors.white),
         title: Text(
-          "Create Company",
+          S.of(context).CreateCompanys,
         ),
       ),
       body: ModalProgressHUD(
@@ -61,8 +62,8 @@ class _CreateCompanyState extends State<CreateCompany> {
                       SizedBox(
                         height: 5.h,
                       ),
-                      const TitleOfFormCreateCompany(
-                        titleText: "Add Logo",
+                      TitleOfFormCreateCompany(
+                        titleText: S.of(context).AddLogo,
                       ),
                       AddImageWidget(
                         ontap: () {
@@ -101,8 +102,8 @@ class _CreateCompanyState extends State<CreateCompany> {
                       SizedBox(
                         height: 15.h,
                       ),
-                      const TitleOfFormCreateCompany(
-                        titleText: "Company Name",
+                      TitleOfFormCreateCompany(
+                        titleText: S.of(context).CompanyName,
                       ),
                       SizedBox(
                         height: 5.h,
@@ -110,17 +111,17 @@ class _CreateCompanyState extends State<CreateCompany> {
                       CustomTextFormField(
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return '*this Field is Requierd';
+                              return S.of(context).FeildRequierd;
                             } else if (!RegExp(r'^[a-zA-Z\s]+$')
                                 .hasMatch(value)) {
-                              return 'Please enter only letters.';
+                              return S.of(context).LattersOnly;
                             }
                             return null;
                           },
                           onChanged: (value) {
                             trigerCubit.companyName = value;
                           },
-                          hintText: "Write Your Company Name",
+                          hintText: S.of(context).hintNameCompany,
                           prefixIcon: Icon(
                             Icons.post_add_rounded,
                             size: 25.h,
@@ -130,8 +131,8 @@ class _CreateCompanyState extends State<CreateCompany> {
                       SizedBox(
                         height: 10.h,
                       ),
-                      const TitleOfFormCreateCompany(
-                        titleText: "Company Adrdress",
+                      TitleOfFormCreateCompany(
+                        titleText: S.of(context).CompanyAdrdress,
                       ),
                       SizedBox(
                         height: 5.h,
@@ -139,14 +140,14 @@ class _CreateCompanyState extends State<CreateCompany> {
                       CustomTextFormField(
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return '*this Field is Requierd';
+                              return S.of(context).FeildRequierd;
                             }
                             return null;
                           },
                           onChanged: (value) {
                             trigerCubit.companyAddress = value;
                           },
-                          hintText: "Write  Your Company Address",
+                          hintText: S.of(context).hintAddressCompany,
                           prefixIcon: Icon(
                             Icons.location_searching,
                             size: 25.h,
@@ -156,8 +157,8 @@ class _CreateCompanyState extends State<CreateCompany> {
                       SizedBox(
                         height: 10.h,
                       ),
-                      const TitleOfFormCreateCompany(
-                        titleText: " Company Type",
+                      TitleOfFormCreateCompany(
+                        titleText: S.of(context).CompanyType,
                       ),
                       SizedBox(
                         height: 5.h,
@@ -165,17 +166,17 @@ class _CreateCompanyState extends State<CreateCompany> {
                       CustomTextFormField(
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return '*this Field is Requierd';
+                              return S.of(context).FeildRequierd;
                             } else if (!RegExp(r'^[a-zA-Z\s\W]+$')
                                 .hasMatch(value)) {
-                              return 'Please enter only letters.';
+                              return S.of(context).LattersOnly;
                             }
                             return null;
                           },
                           onChanged: (value) {
                             trigerCubit.companyType = value;
                           },
-                          hintText: "Write  Your Company Type",
+                          hintText: S.of(context).hintCompanyType,
                           prefixIcon: Icon(
                             Icons.today_rounded,
                             size: 25.h,
@@ -184,7 +185,7 @@ class _CreateCompanyState extends State<CreateCompany> {
                         height: 10.h,
                       ),
                       CustomButton(
-                          nameOfButton: "Submit",
+                          nameOfButton: S.of(context).Submit,
                           onTap: () async {
                             setState(() {
                               isLoading == true;
@@ -193,8 +194,8 @@ class _CreateCompanyState extends State<CreateCompany> {
                             await Future.delayed(Duration(seconds: 2));
                             if (trigerCubit.file == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Please select an image.'),
+                                SnackBar(
+                                  content: Text(S.of(context).MustSelectImage),
                                   duration: Duration(seconds: 2),
                                 ),
                               );
@@ -262,7 +263,7 @@ class ShowModelBottomSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Text(
-              'Choose how to upload the image',
+              S.of(context).chooseHowUploadImage,
               style: Theme.of(context).textTheme.displayMedium,
             ),
             BlocBuilder<FirebaseCreateCompanyCubit, FirebaseCreateCompanyState>(
@@ -270,7 +271,7 @@ class ShowModelBottomSheet extends StatelessWidget {
                 return Row(
                   children: [
                     ButtonInBottomSheet(
-                        nameOfBotton: 'Camera',
+                        nameOfBotton: S.of(context).Camera,
                         icon: Icons.camera,
                         onPressed: onPressedForCamera),
                     // if (trigerCubit.file != null) Image.file(trigerCubit.file!),
@@ -278,7 +279,7 @@ class ShowModelBottomSheet extends StatelessWidget {
                       width: 20,
                     ),
                     ButtonInBottomSheet(
-                      nameOfBotton: 'Galarey',
+                      nameOfBotton: S.of(context).Galarey,
                       icon: Icons.folder,
                       onPressed: onPressedForGalarey,
                     ),

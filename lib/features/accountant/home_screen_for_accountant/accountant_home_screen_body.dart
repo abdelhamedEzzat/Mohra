@@ -6,6 +6,7 @@ import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/icon_and_text_company.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class AccountantHomeScreenBody extends StatelessWidget {
   const AccountantHomeScreenBody({super.key});
@@ -56,13 +57,13 @@ class AccountantHomeScreenBody extends StatelessWidget {
                                 return IconsAndTextToCompany(
                                   numberOfCompany:
                                       snapshot.data!.docs.length ?? 0,
-                                  text: "Companies",
+                                  text: S.of(context).Companies,
                                 );
                               } else {
                                 print('no Company Found');
-                                return const IconsAndTextToCompany(
+                                return IconsAndTextToCompany(
                                   numberOfCompany: 0,
-                                  text: "Companies",
+                                  text: S.of(context).Companies,
                                 );
                               }
                             },
@@ -118,14 +119,14 @@ class AccountantHomeScreenBody extends StatelessWidget {
                             return IconsAndTextToCompany(
                               numberOfCompany:
                                   docSnapshot.data!.docs.length ?? 0,
-                              text: "Documents",
+                              text: S.of(context).Documents,
                             );
                           },
                         );
                       } else {
-                        return const IconsAndTextToCompany(
+                        return IconsAndTextToCompany(
                           //numberOfCompany: 1,
-                          text: "Documents",
+                          text: S.of(context).Documents,
                         );
                       }
                     },
@@ -158,7 +159,7 @@ class AccountantHomeScreenBody extends StatelessWidget {
                   }
 
                   if (!staffSnapshot.hasData) {
-                    return Text('No matching documents found for staff.');
+                    return Text(S.of(context).Nodocumentsfoundforyou);
                   }
 
                   return Container(
@@ -193,8 +194,7 @@ class AccountantHomeScreenBody extends StatelessWidget {
 
                             if (!companySnapshot.hasData ||
                                 companySnapshot.data!.docs.isEmpty) {
-                              return const Text(
-                                  'No matching documents found for company.');
+                              return Text(S.of(context).Nodocumentsfoundforyou);
                             }
 
                             if (index < companySnapshot.data!.docs.length) {
@@ -206,7 +206,7 @@ class AccountantHomeScreenBody extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "My available companies :",
+                                      S.of(context).MyAvailableCompanies,
                                       style: Theme.of(context)
                                           .textTheme
                                           .displayLarge,

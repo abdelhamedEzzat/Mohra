@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
-import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/icon_and_text_company.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class AuditorHomeScreenBody extends StatefulWidget {
   const AuditorHomeScreenBody({Key? key}) : super(key: key);
@@ -50,11 +50,11 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          List<String> companyId =
-                              snapshot.data?.docs.map((doc) {
-                                    return doc['companyId'] as String;
-                                  }).toList() ??
-                                  [];
+                          // List<String> companyId =
+                          //     snapshot.data?.docs.map((doc) {
+                          //           return doc['companyId'] as String;
+                          //         }).toList() ??
+                          //         [];
                           return StreamBuilder<QuerySnapshot>(
                             stream: FirebaseFirestore.instance
                                 .collection('Staff')
@@ -69,13 +69,13 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
                                 return IconsAndTextToCompany(
                                   numberOfCompany:
                                       snapshot.data!.docs.length ?? 0,
-                                  text: "Companies",
+                                  text: S.of(context).Companies,
                                 );
                               } else {
                                 print('no Company Found');
-                                return const IconsAndTextToCompany(
+                                return IconsAndTextToCompany(
                                   numberOfCompany: 0,
-                                  text: "Companies",
+                                  text: S.of(context).Companies,
                                 );
                               }
                             },
@@ -131,14 +131,14 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
                             return IconsAndTextToCompany(
                               numberOfCompany:
                                   docSnapshot.data!.docs.length ?? 0,
-                              text: "Documents",
+                              text: S.of(context).Documents,
                             );
                           },
                         );
                       } else {
-                        return const IconsAndTextToCompany(
+                        return IconsAndTextToCompany(
                           //numberOfCompany: 1,
-                          text: "Documents",
+                          text: S.of(context).Documents,
                         );
                       }
                     },
@@ -164,7 +164,7 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "My available companies :",
+                            S.of(context).MyAvailableCompanies,
                             style: Theme.of(context).textTheme.displayLarge,
                           ),
                         ),
@@ -211,7 +211,8 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
                                   );
                                 } else {
                                   // Handle the case when there is no data
-                                  return Text('No available companies.');
+                                  return Text(
+                                      S.of(context).NoAvailableCompanies);
                                 }
                               },
                             );
@@ -236,8 +237,7 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
                             height: 25.h,
                           ),
                           Center(
-                            child: Text(
-                                "You haven't created any companies yet. Click to create one!",
+                            child: Text(S.of(context).NoAvailableCompanies,
                                 textAlign: TextAlign.center,
                                 style:
                                     Theme.of(context).textTheme.displayMedium),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class ContrallerTabBarScreen extends StatelessWidget {
   const ContrallerTabBarScreen({
@@ -20,7 +21,7 @@ class ContrallerTabBarScreen extends StatelessWidget {
           children: [
             ContrallBottonInAdminHomeScreen(
               colorToButtonContainer: ColorManger.darkGray.withOpacity(0.9),
-              buttonTitle: "Add New Accountatnt",
+              buttonTitle: S.of(context).AddNewAccountatnt,
               icon1: Icons.person,
               icon2: Icons.money,
               onTap: () {
@@ -32,7 +33,7 @@ class ContrallerTabBarScreen extends StatelessWidget {
             ),
             ContrallBottonInAdminHomeScreen(
               colorToButtonContainer: ColorManger.bottonColor.withOpacity(0.6),
-              buttonTitle: "Add New Auditor",
+              buttonTitle: S.of(context).AddNewAuditor,
               icon1: Icons.person,
               icon2: Icons.search,
               onTap: () {
@@ -45,7 +46,7 @@ class ContrallerTabBarScreen extends StatelessWidget {
             ContrallBottonInAdminHomeScreen(
               colorToButtonContainer:
                   ColorManger.rejectedCompanyStatus.withOpacity(0.7),
-              buttonTitle: "Mange Assignment",
+              buttonTitle: S.of(context).ManageAssignment,
               icon1: Icons.person,
               icon2: Icons.assignment_add,
               onTap: () {

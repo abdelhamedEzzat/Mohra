@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mohra_project/core/constants/constans_collections/collections.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class LogOutBotton extends StatelessWidget {
   const LogOutBotton({
@@ -34,7 +35,7 @@ class LogOutBotton extends StatelessWidget {
               child: ListTile(
                 leading: Icon(Icons.logout, size: 24.h),
                 title: Text(
-                  "LogOut",
+                  S.of(context).LogOut,
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
               ),

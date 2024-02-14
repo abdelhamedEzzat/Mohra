@@ -11,6 +11,7 @@ import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/admin_home_screen_body.dart';
 import 'package:mohra_project/features/notification/notification_for_admin.dart';
 import 'package:mohra_project/features/user/settings_screen/settings_screen.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class AdminHomeScreen extends StatefulWidget {
   const AdminHomeScreen({super.key});
@@ -62,21 +63,21 @@ class _AccountantHomeScreenState extends State<AdminHomeScreen> {
               Icons.home,
               color: ColorManger.backGroundColorToSplashScreen,
             ),
-            label: "Home",
+            label: S.of(context).Name,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.notification_add,
               color: ColorManger.backGroundColorToSplashScreen,
             ),
-            label: "Notification",
+            label: S.of(context).Notification,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.settings,
               color: ColorManger.backGroundColorToSplashScreen,
             ),
-            label: "Settings",
+            label: S.of(context).Settings,
           ),
         ]);
   }

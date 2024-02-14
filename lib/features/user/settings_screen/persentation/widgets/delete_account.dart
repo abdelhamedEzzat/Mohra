@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class DeleteAccount extends StatelessWidget {
   const DeleteAccount({
@@ -28,7 +29,7 @@ class DeleteAccount extends StatelessWidget {
                   color: Colors.red,
                 ),
                 title: Text(
-                  "Delete account",
+                  S.of(context).Delete,
                   style: Theme.of(context)
                       .textTheme
                       .displayMedium!

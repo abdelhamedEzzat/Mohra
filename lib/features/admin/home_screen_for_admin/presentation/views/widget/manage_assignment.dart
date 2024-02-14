@@ -9,6 +9,7 @@ import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class ManageAssignment extends StatefulWidget {
   const ManageAssignment({super.key});
@@ -143,9 +144,9 @@ class _ManageAssignmentState extends State<ManageAssignment> {
           Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
         },
         title: Text(
-          "Assignment",
+          S.of(context).Assignment,
         ),
-        leading: BackButton(color: Colors.white),
+        leading: const BackButton(color: Colors.white),
       ),
       body: ModalProgressHUD(
         inAsyncCall: isLoading,
@@ -168,7 +169,7 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                         border: Border.all(color: ColorManger.darkGray)),
                     child: DropdownButton<String>(
                       hint: Text(
-                        "Select Type",
+                        S.of(context).SelectStaffType,
                         style: Theme.of(context)
                             .textTheme
                             .displayMedium!
@@ -204,9 +205,9 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                   CustomTextFormField(
                     validator: (value) {},
                     controller: searchContraller,
-                    hintText: "Write Name to Accountant or Auditor",
+                    hintText: S.of(context).hintAssignmentStaffName,
                     prefixIcon: const Icon(Icons.email),
-                    labelText: "name",
+                    labelText: S.of(context).name,
                     onChanged: (value) {
                       setState(() {
                         searchResultList();
@@ -263,9 +264,9 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                   ),
                   CustomTextFormField(
                     controller: companyContraller,
-                    hintText: "Company Name",
+                    hintText: S.of(context).CompanyName,
                     prefixIcon: const Icon(Icons.add_business),
-                    labelText: "Search For Company",
+                    labelText: S.of(context).SearchForCompany,
                     onChanged: (value) {
                       setState(() {
                         searchResultListCompanys();
@@ -334,7 +335,7 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                     height: 10.h,
                   ),
                   CustomButton(
-                    nameOfButton: "submitted",
+                    nameOfButton: S.of(context).selectItem,
                     onTap: () async {
                       setState(() {
                         isLoading = true; // Start loading
@@ -382,7 +383,7 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                                 .collection('Notification')
                                 .add({
                               'notificationMassage':
-                                  "You added $companyName to be $selectItem to it",
+                                  "${S.of(context).YouAdded} $companyName ${S.of(context).tobe} $selectItem ${S.of(context).toit} ",
                               'role': selectItem,
                               'MassgeSendBy': 'ManagerMassage',
                               'NotificationCompanyID': companyID,

@@ -13,6 +13,7 @@ import 'package:mohra_project/features/user/create_company/data/add_company_hive
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/click_to_create_company.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/number_of_companies_and_documents.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class HomeScreenForUserBody extends StatelessWidget {
   const HomeScreenForUserBody({
@@ -108,7 +109,7 @@ class _CompaniesListThatUserCreatedState
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "My Company :",
+            S.of(context).Companies,
             style: Theme.of(context).textTheme.displayLarge,
           ),
           const SizedBox(height: 20),
@@ -150,7 +151,7 @@ class _CompaniesListThatUserCreatedState
                               SizedBox(height: 25.h),
                               Center(
                                 child: Text(
-                                  "You haven't created any companies yet. Click to create one!",
+                                  S.of(context).NoCompanyMassage,
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),

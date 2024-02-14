@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class LanguageWidget extends StatelessWidget {
   const LanguageWidget({
@@ -12,7 +13,7 @@ class LanguageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExpansionTile(
       title: Text(
-        "Language",
+        S.of(context).Language,
         style: Theme.of(context).textTheme.displayMedium,
       ),
       backgroundColor: Colors.white,
@@ -34,7 +35,7 @@ class LanguageWidget extends StatelessWidget {
                       flex: 3,
                       child: CustomButton(
                         onTap: () {},
-                        nameOfButton: "Arabic",
+                        nameOfButton: S.of(context).Arabic,
                       ),
                     ),
                     const SizedBox(
@@ -45,7 +46,7 @@ class LanguageWidget extends StatelessWidget {
                       child: Center(
                         child: CustomButton(
                           onTap: () {},
-                          nameOfButton: "English",
+                          nameOfButton: S.of(context).English,
                         ),
                       ),
                     )

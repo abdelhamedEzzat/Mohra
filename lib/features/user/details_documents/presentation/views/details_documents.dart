@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
+import 'package:mohra_project/generated/l10n.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -21,10 +22,10 @@ class DetailsDocuments extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     return Scaffold(
-        appBar: const CustomAppBarForUsers(
-          leading: BackButton(color: Colors.white),
+        appBar: CustomAppBarForUsers(
+          leading: const BackButton(color: Colors.white),
           title: Text(
-            "Details Documents",
+            S.of(context).DetailsDocuments,
           ),
         ),
         body: Container(
@@ -94,7 +95,7 @@ class DetailsDocuments extends StatelessWidget {
                             color: ColorManger.white,
                             borderRadius: BorderRadius.circular(25)),
                         child: Row(children: [
-                          Text("Comment : "),
+                          Text(S.of(context).Comments),
                           Text("${doc['comment']}")
                         ]),
                       )
@@ -137,7 +138,7 @@ class DetailsDocuments extends StatelessWidget {
                             color: ColorManger.white,
                             borderRadius: BorderRadius.circular(25)),
                         child: Row(children: [
-                          Text("Comment : "),
+                          Text(S.of(context).Comments),
                           Text("${doc['comment']}")
                         ]),
                       )
@@ -146,39 +147,6 @@ class DetailsDocuments extends StatelessWidget {
   }
 }
 
-// void navigateToFullScreenImage(
-//     BuildContext context, List<String> imageUrls, int initialIndex) {
-//   Navigator.of(context).push(MaterialPageRoute(
-//     builder: (context) => FullScreenImage(imageUrls: imageUrls, initialIndex: initialIndex),
-//   ));
-// }
-// class FullScreenImage extends StatelessWidget {
-//   final List<String> imageUrls;
-//   final int initialIndex;
-
-//   const FullScreenImage({required this.imageUrls, required this.initialIndex});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: PhotoViewGallery.builder(
-//         itemCount: imageUrls.length,
-//         builder: (context, index) {
-//           return PhotoViewGalleryPageOptions(
-//             imageProvider: NetworkImage(imageUrls[index]),
-//             minScale: PhotoViewComputedScale.contained,
-//             maxScale: PhotoViewComputedScale.covered * 2,
-//           );
-//         },
-//         scrollPhysics: BouncingScrollPhysics(),
-//         backgroundDecoration: BoxDecoration(
-//           color: Colors.black,
-//         ),
-//         pageController: PageController(initialPage: initialIndex),
-//       ),
-//     );
-//   }
-// }
 Future<File?> openFile({required String url, String? fileName}) async {
   await downloadFile(url, fileName);
 
@@ -237,3 +205,38 @@ class FullScreenImage extends StatelessWidget {
     );
   }
 }
+
+
+// void navigateToFullScreenImage(
+//     BuildContext context, List<String> imageUrls, int initialIndex) {
+//   Navigator.of(context).push(MaterialPageRoute(
+//     builder: (context) => FullScreenImage(imageUrls: imageUrls, initialIndex: initialIndex),
+//   ));
+// }
+// class FullScreenImage extends StatelessWidget {
+//   final List<String> imageUrls;
+//   final int initialIndex;
+
+//   const FullScreenImage({required this.imageUrls, required this.initialIndex});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: PhotoViewGallery.builder(
+//         itemCount: imageUrls.length,
+//         builder: (context, index) {
+//           return PhotoViewGalleryPageOptions(
+//             imageProvider: NetworkImage(imageUrls[index]),
+//             minScale: PhotoViewComputedScale.contained,
+//             maxScale: PhotoViewComputedScale.covered * 2,
+//           );
+//         },
+//         scrollPhysics: BouncingScrollPhysics(),
+//         backgroundDecoration: BoxDecoration(
+//           color: Colors.black,
+//         ),
+//         pageController: PageController(initialPage: initialIndex),
+//       ),
+//     );
+//   }
+// }

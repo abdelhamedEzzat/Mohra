@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class CustomAppBarForUsers extends StatefulWidget
     implements PreferredSizeWidget {
@@ -110,7 +111,7 @@ class _searchuserState extends State<searchuser> {
               print('No data');
               return Center(
                 child: Text(
-                  "No data available",
+                  S.of(context).NoDataAvailable,
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
               );
@@ -126,7 +127,7 @@ class _searchuserState extends State<searchuser> {
                       if (_searchController.text.isEmpty) {
                         return Center(
                           child: Text(
-                            "Write anything to search",
+                            S.of(context).Writeanythingtosearch,
                             style: Theme.of(context).textTheme.displayMedium,
                           ),
                         );
@@ -187,7 +188,7 @@ class _searchuserState extends State<searchuser> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: "Search...",
+                hintText: S.of(context).SearchScreen,
                 hintStyle: const TextStyle(color: Colors.white),
                 suffixIcon: _isSearching
                     ? IconButton(

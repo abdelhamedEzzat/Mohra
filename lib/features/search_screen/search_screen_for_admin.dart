@@ -5,6 +5,7 @@ import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class SearchScreenForAdmin extends StatefulWidget {
   const SearchScreenForAdmin({super.key});
@@ -144,7 +145,7 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: const Text('Search'),
+        title: Text(S.of(context).Search),
         leading: const BackButton(
           color: Colors.white,
         ),
@@ -159,9 +160,9 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
             children: [
               CustomTextFormField(
                 controller: companyContraller,
-                hintText: "Company Name",
+                hintText: S.of(context).CompanyName,
                 prefixIcon: const Icon(Icons.add_business),
-                labelText: "Search For Company",
+                labelText: S.of(context).SearchForCompany,
                 onChanged: (value) {
                   setState(() {
                     searchResultListCompanys();
@@ -189,7 +190,7 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
                 ),
                 child: DropdownButton<String>(
                   hint: Text(
-                    "Select Type Of Document",
+                    S.of(context).SelectTypeOfDocument,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(
                         color: ColorManger.backGroundColorToSplashScreen),
                   ),

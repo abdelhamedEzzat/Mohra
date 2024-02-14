@@ -4,7 +4,8 @@ import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/tabpar_widget/company_tab.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/tabpar_widget/contraller_tab.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/tabpar_widget/staff_tabbar_screens.dart';
-import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/user_tab.dart';
+import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/tabpar_widget/user_tab.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class AdminHomeScreenBody extends StatelessWidget {
   const AdminHomeScreenBody({super.key});
@@ -24,19 +25,23 @@ class AdminHomeScreenBody extends StatelessWidget {
                 tabs: [
                   Tab(
                     icon: const Icon(Icons.pest_control_outlined),
-                    child: Text("Controller", style: TextStyle(fontSize: 12.h)),
+                    child: Text(S.of(context).Controller,
+                        style: TextStyle(fontSize: 12.h)),
                   ),
                   Tab(
                     icon: const Icon(Icons.add_business),
-                    child: Text("Companys", style: TextStyle(fontSize: 12.h)),
+                    child: Text(S.of(context).Companys,
+                        style: TextStyle(fontSize: 12.h)),
                   ),
                   Tab(
                     icon: const Icon(Icons.person),
-                    child: Text("Users", style: TextStyle(fontSize: 12.h)),
+                    child: Text(S.of(context).Users,
+                        style: TextStyle(fontSize: 12.h)),
                   ),
                   Tab(
                     icon: const Icon(Icons.person_2_sharp),
-                    child: Text("Staff", style: TextStyle(fontSize: 12.h)),
+                    child: Text(S.of(context).Staff,
+                        style: TextStyle(fontSize: 12.h)),
                   ),
                 ]),
           ],

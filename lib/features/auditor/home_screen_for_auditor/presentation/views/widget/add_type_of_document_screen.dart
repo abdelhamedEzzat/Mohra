@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class AddDocumentType extends StatefulWidget {
   @override
@@ -75,7 +76,7 @@ class _AddDocumentTypeState extends State<AddDocumentType> {
                 }
 
                 if (!snapshot.hasData) {
-                  return Text("Company document not found");
+                  return Text(S.of(context).Companydocumentnotfound);
                 }
 
                 return Expanded(
@@ -112,7 +113,7 @@ class _AddDocumentTypeState extends State<AddDocumentType> {
             child: TextField(
               controller: _textEditingController,
               decoration: InputDecoration(
-                labelText: 'Enter Type',
+                labelText: S.of(context).EnterType,
                 labelStyle: Theme.of(context)
                     .textTheme
                     .displayMedium, // Adjust the style here
@@ -142,7 +143,7 @@ class _AddDocumentTypeState extends State<AddDocumentType> {
                 margin: EdgeInsets.only(bottom: 20.h),
                 padding: EdgeInsets.all(20.h),
                 child: Text(
-                  'Add Type of Document Company',
+                  S.of(context).AddTypeofDocumentCompany,
                   style: Theme.of(context)
                       .textTheme
                       .displayMedium!

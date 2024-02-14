@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class UploadDocumentsBotton extends StatelessWidget {
   const UploadDocumentsBotton({
@@ -26,7 +27,7 @@ class UploadDocumentsBotton extends StatelessWidget {
               child: Container(
             padding: EdgeInsets.only(right: 10.w),
             child: Text(
-              "Upload Document",
+              S.of(context).UploadDocument,
               style: Theme.of(context).textTheme.displayLarge,
             ),
           )),

@@ -18,6 +18,7 @@ class DocumentImageAndNumberWithoutState extends StatelessWidget {
     required this.onTap,
     required this.pdfFileExtention,
     required this.pdfFileName,
+    required this.ontapForNavToDetailsScreen,
   }) : super(key: key);
   final Color? color;
   final String? status;
@@ -29,6 +30,7 @@ class DocumentImageAndNumberWithoutState extends StatelessWidget {
   final void Function()? onTap;
   final String pdfFileExtention;
   final String pdfFileName;
+  final void Function()? ontapForNavToDetailsScreen;
   @override
   Widget build(BuildContext context) {
     //  final trigerCubit = BlocProvider.of<UploadDocumentsCubit>(context);
@@ -89,27 +91,30 @@ class DocumentImageAndNumberWithoutState extends StatelessWidget {
                                   .displayLarge!
                                   .copyWith(color: Colors.white)))),
                 ),
-                Positioned(
-                  top: 20.h,
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black87.withOpacity(0.8),
-                          borderRadius: const BorderRadius.only(
-                            //   topLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                          )),
-                      padding: EdgeInsets.only(left: 1.w),
-                      width: MediaQuery.of(context).size.width * 0.30,
-                      height: MediaQuery.of(context).size.height * 0.055,
-                      child: Center(
-                          child: Text(typeOfDocument ?? "New",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displayLarge!
-                                  .copyWith(color: Colors.white)))),
+                GestureDetector(
+                  onTap: ontapForNavToDetailsScreen,
+                  child: Positioned(
+                    top: 20.h,
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black87.withOpacity(0.8),
+                            borderRadius: const BorderRadius.only(
+                              //   topLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            )),
+                        padding: EdgeInsets.only(left: 1.w),
+                        width: MediaQuery.of(context).size.width * 0.30,
+                        height: MediaQuery.of(context).size.height * 0.055,
+                        child: Center(
+                            child: Text(typeOfDocument ?? "New",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayLarge!
+                                    .copyWith(color: Colors.white)))),
+                  ),
                 ),
               ],
             ),
@@ -128,10 +133,11 @@ class ImageDocWidget extends StatelessWidget {
       required this.docImage,
       required this.status,
       required this.onTap,
-      required this.typeOfDocument});
+      required this.typeOfDocument,
+      required this.ontapForNavToDetailsScreen});
   final Color color;
   final String? status;
-
+  final void Function()? ontapForNavToDetailsScreen;
   final String? typeOfDocument;
   final void Function()? onTap;
   final String? docImage;
@@ -189,25 +195,28 @@ class ImageDocWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Positioned(
-                    top: 35.h,
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black87.withOpacity(0.8),
-                            borderRadius: const BorderRadius.only(
-                                //   topLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(25))),
-                        padding: EdgeInsets.only(left: 1.w),
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        height: MediaQuery.of(context).size.height * 0.065,
-                        child: Center(
-                            child: Text(typeOfDocument ?? "1",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayLarge!
-                                    .copyWith(color: Colors.white)))),
+                  GestureDetector(
+                    onTap: ontapForNavToDetailsScreen,
+                    child: Positioned(
+                      top: 35.h,
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black87.withOpacity(0.8),
+                              borderRadius: const BorderRadius.only(
+                                  //   topLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(25))),
+                          padding: EdgeInsets.only(left: 1.w),
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          height: MediaQuery.of(context).size.height * 0.065,
+                          child: Center(
+                              child: Text(typeOfDocument ?? "1",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge!
+                                      .copyWith(color: Colors.white)))),
+                    ),
                   ),
                 ],
               )),
@@ -360,10 +369,11 @@ class DocumentForAuditor extends StatelessWidget {
       this.docImage,
       required this.status,
       required this.onTap,
-      required this.typeOfDocument});
+      required this.typeOfDocument,
+      required this.ontapForNavToDetailsScreen});
   final Color color;
   final String? status;
-
+  final void Function()? ontapForNavToDetailsScreen;
   final String? typeOfDocument;
   final void Function()? onTap;
   final String? docImage;
@@ -435,25 +445,28 @@ class DocumentForAuditor extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Positioned(
-                    top: 35.h,
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black87.withOpacity(0.8),
-                            borderRadius: const BorderRadius.only(
-                                //   topLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(25))),
-                        padding: EdgeInsets.only(left: 1.w),
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        height: MediaQuery.of(context).size.height * 0.065,
-                        child: Center(
-                            child: Text(typeOfDocument ?? "1",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayLarge!
-                                    .copyWith(color: Colors.white)))),
+                  GestureDetector(
+                    onTap: ontapForNavToDetailsScreen,
+                    child: Positioned(
+                      top: 35.h,
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black87.withOpacity(0.8),
+                              borderRadius: const BorderRadius.only(
+                                  //   topLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(25))),
+                          padding: EdgeInsets.only(left: 1.w),
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          height: MediaQuery.of(context).size.height * 0.065,
+                          child: Center(
+                              child: Text(typeOfDocument ?? "1",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge!
+                                      .copyWith(color: Colors.white)))),
+                    ),
                   ),
                 ],
               )),

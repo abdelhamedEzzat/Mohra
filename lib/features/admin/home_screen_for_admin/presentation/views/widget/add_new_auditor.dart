@@ -30,8 +30,8 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
           onPressed: () {
             Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
           },
-          title: const Text("New Auditor"),
-          leading: BackButton(
+          title: Text(S.of(context).NewAuditor),
+          leading: const BackButton(
             color: Colors.white,
           )),
       body: BlocConsumer<AuthCubit, AuthState>(
@@ -69,10 +69,10 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
                       CustomTextFormField(
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Please enter some text.';
+                              return S.of(context).Pleaseentersometext;
                             } else if (!RegExp(r'^[a-zA-Z\s]+$')
                                 .hasMatch(value)) {
-                              return 'Please enter only letters.';
+                              return S.of(context).LattersOnly;
                             }
                             return null;
                           },
@@ -86,10 +86,10 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
                       CustomTextFormField(
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Please enter some text.';
+                              return S.of(context).Pleaseentersometext;
                             } else if (!RegExp(r'^[a-zA-Z\s]+$')
                                 .hasMatch(value)) {
-                              return 'Please enter only letters.';
+                              return S.of(context).LattersOnly;
                             }
                             return null;
                           },
@@ -103,9 +103,11 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
                       CustomTextFormField(
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "* this Field is required You must enter data";
+                              return S.of(context).FeildRequierd;
                             } else if (!RegExp(r'[a-zA-Z]').hasMatch(value)) {
-                              return "The email must contain at least one letter.";
+                              return S
+                                  .of(context)
+                                  .Theemailmustcontainatleastoneletter;
                             }
                             return null;
                           },
@@ -120,11 +122,13 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
                           obscureText: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "* this Field is required You must enter data";
+                              return S.of(context).FeildRequierd;
                             } else if (!RegExp(
                                     r'^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[\W_]).+$')
                                 .hasMatch(value)) {
-                              return "Password must contain  numbers, letters, and special character.";
+                              return S
+                                  .of(context)
+                                  .Passwordmustcontainnumberslettersandspecialcharacter;
                             }
                             return null;
                           },
@@ -137,7 +141,7 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
                               S.of(context).passwordHintTextInRegisterScreen,
                           prefixIcon: const Icon(Icons.lock)),
                       CustomButton(
-                          nameOfButton: "Create Account",
+                          nameOfButton: S.of(context).CreateAccount,
                           onTap: () async {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();

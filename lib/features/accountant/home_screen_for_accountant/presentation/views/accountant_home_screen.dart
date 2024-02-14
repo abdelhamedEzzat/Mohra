@@ -9,6 +9,7 @@ import 'package:mohra_project/features/accountant/home_screen_for_accountant/acc
 import 'package:mohra_project/features/notification/notification_for_auditor.dart';
 
 import 'package:mohra_project/features/user/settings_screen/settings_screen.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class AccountantHomeScreen extends StatefulWidget {
   const AccountantHomeScreen({super.key});
@@ -47,25 +48,25 @@ class _AccountantHomeScreenState extends State<AccountantHomeScreen> {
                   Icons.home,
                   color: ColorManger.backGroundColorToSplashScreen,
                 ),
-                label: "Home",
+                label: S.of(context).Home,
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.notification_add,
                   color: ColorManger.backGroundColorToSplashScreen,
                 ),
-                label: "Notification",
+                label: S.of(context).Notification,
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.settings,
                   color: ColorManger.backGroundColorToSplashScreen,
                 ),
-                label: "Settings",
+                label: S.of(context).Settings,
               ),
             ]),
         appBar: CustomAppBar(
-          title: GetNameForUser(),
+          title: const GetNameForUser(),
           onPressed: () {
             Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
           },
