@@ -7,14 +7,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mohra_project/core/constants/constans_collections/collections.dart';
+import 'package:mohra_project/features/user/upload_document/data/company_document_model.dart';
 import 'package:path/path.dart';
 
 part 'upload_documents_state.dart';
 
 class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
   UploadDocumentsCubit() : super(UploadDocumentsInitial());
+
+  final Box<CompanyDocument> _uploadedDocumentsBox =
+      Hive.box<CompanyDocument>('uploaded_documents');
 
   String url = "";
   String imageurl = "";
@@ -102,7 +107,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
             "companydocID": companydocID,
             "fileExtention": filePlatforme!.extension,
             'DocID': docID,
-            "status": "Wating for Review ",
+            "status": "Wating for Review",
             'companyName': "",
             'invoiceDate': "",
             'invoiceNumber': "",
@@ -113,6 +118,26 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
             'docNumer': nextDocumentNumber,
           },
         );
+
+        final uploadedDocument = CompanyDocument(
+          name: filename,
+          url: url,
+          comment: comment,
+          userId: userId,
+          companyDocId: companydocID,
+          fileExtension: filePlatforme!.extension,
+          docId: docID,
+          status: "Wating for Review",
+          companyName: "",
+          invoiceDate: "",
+          invoiceNumber: "",
+          amountOfTheInvoice: "",
+          selectItem: "",
+          selectTypeItem: "",
+          commentForAccountant: "",
+          docNumber: nextDocumentNumber,
+        );
+        _uploadedDocumentsBox.add(uploadedDocument);
       }
 
       emit(UploadDocumentSuccess());
@@ -187,6 +212,24 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
             'docNumer': nextDocumentNumber,
           },
         );
+        final uploadedDocument = CompanyDocument(
+          urlImage: imageurl,
+          comment: comment,
+          userId: userId,
+          companyDocId: companydocID,
+          fileExtension: "image",
+          docId: docID,
+          status: "Wating for Review",
+          companyName: "",
+          invoiceDate: "",
+          invoiceNumber: "",
+          amountOfTheInvoice: "",
+          selectItem: "",
+          selectTypeItem: "",
+          commentForAccountant: "",
+          docNumber: nextDocumentNumber,
+        );
+        _uploadedDocumentsBox.add(uploadedDocument);
 
         emit(UploadDocumentSuccess());
       } else {

@@ -5,6 +5,8 @@ import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/widget/document_and_number_after_upload.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class AuditorCompanyDocuments extends StatelessWidget {
   const AuditorCompanyDocuments({super.key});
@@ -96,13 +98,40 @@ class AuditorCompanyDocuments extends StatelessWidget {
                         itemList.add(ImageDocWidget(
                           docImage: doc["urlImage"],
                           onTap: () {
-                            Navigator.of(context).pushNamed(
-                              RouterName.auditorDocumentDetails,
-                              arguments: {
-                                'urlImage': doc["urlImage"],
-                                'comment': doc['comment']
+                            Navigator.of(context).push(MaterialPageRoute<void>(
+                              builder: (BuildContext context) {
+                                // Retrieve all image URLs
+                                List imageUrls = allDocs
+                                    .where((doc) =>
+                                        doc["fileExtention"] == "image")
+                                    .map((doc) => doc["urlImage"])
+                                    .toList();
+
+                                // Get the index of the selected image
+                                int initialIndex =
+                                    imageUrls.indexOf(doc["urlImage"]);
+
+                                return PhotoViewGallery.builder(
+                                  itemCount: imageUrls.length,
+                                  builder: (context, index) {
+                                    return PhotoViewGalleryPageOptions(
+                                      imageProvider:
+                                          NetworkImage(imageUrls[index]),
+                                      minScale:
+                                          PhotoViewComputedScale.contained,
+                                      maxScale:
+                                          PhotoViewComputedScale.covered * 2,
+                                    );
+                                  },
+                                  scrollPhysics: const BouncingScrollPhysics(),
+                                  backgroundDecoration: const BoxDecoration(
+                                    color: Colors.black,
+                                  ),
+                                  pageController:
+                                      PageController(initialPage: initialIndex),
+                                );
                               },
-                            );
+                            ));
                           },
                           typeOfDocument: doc["docNumer"].toString(),
                           color: ColorManger.darkGray,

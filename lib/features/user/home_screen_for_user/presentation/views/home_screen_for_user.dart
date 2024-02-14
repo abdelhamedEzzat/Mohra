@@ -13,6 +13,7 @@ import 'package:mohra_project/features/register_screen/presentation/manger/signU
 import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/home_screen_for_user_body.dart';
 import 'package:mohra_project/features/user/settings_screen/settings_screen.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class HomeScreenForUser extends StatefulWidget {
   const HomeScreenForUser({super.key});
@@ -59,21 +60,21 @@ class _HomeScreenForUserState extends State<HomeScreenForUser> {
               Icons.home,
               color: ColorManger.backGroundColorToSplashScreen,
             ),
-            label: "Home",
+            label: S.of(context).Home,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.notification_add,
               color: ColorManger.backGroundColorToSplashScreen,
             ),
-            label: "Notification",
+            label: S.of(context).Notification,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.settings,
               color: ColorManger.backGroundColorToSplashScreen,
             ),
-            label: "Settings",
+            label: S.of(context).Settings,
           ),
         ]);
   }

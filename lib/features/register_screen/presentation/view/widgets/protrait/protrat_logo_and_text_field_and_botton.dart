@@ -117,7 +117,7 @@ class _LogoAndTextFieldAndbuttonProtraitState
           setState(() {
             isdesapled == true;
           });
-        } else if (emailStatus.toLowerCase() == "enabled" && status == 2) {
+        } else if (emailStatus.toLowerCase() == "enabled" && status == "2") {
           print(status);
           Navigator.of(context)
               .pushReplacementNamed(RouterName.homeScreenForUser);
@@ -142,7 +142,7 @@ class _LogoAndTextFieldAndbuttonProtraitState
           horizontal: 25,
         ),
         child: BlocConsumer<AuthCubit, AuthState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is SignupLoading) {
               isLoading = true;
             } else if (state is SignupSuccess) {
@@ -162,6 +162,13 @@ class _LogoAndTextFieldAndbuttonProtraitState
             } else if (state is AuthLoading) {
               isLoading = true;
             } else if (state is AuthAuthenticated) {
+              // User? user = FirebaseAuth.instance.currentUser;
+              // await FirebaseFirestore.instance
+              //     .collection("users")
+              //     .doc(user!.uid)
+              //     .update({
+              //   "status": "1",
+              // });
               checkEmail();
             } else if (state is AuthUnauthenticated) {
               isLoading = false;
@@ -346,6 +353,7 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                           if (user != null) {
                                             await trigerCubit
                                                 .storeUserInfoInFirestore(user);
+                                            showEmailVerifiedSnackBar(context);
                                           }
                                         },
                                         imageIconButton: ImageManger.googleLogo,

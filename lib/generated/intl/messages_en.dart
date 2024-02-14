@@ -24,9 +24,14 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "AlreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("Already Have Account? "),
+        "Companies": MessageLookupByLibrary.simpleMessage("Companies"),
         "ContinueAfterSendVerify":
             MessageLookupByLibrary.simpleMessage("Continue"),
+        "Documents": MessageLookupByLibrary.simpleMessage("Documents"),
+        "Home": MessageLookupByLibrary.simpleMessage("home"),
         "Login": MessageLookupByLibrary.simpleMessage("Login"),
+        "Notification": MessageLookupByLibrary.simpleMessage("Notification"),
+        "Settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "SubTitleVerify": MessageLookupByLibrary.simpleMessage(
             "We have just send email verification link on your email , please check email and click on that link to verify your email address"),
         "Verifyyouremailaddress":

@@ -5,8 +5,10 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mohra_project/core/constants/constans_collections/collections.dart';
+import 'package:mohra_project/features/user/create_company/data/add_company_hive.dart';
 import 'package:path/path.dart';
 part 'create_company_state.dart';
 
@@ -20,6 +22,8 @@ class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
   File? file;
   String? url = "";
   bool isIcon = false;
+  String? compnydocID;
+  List additionalInformation = [];
   List<QueryDocumentSnapshot> companyInformation = [];
 
   Future<void> addCompany(
@@ -31,7 +35,7 @@ class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
       required String compnyCollectionID}) async {
     try {
       emit(FirestoreStorageLoading());
-      List additionalInformation = [];
+
       if (file != null) {
         var imageName = basename(file.path);
         final storage = FirebaseStorage.instanceFor(
@@ -41,7 +45,7 @@ class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
         await companyImageRef.putFile(file);
         url = await companyImageRef.getDownloadURL();
         print("url:$url");
-        var compnydocID = Constanscollection.companyCollection.id;
+        compnydocID = Constanscollection.companyCollection.id;
         await Constanscollection.companyCollection.add(
           {
             'logo': url,
@@ -62,6 +66,38 @@ class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
     } catch (e) {
       emit(FirestoreStoragefaild(
           error: "Failed to add company:${e.toString()}"));
+    }
+  }
+
+  Future<void> addCompanyToHive({
+    String? logo,
+    required String companyName,
+    required String companyAddress,
+    required String companyType,
+    String? compnyCollectionID,
+    File? file,
+  }) async {
+    try {
+      emit(FirestoreStorageLoading());
+      final box = Hive.box<AddCompanyToHive>('companyBox');
+      final newCompany = AddCompanyToHive(
+        logo: url.toString(),
+        companyName: companyName,
+        companyAddress: companyAddress,
+        companyType: companyType,
+        companyDocId: compnydocID.toString(),
+        companyStatus: "Waiting for Accepted",
+        timesTamp: formattedStamp(timestamp),
+        additionalInformation: additionalInformation,
+        userID: FirebaseAuth.instance.currentUser!.uid,
+        companyId: compnyCollectionID.toString(),
+      );
+      await box.add(newCompany);
+
+      emit(FirestoreStorageSuccess());
+    } catch (e) {
+      emit(FirestoreStoragefaild(
+          error: "Failed to add company to hive :${e.toString()}"));
     }
   }
 

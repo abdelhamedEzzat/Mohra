@@ -1,35 +1,42 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/widget/document_and_number_after_upload.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/widget/upload_documents.dart';
+import 'package:mohra_project/features/user/create_company/data/add_company_hive.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/widgets/details_profile.dart';
+import 'package:mohra_project/features/user/upload_document/data/company_document_model.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
-class CompanyDocuments extends StatelessWidget {
+class CompanyDocuments extends StatefulWidget {
   const CompanyDocuments({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var companyId = ModalRoute.of(context)?.settings.arguments;
+  State<CompanyDocuments> createState() => _CompanyDocumentsState();
+}
 
-    final Stream<QuerySnapshot> companyInFormation = FirebaseFirestore.instance
-        .collection("Companys")
-        .where('companyId', isEqualTo: companyId)
-        .snapshots();
+class _CompanyDocumentsState extends State<CompanyDocuments> {
+  @override
+  Widget build(BuildContext context) {
+    var companyData =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
 
     final Stream<QuerySnapshot> compnyDocument = FirebaseFirestore.instance
         .collection("Document")
-        .where('companydocID', isEqualTo: companyId)
+        .where('companydocID', isEqualTo: companyData["companyId"])
         .snapshots();
     var comment = ModalRoute.of(context)?.settings.arguments;
-    int selectedIndex = 0;
-
-    // final trigerCubit = BlocProvider.of<UploadDocumentsCubit>(context);
 
     return Scaffold(
         appBar: const CustomAppBarForUsers(
@@ -44,41 +51,15 @@ class CompanyDocuments extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                StreamBuilder<QuerySnapshot>(
-                    stream: companyInFormation,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.data!.docs.isNotEmpty) {
-                          return DetailsPeofileAndCompanyWidget(
-                            profile: "Company Details",
-                            key1: "Name : ",
-                            value1: snapshot.data!.docs[selectedIndex]
-                                ["company_Name"],
-                            key2: "Address :",
-                            value2: snapshot.data!.docs[selectedIndex]
-                                ["Company_Address"],
-                            key3: "Type :",
-                            value3: snapshot.data!.docs[selectedIndex]
-                                ["Company_type"],
-                          );
-                        } else {
-                          return const Center(
-                              child: Text('No company data available.'));
-                        }
-                      } else if (snapshot.hasError) {
-                        return const Center(
-                          child: Text(
-                              "We will add information to your company soon"),
-                        );
-                      } else if (snapshot.connectionState ==
-                          snapshot.connectionState) {
-                        return const Center(
-                            child: CircularProgressIndicator(
-                          color: Colors.black,
-                        ));
-                      }
-                      return Container();
-                    }),
+                DetailsPeofileAndCompanyWidget(
+                  profile: "Company Details",
+                  key1: "Name : ",
+                  value1: companyData["companyName"],
+                  key2: "Address :",
+                  value2: companyData["companyAddress"],
+                  key3: "Type :",
+                  value3: companyData["companyType"],
+                ),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -86,7 +67,7 @@ class CompanyDocuments extends StatelessWidget {
                   onTap: () async {
                     await Navigator.pushNamed(
                         context, RouterName.uploadDocuments,
-                        arguments: companyId.toString());
+                        arguments: companyData["companyId"].toString());
                   },
                   child: const UploadDocumentsBotton(),
                 ),
@@ -114,7 +95,6 @@ class CompanyDocuments extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List<Widget> itemList = [];
-
                       List<DocumentSnapshot> allDocs = [];
 
                       snapshot.data!.docs.forEach((doc) {
@@ -127,27 +107,113 @@ class CompanyDocuments extends StatelessWidget {
 
                       allDocs.sort(compareByDocNumer);
 
-                      allDocs.forEach((doc) {
+                      allDocs.forEach((doc) async {
                         String fileExtension =
                             doc["fileExtention"].toLowerCase() ?? "";
 
                         if (fileExtension == "image") {
-                          itemList.add(ImageDocWidget(
-                            docImage: doc["urlImage"],
-                            onTap: () {
-                              Navigator.of(context).pushNamed(
-                                RouterName.detailsDocuments,
-                                arguments: {
-                                  'urlImage': doc["urlImage"],
-                                  'comment': doc['comment']
-                                },
-                              );
-                            },
-                            typeOfDocument: doc["docNumer"].toString(),
-                            color: ColorManger.darkGray,
-                            status: doc['status'],
-                          ));
+                          String imageUrl = doc["urlImage"];
+                          DefaultCacheManager().getSingleFile(imageUrl);
+                          if (imageUrl.isEmpty) {
+                            itemList.add(ImageDocWidget(
+                              docImage: doc["urlImage"],
+                              onTap: () {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute<void>(
+                                  builder: (BuildContext context) {
+                                    // Retrieve all image URLs
+                                    List imageUrls = allDocs
+                                        .where((doc) =>
+                                            doc["fileExtention"] == "image")
+                                        .map((doc) => doc["urlImage"])
+                                        .toList();
+
+                                    // Get the index of the selected image
+                                    int initialIndex =
+                                        imageUrls.indexOf(doc["urlImage"]);
+
+                                    return PhotoViewGallery.builder(
+                                      itemCount: imageUrls.length,
+                                      builder: (context, index) {
+                                        return PhotoViewGalleryPageOptions(
+                                          imageProvider:
+                                              NetworkImage(imageUrls[index]),
+                                          minScale:
+                                              PhotoViewComputedScale.contained,
+                                          maxScale:
+                                              PhotoViewComputedScale.covered *
+                                                  2,
+                                        );
+                                      },
+                                      scrollPhysics:
+                                          const BouncingScrollPhysics(),
+                                      backgroundDecoration: const BoxDecoration(
+                                        color: Colors.black,
+                                      ),
+                                      pageController: PageController(
+                                          initialPage: initialIndex),
+                                    );
+                                  },
+                                ));
+                              },
+                              typeOfDocument: doc["docNumer"].toString(),
+                              color: ColorManger.darkGray,
+                              status: doc['status'],
+                            ));
+                          } else {
+                            itemList.add(ImageDocWidget(
+                              docImage: imageUrl,
+                              onTap: () {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute<void>(
+                                  builder: (BuildContext context) {
+                                    // Retrieve all image URLs
+                                    List imageUrls = allDocs
+                                        .where((doc) =>
+                                            doc["fileExtention"] == "image")
+                                        .map((doc) => imageUrl)
+                                        .toList();
+
+                                    // Get the index of the selected image
+                                    int initialIndex =
+                                        imageUrls.indexOf(imageUrl);
+
+                                    return PhotoViewGallery.builder(
+                                      itemCount: imageUrls.length,
+                                      builder: (context, index) {
+                                        return PhotoViewGalleryPageOptions(
+                                          imageProvider:
+                                              NetworkImage(imageUrls[index]),
+                                          minScale:
+                                              PhotoViewComputedScale.contained,
+                                          maxScale:
+                                              PhotoViewComputedScale.covered *
+                                                  2,
+                                        );
+                                      },
+                                      scrollPhysics:
+                                          const BouncingScrollPhysics(),
+                                      backgroundDecoration: const BoxDecoration(
+                                        color: Colors.black,
+                                      ),
+                                      pageController: PageController(
+                                          initialPage: initialIndex),
+                                    );
+                                  },
+                                ));
+                              },
+                              typeOfDocument: doc["docNumer"].toString(),
+                              color: ColorManger.darkGray,
+                              status: doc['status'],
+                            ));
+                          }
                         } else {
+                          String fileUrl = doc["url"];
+                          DefaultCacheManager()
+                              .getSingleFile(fileUrl)
+                              .then((File file) {
+                            print(fileUrl);
+                          });
                           itemList.add(FilesDocWidget(
                             onTap: () {
                               Navigator.of(context).pushNamed(
@@ -199,7 +265,7 @@ class CompanyDocuments extends StatelessWidget {
                         },
                       );
                     } else if (snapshot.data == null) {
-                      Text("sdadasdasdasd");
+                      return Text("No Data");
                     } else if (snapshot.connectionState ==
                         ConnectionState.waiting) {
                       return const Center(

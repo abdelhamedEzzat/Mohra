@@ -19,7 +19,7 @@
     "emailLabelTextInRegisterScreen" : "الايميل" , 
     "emailHintTextInRegisterScreen" : "اكتب الايميل الخاص بك " , 
     "passwordLabelTextInRegisterScreen" : "باسورد" , 
-    "passwordHintTextInRegisterScreen" : "اكتب الباسورد الخاص بك" , 
+    "passwordHintTextInRegisterScreen" : "اكتب الباسورد الخاص بك"  , 
     "nameLabelTextInRegisterScreen" : "الاسم" , 
     "nameHintTextInRegisterScreen" : "اكتب اسمك" , 
     "registerAccountBotton" : "تسجيل الحساب " , 
@@ -35,5 +35,11 @@
 
     "forgetPassword" :   "نسيت كلمه المرور ؟" ,
     "Send Request" :   "اعاده المصادقه",
-    "ContinueAfterSendVerify" :   "التالي" 
+    "ContinueAfterSendVerify" :   "التالي" ,
+
+    "Home" : "الصفحه الرئيسيه" ,
+    "Notification": "الاشعارات",
+    "Settings": "الاعدادات" ,
+    "Companies":"الشركات",
+    "Documents":"المستندات"
 }

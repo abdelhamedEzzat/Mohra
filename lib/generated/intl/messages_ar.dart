@@ -24,9 +24,14 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "AlreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("اذا كنت تمتلك حساب"),
+        "Companies": MessageLookupByLibrary.simpleMessage("الشركات"),
         "ContinueAfterSendVerify":
             MessageLookupByLibrary.simpleMessage("التالي"),
+        "Documents": MessageLookupByLibrary.simpleMessage("المستندات"),
+        "Home": MessageLookupByLibrary.simpleMessage("الصفحه الرئيسيه"),
         "Login": MessageLookupByLibrary.simpleMessage("سجل الدخول"),
+        "Notification": MessageLookupByLibrary.simpleMessage("الاشعارات"),
+        "Settings": MessageLookupByLibrary.simpleMessage("الاعدادات"),
         "buttonNameFirstAndSecoundIntroScreen":
             MessageLookupByLibrary.simpleMessage("التالي"),
         "buttonNameThirdIntroScreen":

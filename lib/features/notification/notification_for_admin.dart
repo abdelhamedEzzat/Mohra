@@ -19,81 +19,70 @@ class NotificationScreenForAdminAndUser extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: const Column(
-            children: [
-              CompanyNotificationForUser(
-                normalText:
-                    "email amabdo275@gmail.com has Permation to Sign in app",
-                statusText: 'user',
-              )
-            ],
-          )
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: StreamBuilder(
+          stream: usersNotification,
+          builder: (BuildContext context, AsyncSnapshot userSnapshot) {
+            if (userSnapshot.hasData) {
+              return ListView.builder(
+                itemCount: userSnapshot.data.docs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var userRoleData = userSnapshot.data.docs[index];
 
-          //  StreamBuilder(
-          //   stream: usersNotification,
-          //   builder: (BuildContext context, AsyncSnapshot userSnapshot) {
-          //     if (userSnapshot.hasData) {
-          //       return ListView.builder(
-          //         itemCount: userSnapshot.data.docs.length,
-          //         itemBuilder: (BuildContext context, int index) {
-          //           var userRoleData = userSnapshot.data.docs[index];
+                  return StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('Notification')
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot notificationSnapshot) {
+                      if (notificationSnapshot.hasData) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Your user-related widget here
 
-          //           return StreamBuilder(
-          //             stream: FirebaseFirestore.instance
-          //                 .collection('Notification')
-          //                 .snapshots(),
-          //             builder: (BuildContext context,
-          //                 AsyncSnapshot notificationSnapshot) {
-          //               if (notificationSnapshot.hasData) {
-          //                 return Column(
-          //                   crossAxisAlignment: CrossAxisAlignment.start,
-          //                   children: [
-          //                     // Your user-related widget here
-
-          //                     ListView.builder(
-          //                       physics: const NeverScrollableScrollPhysics(),
-          //                       shrinkWrap: true,
-          //                       itemCount: notificationSnapshot.data.docs.length,
-          //                       itemBuilder: (BuildContext context, int index) {
-          //                         return CompanyNotificationForUser(
-          //                           normalText: notificationSnapshot
-          //                               .data.docs[index]['notificationMassage'],
-          //                           statusText: notificationSnapshot
-          //                               .data.docs[index]['MassgeSendBy'],
-          //                         );
-          //                       },
-          //                     ),
-          //                   ],
-          //                 );
-          //               } else if (notificationSnapshot.hasError) {
-          //                 print('Error getting notification from snapshot');
-          //               } else if (notificationSnapshot.connectionState ==
-          //                   ConnectionState.waiting) {
-          //                 return Center(
-          //                   child: CircularProgressIndicator(),
-          //                 );
-          //               }
-          //               return SizedBox();
-          //             },
-          //           );
-          //         },
-          //       );
-          //     } else if (userSnapshot.hasError) {
-          //       print('Error getting user data from snapshot');
-          //     } else if (userSnapshot.connectionState ==
-          //         ConnectionState.waiting) {
-          //       return Center(
-          //         child: CircularProgressIndicator(),
-          //       );
-          //     }
-          //     return SizedBox();
-          //   },
-          // ),
-
-          ),
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: notificationSnapshot.data.docs.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return CompanyNotificationForUser(
+                                  normalText: notificationSnapshot
+                                      .data.docs[index]['notificationMassage'],
+                                  statusText: notificationSnapshot
+                                      .data.docs[index]['MassgeSendBy'],
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      } else if (notificationSnapshot.hasError) {
+                        print('Error getting notification from snapshot');
+                      } else if (notificationSnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return SizedBox();
+                    },
+                  );
+                },
+              );
+            } else if (userSnapshot.hasError) {
+              print('Error getting user data from snapshot');
+            } else if (userSnapshot.connectionState ==
+                ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return SizedBox();
+          },
+        ),
+      ),
     );
   }
 }

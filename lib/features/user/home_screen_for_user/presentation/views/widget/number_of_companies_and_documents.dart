@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/icon_and_text_company.dart';
+import 'package:mohra_project/generated/l10n.dart';
 
 class NumberOfCompaniesAndDocuments extends StatelessWidget {
   const NumberOfCompaniesAndDocuments({
@@ -22,7 +22,7 @@ class NumberOfCompaniesAndDocuments extends StatelessWidget {
             if (snapshot.hasData) {
               return IconsAndTextToCompany(
                 numberOfCompany: snapshot.data!.docs.length,
-                text: "Companies",
+                text: S.of(context).Companies,
               );
             } else {
               return const CircularProgressIndicator(
@@ -70,14 +70,14 @@ class NumberOfCompaniesAndDocuments extends StatelessWidget {
 
                 return IconsAndTextToCompany(
                   numberOfCompany: docSnapshot.data!.docs.length ?? 0,
-                  text: "Documents",
+                  text: S.of(context).Documents,
                 );
               },
             );
           } else {
-            return const IconsAndTextToCompany(
+            return IconsAndTextToCompany(
               numberOfCompany: 0,
-              text: "Documents",
+              text: S.of(context).Documents,
             );
           }
         },

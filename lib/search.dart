@@ -1,20 +1,16 @@
-
-
-
-
-
-
-
-
-
-
-
+// import 'dart:async';
 
 // import 'package:flutter/material.dart';
-// import 'package:url_launcher/url_launcher.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:hive/hive.dart';
+// import 'package:hive_flutter/hive_flutter.dart';
+// import 'package:mohra_project/features/user/create_company/data/add_company_hive.dart';
 
-// void main() {
+// void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
+//   await Hive.initFlutter();
+//   Hive.registerAdapter(AddCompanyToHiveAdapter());
+//   await Hive.openBox<AddCompanyToHive>('companyBox');
 //   runApp(const MyApppp());
 // }
 
@@ -34,51 +30,175 @@
 //   }
 // }
 
-// class PdfViewer extends StatelessWidget {
-//   const PdfViewer({Key? key}) : super(key: key);
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
-//   // Future<void> openPdf() async {
-//   //   try {
-//   //     await launch(pdfUrl, forceWebView: true, enableJavaScript: true);
-//   //   } catch (e) {
-//   //     print("Error opening PDF: $e");
-//   //   }
-//   // }
+class MyAppppp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Firestore Cache Example',
+      home: MyHomePage(),
+    );
+  }
+}
 
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Firestore Cache Example'),
+      ),
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: _getCachedDataStream(),
+        builder: (context, cachedSnapshot) {
+          if (cachedSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (cachedSnapshot.hasError) {
+            return Center(child: Text('Error: ${cachedSnapshot.error}'));
+          }
+          List<Map<String, dynamic>> cachedData = cachedSnapshot.data ?? [];
+          if (cachedData.isNotEmpty) {
+            print('============data From Cache================');
+
+            return _buildListView(cachedData);
+          } else {
+            return StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('Document').snapshots(),
+              builder: (context, firebaseSnapshot) {
+                if (firebaseSnapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (firebaseSnapshot.hasError) {
+                  return Center(
+                      child: Text('Error: ${firebaseSnapshot.error}'));
+                }
+                List<Map<String, dynamic>> firebaseData = firebaseSnapshot
+                    .data!.docs
+                    .map((doc) => doc.data() as Map<String, dynamic>)
+                    .toList();
+                _cacheData(firebaseData);
+                print('============data From database================');
+
+                return _buildListView(firebaseData);
+              },
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildListView(List<Map<String, dynamic>> data) {
+    return ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(data[index]['comment'] ?? ''),
+          subtitle: Text(data[index]['companydocID'] ?? ''),
+        );
+      },
+    );
+  }
+
+  static Stream<List<Map<String, dynamic>>> _getCachedDataStream() async* {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cachedDataString = prefs.getString('cached_data');
+    if (cachedDataString != null) {
+      List<dynamic> cachedDataJson = json.decode(cachedDataString);
+      yield cachedDataJson.cast<Map<String, dynamic>>();
+    }
+  }
+
+  Future<void> _cacheData(List<Map<String, dynamic>> data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jsonData = json.encode(data);
+    await prefs.setString('cached_data', jsonData);
+  }
+}
+
+// class MyHomePage extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
-//     final Uri _url = Uri.parse('https://flutter.dev');
-//     return Center(
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: <Widget>[
-//           Text('PDF Viewer'),
-//           const SizedBox(height: 20),
-//           ElevatedButton(
-//             onPressed: () async {
-//               try {
-//                 String pdfUrl =
-//                     'https://firebasestorage.googleapis.com/v0/b/mohra-project.appspot.com/o/Image%20Document%20Company%2Fa735b78c-2beb-41ce-beaa-e52fb59d9d1b5141260431010215994.jpg?alt=media&token=3a8a2ba4-a3d8-4593-a9ea-b4de556413ce';
-
-//                 var query = "file:$pdfUrl";
-//                 var uri = Uri.parse(pdfUrl);
-//                 Uri.encodeComponent(pdfUrl);
-//                 if (await canLaunchUrl(uri)) {
-//                   await launchUrl(uri, mode: LaunchMode.inAppWebView
-//                       // mode: LaunchMode.externalNonBrowserApplication
-//                       );
-//                 } else {
-//                   print(uri);
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Firestore Cache Example'),
+//       ),
+//       body: FutureBuilder<List<Map<String, dynamic>>>(
+//         future: _getCachedData(),
+//         builder: (context, cachedSnapshot) {
+//           if (cachedSnapshot.connectionState == ConnectionState.waiting) {
+//             return Center(child: CircularProgressIndicator());
+//           }
+//           if (cachedSnapshot.hasError) {
+//             return Center(child: Text('Error: ${cachedSnapshot.error}'));
+//           }
+//           List<Map<String, dynamic>> cachedData = cachedSnapshot.data ?? [];
+//           if (cachedData.isNotEmpty) {
+//             print('============data From Cache================');
+//             return _buildListView(cachedData);
+//           } else {
+//             return FutureBuilder<List<Map<String, dynamic>>>(
+//               future: _fetchAndCacheData(),
+//               builder: (context, firebaseSnapshot) {
+//                 if (firebaseSnapshot.connectionState ==
+//                     ConnectionState.waiting) {
+//                   return Center(child: CircularProgressIndicator());
 //                 }
-//               } on Exception catch (e) {
-//                 print(e.toString());
-//                 // TODO
-//               }
-//             },
-//             child: const Text('Open PDF with url_launcher'),
-//           ),
-//         ],
+//                 if (firebaseSnapshot.hasError) {
+//                   return Center(
+//                       child: Text('Error: ${firebaseSnapshot.error}'));
+//                 }
+//                 List<Map<String, dynamic>> firebaseData =
+//                     firebaseSnapshot.data ?? [];
+//                 print('============data From firebase================');
+//                 return _buildListView(firebaseData);
+//               },
+//             );
+//           }
+//         },
 //       ),
 //     );
+//   }
+
+//   Widget _buildListView(List<Map<String, dynamic>> data) {
+//     return ListView.builder(
+//       itemCount: data.length,
+//       itemBuilder: (context, index) {
+//         return ListTile(
+//           title: Text(data[index]['comment'] ?? ''),
+//           subtitle: Text(data[index]['companydocID'] ?? ''),
+//         );
+//       },
+//     );
+//   }
+
+//   Future<List<Map<String, dynamic>>> _getCachedData() async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     String? cachedDataString = prefs.getString('cached_data');
+//     if (cachedDataString != null) {
+//       List<dynamic> cachedDataJson = json.decode(cachedDataString);
+//       return cachedDataJson.cast<Map<String, dynamic>>();
+//     } else {
+//       return [];
+//     }
+//   }
+
+//   Future<List<Map<String, dynamic>>> _fetchAndCacheData() async {
+//     QuerySnapshot querySnapshot =
+//         await FirebaseFirestore.instance.collection('Document').get();
+//     List<Map<String, dynamic>> data = querySnapshot.docs
+//         .map((doc) => doc.data() as Map<String, dynamic>)
+//         .toList();
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     String jsonData = json.encode(data);
+//     await prefs.setString('cached_data', jsonData);
+//     return data;
 //   }
 // }

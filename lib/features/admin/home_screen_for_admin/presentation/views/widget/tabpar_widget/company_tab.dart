@@ -278,6 +278,17 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                     .collection('Companys')
                     .doc(companyDocument.id)
                     .update({'CompanyStatus': 'Rejected'});
+
+                await FirebaseFirestore.instance
+                    .collection('Notification')
+                    .add({
+                  'notificationMassage':
+                      "your Company ${companyDocument['company_Name']} Has been Rejected ",
+                  'role': "admin",
+                  'MassgeSendBy': 'Review',
+                  'NotificationCompanyID': companyDocument['DocID'],
+                  'NotificationUserID': ''
+                });
               }
             } catch (e) {
               print('Error querying for company: $e');
@@ -327,6 +338,17 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                           .collection('Companys')
                           .doc(companyDocument.id)
                           .update({'CompanyStatus': 'Accepted'});
+
+                      await FirebaseFirestore.instance
+                          .collection('Notification')
+                          .add({
+                        'notificationMassage':
+                            "your Company ${companyDocument['company_Name']} Has been Accepted ",
+                        'role': "admin",
+                        'MassgeSendBy': 'adminstration',
+                        'NotificationCompanyID': companyDocument['DocID'],
+                        'NotificationUserID': ''
+                      });
                     }
                   } catch (e) {
                     print('Error querying for company: $e');

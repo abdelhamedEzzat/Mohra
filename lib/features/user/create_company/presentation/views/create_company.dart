@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:mohra_project/core/constants/constans_collections/collections.dart';
 import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
-import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
 import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
@@ -214,7 +212,15 @@ class _CreateCompanyState extends State<CreateCompany> {
                                   companyType: trigerCubit.companyType);
 
                               // ignore: use_build_context_synchronously
+                              await trigerCubit.addCompanyToHive(
+                                  file: trigerCubit.file,
+                                  companyAddress: trigerCubit.companyAddress,
+                                  companyName: trigerCubit.companyName,
+                                  companyType: trigerCubit.companyType,
+                                  logo: trigerCubit.url.toString());
+
                               Navigator.of(context).pop();
+
                               trigerCubit.clearData();
                             }
                             setState(() {

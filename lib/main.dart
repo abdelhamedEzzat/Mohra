@@ -30,9 +30,11 @@ import 'package:mohra_project/features/search_screen/search_screen_for_admin.dar
 import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
 import 'package:mohra_project/features/splash_screens/presentation/views/splash_screen.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/company_documents.dart';
+import 'package:mohra_project/features/user/create_company/data/add_company_hive.dart';
 import 'package:mohra_project/features/user/create_company/presentation/manger/firebase_company/create_company_cubit.dart';
 import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/home_screen_for_user.dart';
+import 'package:mohra_project/features/user/upload_document/data/company_document_model.dart';
 import 'package:mohra_project/features/user/upload_document/presentation/manger/upload_documents/upload_documents_cubit.dart';
 import 'package:mohra_project/features/user/upload_document/presentation/views/upload_documents.dart';
 import 'package:mohra_project/features/vreify_email/vreify_email.dart';
@@ -45,8 +47,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
+  //
+  //
   Hive.registerAdapter(UserStatusModelAdapter());
   await Hive.openBox<UserStatusModel>('userStatusBox');
+  //
+  //
+  Hive.registerAdapter(AddCompanyToHiveAdapter());
+  await Hive.openBox<AddCompanyToHive>('companyBox');
+
+  Hive.registerAdapter(CompanyDocumentAdapter());
+  await Hive.openBox<CompanyDocument>('company_documents');
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -146,6 +157,8 @@ class MyApp extends StatelessWidget {
                 RouterName.searchScreenForUser: (context) => searchuser()
               },
               home:
+                  //MyAppppp()
+                  // MyApppp()
                   // AddDocumentType(),
 
                   const AuthUsers(),

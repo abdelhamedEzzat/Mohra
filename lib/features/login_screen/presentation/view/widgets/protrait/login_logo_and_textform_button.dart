@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/constans_collections/collections.dart';
 import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
@@ -155,7 +156,15 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
                                 // this function for sign in with google
 
                                 CustomBottonWithIconOrImage(
-                                    onTap: () {},
+                                    onTap: () async {
+                                      await trigerCubit.signInWithGoogle();
+
+                                      final user = trigerCubit.user;
+
+                                      if (user != null) {
+                                        checkEmailForSigninWithGoogle(context);
+                                      }
+                                    },
                                     imageIconButton: ImageManger.googleLogo,
                                     nameOfButton: S
                                         .of(context)
@@ -175,6 +184,43 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
         );
       },
     );
+  }
+
+  void showWelcomeSnackBar(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => showSnackBar(
+          context,
+          "Congratulations, your email has been authenticated and your data will be reviewed by the administration within 24 hours you cant do anythink after accepted. ",
+          backgroundcolor: ColorManger.backGroundColorToSplashScreen,
+          duration: const Duration(seconds: 20),
+        ));
+  }
+
+  Future<void> checkEmailForSigninWithGoogle(BuildContext context) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        DocumentSnapshot<Map<String, dynamic>> userData =
+            await FirebaseFirestore.instance
+                .collection("users")
+                .doc(user.uid)
+                .get();
+
+        String emailStatus = userData["Email_status"] ?? "";
+        String status = userData["status"] ?? "";
+        if (emailStatus.toLowerCase() == "disabled") {
+          return showWelcomeSnackBar(context);
+        } else if (emailStatus.toLowerCase() == "enabled" && status == "2") {
+          print(status);
+
+          Navigator.of(context)
+              .pushReplacementNamed(RouterName.homeScreenForUser);
+
+          print(emailStatus);
+        }
+      }
+    } catch (e) {
+      print("Error checking email status: $e");
+    }
   }
 
   Future checkEmailAndNavigate(context) async {
