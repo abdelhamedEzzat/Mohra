@@ -108,7 +108,7 @@ class StaffShowWidget extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            "${S.of(context).email}  : $staffemail ",
+                            "${S.of(context).email}   $staffemail ",
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.displaySmall,
                           ),
@@ -122,7 +122,7 @@ class StaffShowWidget extends StatelessWidget {
                       children: [
                         Expanded(
                             child: Text(
-                          "${S.of(context).UserName}  :$staffName ",
+                          "${S.of(context).UserName}  $staffName ",
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.displaySmall,
                         )),

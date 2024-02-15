@@ -94,7 +94,8 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator(color: Colors.black);
+                        return const CircularProgressIndicator(
+                            color: Colors.black);
                       }
 
                       if (snapshot.hasError) {
@@ -117,7 +118,7 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
                               AsyncSnapshot docSnapshot) {
                             if (docSnapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator(
+                              return const CircularProgressIndicator(
                                   color: Colors.black);
                             }
 

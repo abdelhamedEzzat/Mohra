@@ -9,15 +9,17 @@ class TitleOfFormCreateCompany extends StatelessWidget {
   final String titleText;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        titleText,
-        style: Theme.of(context)
-            .textTheme
-            .headlineSmall!
-            .copyWith(color: ColorManger.black.withOpacity(0.66)),
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          titleText,
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall!
+              .copyWith(color: ColorManger.black.withOpacity(0.66)),
+        ),
+      ],
     );
   }
 }

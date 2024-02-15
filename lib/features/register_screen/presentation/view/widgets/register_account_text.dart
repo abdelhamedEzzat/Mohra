@@ -11,15 +11,14 @@ class RegisterAccountText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
+    return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+      Text(
         S.of(context).registerAccount,
         style: TextStyle(
             color: ColorManger.backGroundColorToSplashScreen,
             fontSize: FontSize.s20.h,
             fontWeight: FontWeightManager.bold),
       ),
-    );
+    ]);
   }
 }

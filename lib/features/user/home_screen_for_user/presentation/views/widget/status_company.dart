@@ -17,22 +17,25 @@ class StatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width / 2,
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(left: 15.w, right: 15.w),
       height: 20.h,
       decoration: BoxDecoration(
           color: colorOfStatus,
           borderRadius: borderRadius ??
               const BorderRadius.only(
                 topLeft: Radius.circular(25),
+                topRight: Radius.circular(25),
               )),
-      child: Center(
-          child: Text(
-        statusText,
-        style: Theme.of(context)
-            .textTheme
-            .displaySmall!
-            .copyWith(color: ColorManger.white),
-      )),
+      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+        Text(
+          statusText,
+          style: Theme.of(context)
+              .textTheme
+              .displaySmall!
+              .copyWith(color: ColorManger.white),
+        ),
+      ]),
     );
   }
 }

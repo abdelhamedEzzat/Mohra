@@ -45,7 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Camera": MessageLookupByLibrary.simpleMessage("Camera "),
         "Canceled": MessageLookupByLibrary.simpleMessage("Canceled"),
         "ChooseFilter": MessageLookupByLibrary.simpleMessage("Choose Filter"),
-        "Comments": MessageLookupByLibrary.simpleMessage("Comments"),
+        "Comments": MessageLookupByLibrary.simpleMessage("Comments :"),
         "Companies": MessageLookupByLibrary.simpleMessage("Companies"),
         "CompanyAdrdress":
             MessageLookupByLibrary.simpleMessage("Company Adrdress"),
@@ -94,10 +94,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "Login": MessageLookupByLibrary.simpleMessage("Login"),
         "ManageAssignment":
             MessageLookupByLibrary.simpleMessage("Manage Assignment"),
+        "ManageSubmit": MessageLookupByLibrary.simpleMessage("تنفيذ"),
         "MustSelectImage":
             MessageLookupByLibrary.simpleMessage(" Please select an image."),
         "MyAvailableCompanies":
             MessageLookupByLibrary.simpleMessage("My available companies :"),
+        "MyCompany": MessageLookupByLibrary.simpleMessage("My Company :"),
         "MyDocument": MessageLookupByLibrary.simpleMessage("My Document :"),
         "Name": MessageLookupByLibrary.simpleMessage("Name :"),
         "NewAccountant": MessageLookupByLibrary.simpleMessage("New Accountant"),
@@ -148,9 +150,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "Typeinvoicenumber":
             MessageLookupByLibrary.simpleMessage("Type invoice number"),
         "UploadDocument":
-            MessageLookupByLibrary.simpleMessage("Upload Document"),
+            MessageLookupByLibrary.simpleMessage("Upload Document "),
         "UploadDocuments":
-            MessageLookupByLibrary.simpleMessage("Upload Documents"),
+            MessageLookupByLibrary.simpleMessage("Upload Documents :"),
         "UploadFromUser":
             MessageLookupByLibrary.simpleMessage("Upload From User : "),
         "UploadanyDocument":
@@ -188,7 +190,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Choose how to upload the image"),
         "didntHaveAccount":
             MessageLookupByLibrary.simpleMessage("Didnt Have Account? "),
-        "email": MessageLookupByLibrary.simpleMessage("email"),
+        "email": MessageLookupByLibrary.simpleMessage("email :"),
         "emailHintTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("Enter Your Email"),
         "emailLabelTextInRegisterScreen":
@@ -217,8 +219,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginAccountBottonByGoogle":
             MessageLookupByLibrary.simpleMessage("Login with google"),
         "name": MessageLookupByLibrary.simpleMessage("name"),
-        "nameHintTextInRegisterScreen":
-            MessageLookupByLibrary.simpleMessage("Enter Your Name"),
+        "nameHintTextInRegisterScreenFirst":
+            MessageLookupByLibrary.simpleMessage("Enter first name"),
+        "nameHintTextInRegisterScreenLast":
+            MessageLookupByLibrary.simpleMessage("Enter Last name"),
         "passwordHintTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("Enter Your Pasword"),
         "passwordLabelTextInRegisterScreen":

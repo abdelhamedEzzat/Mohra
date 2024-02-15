@@ -335,7 +335,7 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                     height: 10.h,
                   ),
                   CustomButton(
-                    nameOfButton: S.of(context).selectItem,
+                    nameOfButton: S.of(context).ManageSubmit,
                     onTap: () async {
                       setState(() {
                         isLoading = true; // Start loading

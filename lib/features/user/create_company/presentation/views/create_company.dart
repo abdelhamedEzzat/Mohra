@@ -112,8 +112,9 @@ class _CreateCompanyState extends State<CreateCompany> {
                           validator: (value) {
                             if (value!.isEmpty) {
                               return S.of(context).FeildRequierd;
-                            } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                            } else if (!RegExp(r'^[a-zA-Z\u0600-\u06FF\s]+$')
                                 .hasMatch(value)) {
+                              // The regex pattern now includes Arabic letters from \u0600 to \u06FF
                               return S.of(context).LattersOnly;
                             }
                             return null;
@@ -167,8 +168,9 @@ class _CreateCompanyState extends State<CreateCompany> {
                           validator: (value) {
                             if (value!.isEmpty) {
                               return S.of(context).FeildRequierd;
-                            } else if (!RegExp(r'^[a-zA-Z\s\W]+$')
+                            } else if (!RegExp(r'^[a-zA-Z\u0600-\u06FF\s]+$')
                                 .hasMatch(value)) {
+                              // The regex pattern now includes Arabic letters from \u0600 to \u06FF
                               return S.of(context).LattersOnly;
                             }
                             return null;

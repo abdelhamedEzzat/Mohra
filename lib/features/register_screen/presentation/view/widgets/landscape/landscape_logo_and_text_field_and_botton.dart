@@ -78,7 +78,7 @@ class LogoAndTextFieldAndbuttonlandscape extends StatelessWidget {
                                       .firstnameLabelTextInRegisterScreen,
                                   hintText: S
                                       .of(context)
-                                      .nameHintTextInRegisterScreen,
+                                      .nameHintTextInRegisterScreenFirst,
                                   prefixIcon: const Icon(Icons.person)),
                               CustomButton(
                                   nameOfButton:

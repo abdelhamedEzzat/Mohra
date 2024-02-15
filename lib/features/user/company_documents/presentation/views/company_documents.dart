@@ -33,7 +33,7 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
         .collection("Document")
         .where('companydocID', isEqualTo: companyData["companyId"])
         .snapshots();
-    var comment = ModalRoute.of(context)?.settings.arguments;
+    //  var comment = ModalRoute.of(context)?.settings.arguments;
 
     return Scaffold(
         appBar: CustomAppBarForUsers(
@@ -77,12 +77,14 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
                     color: Colors.black,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    S.of(context).MyDocument,
-                    style: Theme.of(context).textTheme.displayLarge,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      S.of(context).MyDocument,
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 15.h,

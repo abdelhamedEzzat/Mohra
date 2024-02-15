@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:mohra_project/features/register_screen/data/user_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 int counter = 0;
 DateTime now = DateTime.now();

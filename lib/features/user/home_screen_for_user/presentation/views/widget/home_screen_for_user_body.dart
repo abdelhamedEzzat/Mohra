@@ -109,7 +109,7 @@ class _CompaniesListThatUserCreatedState
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            S.of(context).Companies,
+            S.of(context).MyCompany,
             style: Theme.of(context).textTheme.displayLarge,
           ),
           const SizedBox(height: 20),
@@ -176,27 +176,47 @@ class _CompaniesListThatUserCreatedState
                             final company = companies[index];
                             print(
                                 "======================${company.companyName}");
-                            return CompanyButton(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  RouterName.companyDocuments,
-                                  arguments: {
-                                    'companyId': company.companyId,
-                                    'companyAddress': company.companyAddress,
-                                    'companyName': company.companyName,
-                                    'companyType': company.companyType
-                                  },
-                                );
-                              },
-                              withStatus: true,
-                              companyName: company.companyName,
-                              logoCompany: company.logo,
-                              colorOfStatus: company.companyStatus == 'Accepted'
-                                  ? Colors.green
-                                  : Colors.red,
-                              statusText: company.companyStatus,
-                            );
+                            return snapshot.data!.docs[index]
+                                            ["CompanyStatus"] ==
+                                        'Waiting for Accepted' ||
+                                    snapshot.data!.docs[index]
+                                            ["CompanyStatus"] ==
+                                        'Rejected'
+                                ? CompanyButton(
+                                    onTap: () {},
+                                    withStatus: true,
+                                    companyName: company.companyName,
+                                    logoCompany: company.logo,
+                                    colorOfStatus: snapshot.data!.docs[index]
+                                                ["CompanyStatus"] ==
+                                            'Waiting for Accepted'
+                                        ? ColorManger.darkGray
+                                        : ColorManger.rejectedCompanyStatus,
+                                    statusText: company.companyStatus,
+                                  )
+                                : CompanyButton(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        RouterName.companyDocuments,
+                                        arguments: {
+                                          'companyId': company.companyId,
+                                          'companyAddress':
+                                              company.companyAddress,
+                                          'companyName': company.companyName,
+                                          'companyType': company.companyType
+                                        },
+                                      );
+                                    },
+                                    withStatus: true,
+                                    companyName: company.companyName,
+                                    logoCompany: company.logo,
+                                    colorOfStatus:
+                                        company.companyStatus == 'Accepted'
+                                            ? Colors.green
+                                            : Colors.red,
+                                    statusText: company.companyStatus,
+                                  );
                           },
                         );
                       }

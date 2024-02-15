@@ -34,6 +34,7 @@ import 'package:mohra_project/features/user/create_company/data/add_company_hive
 import 'package:mohra_project/features/user/create_company/presentation/manger/firebase_company/create_company_cubit.dart';
 import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/home_screen_for_user.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/manger/language/language_cubit.dart';
 import 'package:mohra_project/features/user/upload_document/data/company_document_model.dart';
 import 'package:mohra_project/features/user/upload_document/presentation/manger/upload_documents/upload_documents_cubit.dart';
 import 'package:mohra_project/features/user/upload_document/presentation/views/upload_documents.dart';
@@ -107,62 +108,80 @@ class MyApp extends StatelessWidget {
               BlocProvider(
                 create: (context) => UploadDocumentsCubit(),
               ),
+              BlocProvider(
+                create: (context) => LanguageCubit(),
+              ),
               // BlocProvider(
               //   create: (context) => MannageAssignmentCubit(),
               // ),
             ],
-            child: MaterialApp(
-              theme: theme(),
-              debugShowCheckedModeBanner: false,
-              // for Responcive Screens
-              builder: DevicePreview.appBuilder,
-              //
-              // For Localization Screens
-              localizationsDelegates: const [
-                S.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: S.delegate.supportedLocales,
+            child: BlocBuilder<LanguageCubit, Language>(
+                builder: (context, languageState) {
+              TextDirection textDirection = languageState == Language.arabic
+                  ? TextDirection.rtl
+                  : TextDirection.ltr;
+              return Directionality(
+                textDirection: textDirection,
+                child: MaterialApp(
+                  locale: (languageState == Language.arabic)
+                      ? Locale('ar', '')
+                      : Locale('en', ''),
+                  //locale: Locale("ar"),
 
-              // for Routing Screens
-              onGenerateRoute: AppRouter.onGenrateRoute,
-              // initialRoute: RouterName.loginScreen,
+                  theme: theme(),
+                  debugShowCheckedModeBanner: false,
+                  // for Responcive Screens
+                  builder: DevicePreview.appBuilder,
+                  //
+                  // For Localization Screens
+                  localizationsDelegates: const [
+                    S.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: S.delegate.supportedLocales,
 
-              routes: {
-                RouterName.companyDocuments: (context) =>
-                    const CompanyDocuments(),
-                RouterName.homeScreenForUser: (context) =>
-                    const HomeScreenForUser(),
-                RouterName.uploadDocuments: (context) =>
-                    const UploadDocuments(),
-                RouterName.detailsDocuments: (context) =>
-                    const DetailsDocuments(),
-                RouterName.addDocumetType: (context) => AddDocumentType(),
-                RouterName.auditorCompanyDocuments: (context) =>
-                    const AuditorCompanyDocuments(),
-                RouterName.auditorHomeScreen: (context) =>
-                    const AuditorHomeScreen(),
-                RouterName.accountantHomeScreen: (context) =>
-                    const AccountantHomeScreen(),
-                RouterName.accountantDocumentDetails: (context) =>
-                    const AccountantDocumentDetails(),
-                RouterName.accuntantCompanyDocuments: (context) =>
-                    const AccuntantCompanyDocuments(),
-                RouterName.auditorDocumentDetails: (context) =>
-                    const AuditorDocumentDetails(),
-                RouterName.searchScreenForAdmin: (context) =>
-                    const SearchScreenForAdmin(),
-                RouterName.searchScreenForUser: (context) => searchuser()
-              },
-              home:
-                  //MyAppppp()
-                  // MyApppp()
-                  // AddDocumentType(),
+                  // for Routing Screens
+                  onGenerateRoute: AppRouter.onGenrateRoute,
+                  // initialRoute: RouterName.loginScreen,
 
-                  const AuthUsers(),
-            ),
+                  routes: {
+                    RouterName.companyDocuments: (context) =>
+                        const CompanyDocuments(),
+                    RouterName.homeScreenForUser: (context) =>
+                        const HomeScreenForUser(),
+                    RouterName.uploadDocuments: (context) =>
+                        const UploadDocuments(),
+                    RouterName.detailsDocuments: (context) =>
+                        const DetailsDocuments(),
+                    RouterName.addDocumetType: (context) => AddDocumentType(),
+                    RouterName.auditorCompanyDocuments: (context) =>
+                        const AuditorCompanyDocuments(),
+                    RouterName.auditorHomeScreen: (context) =>
+                        const AuditorHomeScreen(),
+                    RouterName.accountantHomeScreen: (context) =>
+                        const AccountantHomeScreen(),
+                    RouterName.accountantDocumentDetails: (context) =>
+                        const AccountantDocumentDetails(),
+                    RouterName.accuntantCompanyDocuments: (context) =>
+                        const AccuntantCompanyDocuments(),
+                    RouterName.auditorDocumentDetails: (context) =>
+                        const AuditorDocumentDetails(),
+                    RouterName.searchScreenForAdmin: (context) =>
+                        const SearchScreenForAdmin(),
+                    RouterName.searchScreenForUser: (context) => searchuser()
+                  },
+
+                  home:
+                      //MyAppppp()
+                      // MyApppp()
+                      // AddDocumentType(),
+
+                      const AuthUsers(),
+                ),
+              );
+            }),
           );
         },
       );

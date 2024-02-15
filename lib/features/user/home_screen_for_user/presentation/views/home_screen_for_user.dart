@@ -37,8 +37,9 @@ class _HomeScreenForUserState extends State<HomeScreenForUser> {
 
   BottomNavigationBar bottomNavigationBar() {
     return BottomNavigationBar(
-        unselectedIconTheme: IconThemeData(size: 20.h),
-        selectedIconTheme: IconThemeData(size: 24.h),
+        showUnselectedLabels: false,
+        unselectedIconTheme: IconThemeData(size: 15.h),
+        selectedIconTheme: IconThemeData(size: 20.h),
         selectedLabelStyle: TextStyle(
           fontSize: 14.h,
         ),

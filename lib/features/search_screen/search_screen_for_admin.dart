@@ -149,9 +149,7 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
         leading: const BackButton(
           color: Colors.white,
         ),
-        onPressed: () {
-          Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
-        },
+        onPressed: () {},
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

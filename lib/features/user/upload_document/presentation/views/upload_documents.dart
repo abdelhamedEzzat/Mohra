@@ -41,7 +41,7 @@ class _UploadDocumentsState extends State<UploadDocuments> {
           },
           leading: const BackButton(color: Colors.white),
           title: Text(
-            S.of(context).UploadDocuments,
+            S.of(context).UploadDocument,
           ),
         ),
         body: SizedBox(

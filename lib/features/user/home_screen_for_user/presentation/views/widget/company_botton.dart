@@ -70,7 +70,7 @@ class CompanyButton extends StatelessWidget {
                             ),
                             Expanded(
                               child: Container(
-                                padding: EdgeInsets.only(right: 12.w),
+                                padding: EdgeInsets.only(right: 12.w, top: 6.h),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(75),
                                   child: CircleAvatar(

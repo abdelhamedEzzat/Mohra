@@ -29,56 +29,53 @@ class _AccountantHomeScreenState extends State<AccountantHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-            unselectedIconTheme: IconThemeData(size: 20.h),
-            selectedIconTheme: IconThemeData(size: 24.h),
-            selectedLabelStyle: TextStyle(
-              fontSize: 14.h,
-            ),
-            currentIndex: currentIndex,
-            onTap: (index) {
-              setState(() {
-                currentIndex = index;
-              });
-            },
-            fixedColor: ColorManger.backGroundColorToSplashScreen,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  color: ColorManger.backGroundColorToSplashScreen,
-                ),
-                label: S.of(context).Home,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.notification_add,
-                  color: ColorManger.backGroundColorToSplashScreen,
-                ),
-                label: S.of(context).Notification,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.settings,
-                  color: ColorManger.backGroundColorToSplashScreen,
-                ),
-                label: S.of(context).Settings,
-              ),
-            ]),
+        bottomNavigationBar: bottomNavigationBar(),
         appBar: CustomAppBar(
           title: const GetNameForUser(),
           onPressed: () {
             Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
           },
-
-          //      Text(
-          //   "Hello : Mr Mohmed",
-          //   style: Theme.of(context)
-          //       .textTheme
-          //       .displayMedium!
-          //       .copyWith(color: ColorManger.white),
-          // )
         ),
         body: pages[currentIndex]);
+  }
+
+  BottomNavigationBar bottomNavigationBar() {
+    return BottomNavigationBar(
+        showUnselectedLabels: false,
+        unselectedIconTheme: IconThemeData(size: 15.h),
+        selectedIconTheme: IconThemeData(size: 20.h),
+        selectedLabelStyle: TextStyle(
+          fontSize: 14.h,
+        ),
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        fixedColor: ColorManger.backGroundColorToSplashScreen,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: ColorManger.backGroundColorToSplashScreen,
+            ),
+            label: S.of(context).Home,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.notification_add,
+              color: ColorManger.backGroundColorToSplashScreen,
+            ),
+            label: S.of(context).Notification,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              color: ColorManger.backGroundColorToSplashScreen,
+            ),
+            label: S.of(context).Settings,
+          ),
+        ]);
   }
 }

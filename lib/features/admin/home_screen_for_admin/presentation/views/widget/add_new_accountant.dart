@@ -79,7 +79,8 @@ class _AddNewAuditorState extends State<AddNewAccountant> {
                           },
                           labelText:
                               S.of(context).firstnameLabelTextInRegisterScreen,
-                          hintText: S.of(context).nameHintTextInRegisterScreen,
+                          hintText:
+                              S.of(context).nameHintTextInRegisterScreenFirst,
                           prefixIcon: const Icon(Icons.person)),
                       CustomTextFormField(
                           validator: (value) {
@@ -96,7 +97,8 @@ class _AddNewAuditorState extends State<AddNewAccountant> {
                           },
                           labelText:
                               S.of(context).lastnameLabelTextInRegisterScreen,
-                          hintText: S.of(context).nameHintTextInRegisterScreen,
+                          hintText:
+                              S.of(context).nameHintTextInRegisterScreenLast,
                           prefixIcon: const Icon(Icons.person)),
                       CustomTextFormField(
                           validator: (value) {
@@ -139,7 +141,7 @@ class _AddNewAuditorState extends State<AddNewAccountant> {
                               S.of(context).passwordHintTextInRegisterScreen,
                           prefixIcon: const Icon(Icons.lock)),
                       CustomButton(
-                          nameOfButton: "Create Account",
+                          nameOfButton: S.of(context).CreateAccount,
                           onTap: () async {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();

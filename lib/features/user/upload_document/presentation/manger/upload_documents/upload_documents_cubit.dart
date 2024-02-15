@@ -17,8 +17,8 @@ part 'upload_documents_state.dart';
 class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
   UploadDocumentsCubit() : super(UploadDocumentsInitial());
 
-  final Box<CompanyDocument> _uploadedDocumentsBox =
-      Hive.box<CompanyDocument>('uploaded_documents');
+  // final Box<CompanyDocument> _uploadedDocumentsBox =
+  //     Hive.box<CompanyDocument>('uploaded_documents');
 
   String url = "";
   String imageurl = "";
@@ -118,25 +118,25 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
           },
         );
 
-        final uploadedDocument = CompanyDocument(
-          name: filename,
-          url: url,
-          comment: comment,
-          userId: userId,
-          companyDocId: companydocID,
-          fileExtension: filePlatforme!.extension,
-          docId: docID,
-          status: "Wating for Review",
-          companyName: "",
-          invoiceDate: "",
-          invoiceNumber: "",
-          amountOfTheInvoice: "",
-          selectItem: "",
-          selectTypeItem: "",
-          commentForAccountant: "",
-          docNumber: nextDocumentNumber,
-        );
-        _uploadedDocumentsBox.add(uploadedDocument);
+        // final uploadedDocument = CompanyDocument(
+        //   name: filename,
+        //   url: url,
+        //   comment: comment,
+        //   userId: userId,
+        //   companyDocId: companydocID,
+        //   fileExtension: filePlatforme!.extension,
+        //   docId: docID,
+        //   status: "Wating for Review",
+        //   companyName: "",
+        //   invoiceDate: "",
+        //   invoiceNumber: "",
+        //   amountOfTheInvoice: "",
+        //   selectItem: "",
+        //   selectTypeItem: "",
+        //   commentForAccountant: "",
+        //   docNumber: nextDocumentNumber,
+        // );
+        // _uploadedDocumentsBox.add(uploadedDocument);
       }
 
       emit(UploadDocumentSuccess());
@@ -211,24 +211,24 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
             'docNumer': nextDocumentNumber,
           },
         );
-        final uploadedDocument = CompanyDocument(
-          urlImage: imageurl,
-          comment: comment,
-          userId: userId,
-          companyDocId: companydocID,
-          fileExtension: "image",
-          docId: docID,
-          status: "Wating for Review",
-          companyName: "",
-          invoiceDate: "",
-          invoiceNumber: "",
-          amountOfTheInvoice: "",
-          selectItem: "",
-          selectTypeItem: "",
-          commentForAccountant: "",
-          docNumber: nextDocumentNumber,
-        );
-        _uploadedDocumentsBox.add(uploadedDocument);
+        // final uploadedDocument = CompanyDocument(
+        //   urlImage: imageurl,
+        //   comment: comment,
+        //   userId: userId,
+        //   companyDocId: companydocID,
+        //   fileExtension: "image",
+        //   docId: docID,
+        //   status: "Wating for Review",
+        //   companyName: "",
+        //   invoiceDate: "",
+        //   invoiceNumber: "",
+        //   amountOfTheInvoice: "",
+        //   selectItem: "",
+        //   selectTypeItem: "",
+        //   commentForAccountant: "",
+        //   docNumber: nextDocumentNumber,
+        // );
+        // _uploadedDocumentsBox.add(uploadedDocument);
 
         emit(UploadDocumentSuccess());
       } else {

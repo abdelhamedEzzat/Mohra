@@ -31,12 +31,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "AddNewAccountatnt":
             MessageLookupByLibrary.simpleMessage("إضافة محاسب جديد"),
         "AddNewAuditor":
-            MessageLookupByLibrary.simpleMessage("إضافة مراجع جديد"),
+            MessageLookupByLibrary.simpleMessage("إضافة مدقق جديد"),
         "AddTypeofDocumentCompany":
             MessageLookupByLibrary.simpleMessage("أضف نوع الوثيقة الشركة"),
-        "Address": MessageLookupByLibrary.simpleMessage(" : العنون"),
+        "Address": MessageLookupByLibrary.simpleMessage("العنوان :"),
         "AlreadyHaveAccount":
-            MessageLookupByLibrary.simpleMessage("اذا كنت تمتلك حساب"),
+            MessageLookupByLibrary.simpleMessage(" اذا كنت تمتلك حساب :"),
         "Arabic": MessageLookupByLibrary.simpleMessage("العربيه"),
         "Assignment": MessageLookupByLibrary.simpleMessage("تكليف الموظفين"),
         "Auditor": MessageLookupByLibrary.simpleMessage("مدقق الحسابات"),
@@ -45,8 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Camera": MessageLookupByLibrary.simpleMessage("الكاميرا "),
         "Canceled": MessageLookupByLibrary.simpleMessage("ألغيت"),
         "ChooseFilter": MessageLookupByLibrary.simpleMessage("اختر الفلتر"),
-        "Comments": MessageLookupByLibrary.simpleMessage("التعليقات"),
-        "Companies": MessageLookupByLibrary.simpleMessage("الشركات"),
+        "Comments": MessageLookupByLibrary.simpleMessage("التعليقات : "),
+        "Companies": MessageLookupByLibrary.simpleMessage(" الشركات "),
         "CompanyAdrdress": MessageLookupByLibrary.simpleMessage("عنوان الشركه"),
         "CompanyDetails": MessageLookupByLibrary.simpleMessage("تفاصيل الشركه"),
         "CompanyDocuments":
@@ -72,7 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "DidntHaveDocument": MessageLookupByLibrary.simpleMessage(
             "لا يوجد لديك مستندات في الشركه"),
         "DocumentStatus":
-            MessageLookupByLibrary.simpleMessage(": حالة المستند "),
+            MessageLookupByLibrary.simpleMessage(" حالة المستند :"),
         "Documents": MessageLookupByLibrary.simpleMessage("المستندات"),
         "English": MessageLookupByLibrary.simpleMessage("الانجليزيه"),
         "EnterType": MessageLookupByLibrary.simpleMessage(" اكتب نوع للمستند"),
@@ -91,13 +91,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "Login": MessageLookupByLibrary.simpleMessage("سجل الدخول"),
         "ManageAssignment":
             MessageLookupByLibrary.simpleMessage("اضافه طاقم العمل الي شركه"),
+        "ManageSubmit": MessageLookupByLibrary.simpleMessage("تنفيذ"),
         "MustSelectImage": MessageLookupByLibrary.simpleMessage(
             " من فضلك يجب اختيار صوره للشركه"),
         "MyAvailableCompanies":
             MessageLookupByLibrary.simpleMessage(" : شركاتي المتاحه "),
-        "MyDocument":
-            MessageLookupByLibrary.simpleMessage(" : مستندات الشركه "),
-        "Name": MessageLookupByLibrary.simpleMessage(": الاسم "),
+        "MyCompany": MessageLookupByLibrary.simpleMessage("شركاتي :"),
+        "MyDocument": MessageLookupByLibrary.simpleMessage("مستندات الشركه :"),
+        "Name": MessageLookupByLibrary.simpleMessage("الاسم :"),
         "NewAccountant": MessageLookupByLibrary.simpleMessage("محاسب جديد"),
         "NewAuditor": MessageLookupByLibrary.simpleMessage("مدقق جديد"),
         "NoCompanyMassage": MessageLookupByLibrary.simpleMessage(
@@ -107,14 +108,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "Nodocumentsfoundforyou":
             MessageLookupByLibrary.simpleMessage("لا توجد مستندات لك "),
         "Notification": MessageLookupByLibrary.simpleMessage("الاشعارات"),
+        "Passwordmustcontainnumberslettersandspecialcharacter":
+            MessageLookupByLibrary.simpleMessage(
+                "يجب ان يحتوي الباسورد علي احرف وارقام وعلامات خاصه"),
         "Pleaseentersometext":
             MessageLookupByLibrary.simpleMessage("الرجاء إدخال بعض النص"),
         "Rejected": MessageLookupByLibrary.simpleMessage("رفض"),
-        "Review": MessageLookupByLibrary.simpleMessage(" : مراجعه "),
+        "Review": MessageLookupByLibrary.simpleMessage("مراجعه  : "),
         "Search": MessageLookupByLibrary.simpleMessage("بحث"),
         "SearchForCompany":
             MessageLookupByLibrary.simpleMessage("ابحث عن شركه"),
-        "SearchScreen": MessageLookupByLibrary.simpleMessage("... بحث"),
+        "SearchScreen": MessageLookupByLibrary.simpleMessage("بحث... "),
         "SelectStaffType":
             MessageLookupByLibrary.simpleMessage("حدد نوع الموظفين"),
         "SelectStatusOfDocument":
@@ -124,26 +128,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "Settings": MessageLookupByLibrary.simpleMessage("الاعدادات"),
         "Staff": MessageLookupByLibrary.simpleMessage("الموظفون"),
         "StaffTypeReview":
-            MessageLookupByLibrary.simpleMessage(": تمت المراجعه بواسطه"),
+            MessageLookupByLibrary.simpleMessage(" تمت المراجعه بواسطه : "),
         "Submit": MessageLookupByLibrary.simpleMessage("أنشئ"),
         "Theemailmustcontainatleastoneletter":
             MessageLookupByLibrary.simpleMessage(
                 "يجب أن يحتوي البريد الإلكتروني على حرف واحد على الأقل"),
-        "Type": MessageLookupByLibrary.simpleMessage(":مجال الشركه"),
+        "Type": MessageLookupByLibrary.simpleMessage("مجال الشركه :"),
         "TypeAmountoftheinvoice":
             MessageLookupByLibrary.simpleMessage("اكتب مبلغ الفاتورة"),
         "TypeInvoicedate":
             MessageLookupByLibrary.simpleMessage("اكتب تاريخ الفاتورة"),
         "Typeinvoicenumber":
             MessageLookupByLibrary.simpleMessage("اكتب رقم الفاتوره"),
-        "UploadDocument": MessageLookupByLibrary.simpleMessage("رفع المستندات"),
+        "UploadDocument":
+            MessageLookupByLibrary.simpleMessage("رفع المستندات "),
         "UploadDocuments":
-            MessageLookupByLibrary.simpleMessage("رفع المستندات"),
+            MessageLookupByLibrary.simpleMessage("رفع المستندات : "),
         "UploadFromUser":
             MessageLookupByLibrary.simpleMessage(" : تم رفعه من المستخدم "),
         "UploadanyDocument": MessageLookupByLibrary.simpleMessage(
             "اضغط لرفع المستندات للمراجعه"),
-        "UserName": MessageLookupByLibrary.simpleMessage("اسم المستخدم"),
+        "UserName": MessageLookupByLibrary.simpleMessage("اسم المستخدم : "),
         "UserNotification":
             MessageLookupByLibrary.simpleMessage("اشعار من المستخدم"),
         "Users": MessageLookupByLibrary.simpleMessage("المستخدمون"),
@@ -165,7 +170,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("اضاف مستند بأسم "),
         "amendment": MessageLookupByLibrary.simpleMessage("تعديل"),
         "amountOfTheInvoice":
-            MessageLookupByLibrary.simpleMessage(" : مبلغ الفاتورة"),
+            MessageLookupByLibrary.simpleMessage(" مبلغ الفاتوره : "),
         "buttonNameFirstAndSecoundIntroScreen":
             MessageLookupByLibrary.simpleMessage("التالي"),
         "buttonNameThirdIntroScreen":
@@ -174,11 +179,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("اختر طريقه رفع الصوره"),
         "didntHaveAccount":
             MessageLookupByLibrary.simpleMessage("اذا لم تكن تمتلك حساب ؟ "),
-        "email": MessageLookupByLibrary.simpleMessage("ايميل المستخدم"),
+        "email": MessageLookupByLibrary.simpleMessage("ايميل المستخدم : "),
         "emailHintTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("اكتب الايميل الخاص بك "),
         "emailLabelTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("الايميل"),
+        "firstnameLabelTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("الاسم الاول"),
         "forgetPassword":
             MessageLookupByLibrary.simpleMessage("نسيت كلمه المرور ؟"),
         "hintAddressCompany":
@@ -191,17 +198,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "hintNameCompany":
             MessageLookupByLibrary.simpleMessage("اكتب اسم الشركه "),
         "invoiceDate":
-            MessageLookupByLibrary.simpleMessage(": تاريخ الفاتورة "),
+            MessageLookupByLibrary.simpleMessage(" تاريخ الفاتورة :"),
         "invoiceNumber":
-            MessageLookupByLibrary.simpleMessage(": رقم الفاتورة "),
+            MessageLookupByLibrary.simpleMessage(" رقم الفاتورة :"),
+        "lastnameLabelTextInRegisterScreen":
+            MessageLookupByLibrary.simpleMessage("الاسم الاخير"),
         "loginAccount": MessageLookupByLibrary.simpleMessage("تسجيل الدخول "),
         "loginAccountBotton":
             MessageLookupByLibrary.simpleMessage("سجل الدخول"),
         "loginAccountBottonByGoogle":
             MessageLookupByLibrary.simpleMessage("تسجيل الدخول من خلال جوجل"),
         "name": MessageLookupByLibrary.simpleMessage("الاسم"),
-        "nameHintTextInRegisterScreen":
-            MessageLookupByLibrary.simpleMessage("اكتب اسمك"),
+        "nameHintTextInRegisterScreenFirst":
+            MessageLookupByLibrary.simpleMessage("اكتب الاسم الاول"),
+        "nameHintTextInRegisterScreenLast":
+            MessageLookupByLibrary.simpleMessage("اكتب الاسم الاخير"),
         "passwordHintTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("اكتب الباسورد الخاص بك"),
         "passwordLabelTextInRegisterScreen":
@@ -212,9 +223,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تسجيل الحساب "),
         "registerAccountBottonByGoogle":
             MessageLookupByLibrary.simpleMessage("تسجيل الحساب من خلال جوجل"),
-        "selectItem": MessageLookupByLibrary.simpleMessage(": اختر العنصر"),
+        "selectItem": MessageLookupByLibrary.simpleMessage("اختر العنصر : "),
         "selectTypeItem":
-            MessageLookupByLibrary.simpleMessage(" : حدد نوع العنصر"),
+            MessageLookupByLibrary.simpleMessage("حدد نوع العنصر : "),
         "subtitleForFirstIntroScreen": MessageLookupByLibrary.simpleMessage(
             "يمكنك بسهولة تحميل المستندات ومتابعة سير العمل عليها ويمكنك أيضًا كتابة التعليقات"),
         "subtitleForSecondIntroScreen": MessageLookupByLibrary.simpleMessage(

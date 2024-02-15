@@ -174,7 +174,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData && snapshot.data.docs.isNotEmpty) {
                         var document = snapshot.data.docs[0].data();
-                        var accountantReview = document?['AccountantReview'];
+                        // var accountantReview = document?['AccountantReview'];
 
                         var accountantReviews =
                             (document?['AccountantReview'] as List<dynamic>?) ??

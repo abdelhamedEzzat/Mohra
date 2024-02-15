@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/manger/language/language_cubit.dart';
 import 'package:mohra_project/generated/l10n.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageWidget extends StatelessWidget {
   const LanguageWidget({
@@ -34,7 +37,10 @@ class LanguageWidget extends StatelessWidget {
                     Expanded(
                       flex: 3,
                       child: CustomButton(
-                        onTap: () {},
+                        onTap: () {
+                          BlocProvider.of<LanguageCubit>(context)
+                              .toggleLanguage(Language.arabic);
+                        },
                         nameOfButton: S.of(context).Arabic,
                       ),
                     ),
@@ -45,7 +51,10 @@ class LanguageWidget extends StatelessWidget {
                       flex: 3,
                       child: Center(
                         child: CustomButton(
-                          onTap: () {},
+                          onTap: () {
+                            BlocProvider.of<LanguageCubit>(context)
+                                .toggleLanguage(Language.english);
+                          },
                           nameOfButton: S.of(context).English,
                         ),
                       ),

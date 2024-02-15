@@ -16,14 +16,33 @@ class IfYouDidntHaveAccount extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.only(left: 10),
         alignment: Alignment.centerLeft,
-        child: Text.rich(TextSpan(children: [
-          TextSpan(
-            text: S.of(context).didntHaveAccount,
-            style:
-                TextStyle(fontSize: FontSize.s12.h, color: ColorManger.black),
-          ),
-          registerButtonText(context),
-        ])));
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              S.of(context).didntHaveAccount,
+              style:
+                  TextStyle(fontSize: FontSize.s12.w, color: ColorManger.black),
+            ),
+            SizedBox(
+              width: 3.w,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouterName.registerScreen,
+                  (route) => false,
+                );
+              },
+              child: Text(
+                S.of(context).register,
+                style: TextStyle(
+                    fontSize: FontSize.s14,
+                    color: ColorManger.backGroundColorToSplashScreen),
+              ),
+            )
+          ],
+        ));
   }
 
   WidgetSpan registerButtonText(BuildContext context) {
@@ -44,7 +63,7 @@ class IfYouDidntHaveAccount extends StatelessWidget {
       child: Text(
         S.of(context).register,
         style: TextStyle(
-            fontSize: FontSize.s16,
+            fontSize: FontSize.s14,
             color: ColorManger.backGroundColorToSplashScreen),
       ),
     ));

@@ -15,28 +15,30 @@ class UserIfAlreadyHaveAccount extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.only(left: 10),
         alignment: Alignment.centerLeft,
-        child: Text.rich(TextSpan(children: [
-          TextSpan(
-            text: S.of(context).AlreadyHaveAccount,
-            style:
-                TextStyle(fontSize: FontSize.s12.h, color: ColorManger.black),
-          ),
-          loginButtonText(context),
-        ])));
-  }
-
-  WidgetSpan loginButtonText(BuildContext context) {
-    return WidgetSpan(
-        child: GestureDetector(
-      onTap: () {
-        Navigator.of(context).pushNamed(RouterName.loginScreen);
-      },
-      child: Text(
-        S.of(context).Login,
-        style: TextStyle(
-            fontSize: FontSize.s16,
-            color: ColorManger.backGroundColorToSplashScreen),
-      ),
-    ));
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              S.of(context).AlreadyHaveAccount,
+              style:
+                  TextStyle(fontSize: FontSize.s12.w, color: ColorManger.black),
+            ),
+            SizedBox(
+              width: 3.w,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(RouterName.loginScreen);
+              },
+              child: Text(
+                S.of(context).Login,
+                style: TextStyle(
+                    fontSize: FontSize.s14,
+                    color: ColorManger.backGroundColorToSplashScreen),
+              ),
+            )
+          ],
+        ));
   }
 }

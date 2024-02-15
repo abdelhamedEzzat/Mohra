@@ -1,8 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
@@ -33,7 +30,7 @@ class _AccountantHomeScreenState extends State<AdminHomeScreen> {
     return DefaultTabController(
         length: 4,
         child: Scaffold(
-            bottomNavigationBar: bottomNavigationForAdmin(),
+            bottomNavigationBar: bottomNavigationBar(),
             appBar: CustomAppBar(
                 onPressed: () {
                   Navigator.of(context)
@@ -43,10 +40,11 @@ class _AccountantHomeScreenState extends State<AdminHomeScreen> {
             body: pages[currentIndex]));
   }
 
-  BottomNavigationBar bottomNavigationForAdmin() {
+  BottomNavigationBar bottomNavigationBar() {
     return BottomNavigationBar(
-        unselectedIconTheme: IconThemeData(size: 20.h),
-        selectedIconTheme: IconThemeData(size: 24.h),
+        showUnselectedLabels: false,
+        unselectedIconTheme: IconThemeData(size: 15.h),
+        selectedIconTheme: IconThemeData(size: 20.h),
         selectedLabelStyle: TextStyle(
           fontSize: 14.h,
         ),
@@ -63,7 +61,7 @@ class _AccountantHomeScreenState extends State<AdminHomeScreen> {
               Icons.home,
               color: ColorManger.backGroundColorToSplashScreen,
             ),
-            label: S.of(context).Name,
+            label: S.of(context).Home,
           ),
           BottomNavigationBarItem(
             icon: Icon(

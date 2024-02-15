@@ -233,7 +233,7 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                             .firstnameLabelTextInRegisterScreen,
                                         hintText: S
                                             .of(context)
-                                            .nameHintTextInRegisterScreen,
+                                            .nameHintTextInRegisterScreenFirst,
                                         prefixIcon: const Icon(Icons.person)),
                                     //
                                     //
@@ -256,7 +256,7 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                             .lastnameLabelTextInRegisterScreen,
                                         hintText: S
                                             .of(context)
-                                            .nameHintTextInRegisterScreen,
+                                            .nameHintTextInRegisterScreenLast,
                                         prefixIcon: const Icon(Icons.person)),
                                     //
                                     //
@@ -267,10 +267,10 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                     CustomTextFormField(
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return "* this Field is required You must enter data";
+                                            return S.of(context).FeildRequierd;
                                           } else if (!RegExp(r'[a-zA-Z]')
                                               .hasMatch(value)) {
-                                            return "The email must contain at least one letter.";
+                                            return S.of(context).LattersOnly;
                                           }
                                           return null;
                                         },
@@ -293,11 +293,13 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                         obscureText: true,
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return "* this Field is required You must enter data";
+                                            return S.of(context).FeildRequierd;
                                           } else if (!RegExp(
                                                   r'^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[\W_]).+$')
                                               .hasMatch(value)) {
-                                            return "Password must contain  numbers, letters, and special character.";
+                                            return S
+                                                .of(context)
+                                                .Passwordmustcontainnumberslettersandspecialcharacter;
                                           }
                                           return null;
                                         },

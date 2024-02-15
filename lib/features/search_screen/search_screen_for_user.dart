@@ -47,7 +47,7 @@ class _CustomAppBarState extends State<CustomAppBarForUsers> {
         backgroundColor: ColorManger.backGroundColorToSplashScreen,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 20),
+            padding: EdgeInsets.only(right: 20.w, left: 20.w),
             child: GestureDetector(
               onTap: widget.onTap ??
                   () {
@@ -144,8 +144,12 @@ class _searchuserState extends State<searchuser> {
                                 "Accepted") {
                               Navigator.pushNamed(
                                   context, RouterName.companyDocuments,
-                                  arguments: snapshot.data.docs[index]
-                                      ["companyId"]);
+                                  arguments: {
+                                    "companyId": data["companyId"],
+                                    "companyName": data["company_Name"],
+                                    "companyAddress": data["Company_Address"],
+                                    "Company_type": data["companyType"],
+                                  });
                             } else {
                               return;
                             }

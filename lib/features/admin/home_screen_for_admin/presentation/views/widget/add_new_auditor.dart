@@ -81,7 +81,8 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
                           },
                           labelText:
                               S.of(context).firstnameLabelTextInRegisterScreen,
-                          hintText: S.of(context).nameHintTextInRegisterScreen,
+                          hintText:
+                              S.of(context).nameHintTextInRegisterScreenFirst,
                           prefixIcon: const Icon(Icons.person)),
                       CustomTextFormField(
                           validator: (value) {
@@ -98,7 +99,8 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
                           },
                           labelText:
                               S.of(context).lastnameLabelTextInRegisterScreen,
-                          hintText: S.of(context).nameHintTextInRegisterScreen,
+                          hintText:
+                              S.of(context).nameHintTextInRegisterScreenLast,
                           prefixIcon: const Icon(Icons.person)),
                       CustomTextFormField(
                           validator: (value) {

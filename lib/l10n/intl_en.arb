@@ -22,7 +22,8 @@
     "passwordHintTextInRegisterScreen" : "Enter Your Pasword"  , 
     "firstnameLabelTextInRegisterScreen" : "first Name" , 
     "lastnameLabelTextInRegisterScreen" : "last Name" , 
-    "nameHintTextInRegisterScreen" : "Enter Your Name" , 
+    "nameHintTextInRegisterScreenFirst" : "Enter first name" ,
+    "nameHintTextInRegisterScreenLast" : "Enter Last name" , 
     "registerAccountBotton" : "Register Account" , 
     "registerAccountBottonByGoogle" : "Register with google" , 
     "Login" : "Login" ,
@@ -41,7 +42,7 @@
     "sendRequest" :   "Send Request" ,
     "resetPassword" :   "Reset Password" ,
     "ContinueAfterSendVerify" :   "Continue" ,
-
+    
   
 
 
@@ -56,7 +57,7 @@
     "Settings": "Settings" ,
     "Companies":"Companies",
     "Documents":"Documents",
-    "My Company :": "My Company :",
+    "MyCompany": "My Company :",
     "NoCompanyMassage":"You haven't created any companies yet. Click to create one!",
     "CreateCompany":"Click to Create your Company",
     "CreateCompanyToStart":"Create Company To Start",
@@ -66,8 +67,8 @@
     "Arabic":"Arabic",
     "English":"English",
     "Delete":"Delete account",
-    "UploadDocuments":"Upload Documents",
-    "Comments":"Comments" , 
+    "UploadDocuments":"Upload Documents :",
+    "Comments":"Comments :" , 
     "hintComments":"Add any Comment Here",
     "UploadanyDocument":"Upload any Document",
      "userin":"user in",
@@ -104,7 +105,7 @@
      "Type" :"Type :",
      "MyDocument":"My Document :",
      "DidntHaveDocument": "You didn't have any documents.",
-     "UploadDocument":"Upload Document",
+     "UploadDocument":"Upload Document ",
      "Search": "Search",
      "SearchForCompany":"Search For Company",
      "SelectTypeOfDocument":"Select Type Of Document",
@@ -164,7 +165,7 @@
    "AddNewAuditor":"Add New Auditor",
    "ManageAssignment": "Manage Assignment",
    "Youdidnthaveanydocuments":"You didn't have any documents.",
-   "email":"email",
+   "email":"email :",
    "UserName":"UserName",
    "Accepted":"Accepted",
    "Rejected":"Rejected",
@@ -174,7 +175,10 @@
    "Typeinvoicenumber":"Type invoice number",
    "TypeAmountoftheinvoice":"Type Amount of the invoice",
    "AccountantaddedDocumentin":"Accountant added Document in",
-   "YouMustaddTypeOfDocument":"You Must add Type Of Document"
+   "YouMustaddTypeOfDocument":"You Must add Type Of Document",
+   "ManageSubmit":"تنفيذ"
+  
+   
   
    
     

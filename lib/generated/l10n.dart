@@ -200,11 +200,21 @@ class S {
     );
   }
 
-  /// `Enter Your Name`
-  String get nameHintTextInRegisterScreen {
+  /// `Enter first name`
+  String get nameHintTextInRegisterScreenFirst {
     return Intl.message(
-      'Enter Your Name',
-      name: 'nameHintTextInRegisterScreen',
+      'Enter first name',
+      name: 'nameHintTextInRegisterScreenFirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Last name`
+  String get nameHintTextInRegisterScreenLast {
+    return Intl.message(
+      'Enter Last name',
+      name: 'nameHintTextInRegisterScreenLast',
       desc: '',
       args: [],
     );
@@ -410,7 +420,15 @@ class S {
     );
   }
 
-  // skipped getter for the 'My Company :' key
+  /// `My Company :`
+  String get MyCompany {
+    return Intl.message(
+      'My Company :',
+      name: 'MyCompany',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `You haven't created any companies yet. Click to create one!`
   String get NoCompanyMassage {
@@ -492,20 +510,20 @@ class S {
     );
   }
 
-  /// `Upload Documents`
+  /// `Upload Documents :`
   String get UploadDocuments {
     return Intl.message(
-      'Upload Documents',
+      'Upload Documents :',
       name: 'UploadDocuments',
       desc: '',
       args: [],
     );
   }
 
-  /// `Comments`
+  /// `Comments :`
   String get Comments {
     return Intl.message(
-      'Comments',
+      'Comments :',
       name: 'Comments',
       desc: '',
       args: [],
@@ -822,10 +840,10 @@ class S {
     );
   }
 
-  /// `Upload Document`
+  /// `Upload Document `
   String get UploadDocument {
     return Intl.message(
-      'Upload Document',
+      'Upload Document ',
       name: 'UploadDocument',
       desc: '',
       args: [],
@@ -1392,10 +1410,10 @@ class S {
     );
   }
 
-  /// `email`
+  /// `email :`
   String get email {
     return Intl.message(
-      'email',
+      'email :',
       name: 'email',
       desc: '',
       args: [],
@@ -1497,6 +1515,16 @@ class S {
     return Intl.message(
       'You Must add Type Of Document',
       name: 'YouMustaddTypeOfDocument',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تنفيذ`
+  String get ManageSubmit {
+    return Intl.message(
+      'تنفيذ',
+      name: 'ManageSubmit',
       desc: '',
       args: [],
     );

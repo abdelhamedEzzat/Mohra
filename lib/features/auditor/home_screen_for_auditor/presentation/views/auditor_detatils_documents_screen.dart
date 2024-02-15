@@ -34,15 +34,15 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
   ];
   @override
   Widget build(BuildContext context) {
-    bool isBord = true;
+    // bool isBord = true;
 
     Map<String, dynamic> docDitails =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
-    final Stream<QuerySnapshot> documentCompany = FirebaseFirestore.instance
-        .collection('Companys')
-        .where("companyId", isEqualTo: docDitails['companydocID'])
-        .snapshots();
+    // final Stream<QuerySnapshot> documentCompany = FirebaseFirestore.instance
+    //     .collection('Companys')
+    //     .where("companyId", isEqualTo: docDitails['companydocID'])
+    //     .snapshots();
 
     final Stream<QuerySnapshot> documentDetatils = FirebaseFirestore.instance
         .collection('Document')

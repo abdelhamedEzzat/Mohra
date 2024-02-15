@@ -195,12 +195,12 @@ class ImageDocWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  GestureDetector(
-                    onTap: ontapForNavToDetailsScreen,
-                    child: Positioned(
-                      top: 35.h,
-                      right: 0,
-                      bottom: 0,
+                  Positioned(
+                    top: 35.h,
+                    right: 0,
+                    bottom: 0,
+                    child: GestureDetector(
+                      onTap: ontapForNavToDetailsScreen,
                       child: Container(
                           decoration: BoxDecoration(
                               color: Colors.black87.withOpacity(0.8),
@@ -445,12 +445,12 @@ class DocumentForAuditor extends StatelessWidget {
                       ),
                     ],
                   ),
-                  GestureDetector(
-                    onTap: ontapForNavToDetailsScreen,
-                    child: Positioned(
-                      top: 35.h,
-                      right: 0,
-                      bottom: 0,
+                  Positioned(
+                    top: 35.h,
+                    right: 0,
+                    bottom: 0,
+                    child: GestureDetector(
+                      onTap: ontapForNavToDetailsScreen,
                       child: Container(
                           decoration: BoxDecoration(
                               color: Colors.black87.withOpacity(0.8),

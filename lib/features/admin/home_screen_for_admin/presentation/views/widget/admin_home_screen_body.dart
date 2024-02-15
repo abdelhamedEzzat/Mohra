@@ -24,7 +24,9 @@ class AdminHomeScreenBody extends StatelessWidget {
                 indicatorColor: ColorManger.black,
                 tabs: [
                   Tab(
-                    icon: const Icon(Icons.pest_control_outlined),
+                    icon: Icon(
+                      Icons.pest_control_outlined,
+                    ),
                     child: Text(S.of(context).Controller,
                         style: TextStyle(fontSize: 12.h)),
                   ),
