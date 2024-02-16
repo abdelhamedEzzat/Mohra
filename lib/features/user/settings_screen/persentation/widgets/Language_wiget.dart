@@ -5,7 +5,6 @@ import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/manger/language/language_cubit.dart';
 import 'package:mohra_project/generated/l10n.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageWidget extends StatelessWidget {
   const LanguageWidget({

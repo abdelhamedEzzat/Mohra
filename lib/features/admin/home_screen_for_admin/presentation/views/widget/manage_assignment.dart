@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
-import 'package:mohra_project/core/constants/constans_collections/collections.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
@@ -134,10 +132,9 @@ class _ManageAssignmentState extends State<ManageAssignment> {
   int number = 0;
   List<String> filterCompanyDropDown = ['Auditor', 'Accountant'];
   String? selectItem;
-
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    bool isLoading = false;
     return Scaffold(
       appBar: CustomAppBar(
         onPressed: () {
@@ -203,7 +200,7 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                   ),
 
                   CustomTextFormField(
-                    validator: (value) {},
+                    //  validator: (value) {},
                     controller: searchContraller,
                     hintText: S.of(context).hintAssignmentStaffName,
                     prefixIcon: const Icon(Icons.email),
@@ -389,6 +386,8 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                               'NotificationCompanyID': companyID,
                               'NotificationUserID': sttafuserID
                             });
+                          }).then((value) {
+                            Navigator.of(context).pop();
                           });
 
                           print(

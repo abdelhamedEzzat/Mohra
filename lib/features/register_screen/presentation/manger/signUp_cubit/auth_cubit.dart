@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -129,7 +130,7 @@ class AuthCubit extends Cubit<AuthState> {
     final user = FirebaseAuth.instance.currentUser!.uid;
     DocumentReference users = firestore.collection('users').doc(user);
 
-    emit(SignupLoading());
+    emit(AddAuditorLoading());
     try {
       users.set({
         'first_Name': firstName,
@@ -141,20 +142,72 @@ class AuthCubit extends Cubit<AuthState> {
         'status': '2',
         'Email_status': 'enabled',
       });
-      emit(SignupSuccess());
+      emit(AddAuditorSuccess());
     } catch (e) {
-      Signupfaild(error: "Failed to add user:${e.toString()}");
+      AddAuditorfaild(error: "Failed to add user:${e.toString()}");
     }
   }
 
-  Future<void> addAccountant(
-      {required String firstName,
-      required String lastName,
-      required String email}) async {
+  Future<void> staffSignIn({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+  }) async {
+    emit(SignupLoading());
+    try {
+      UserCredential credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      final user = credential.user!;
+      CollectionReference users = firestore.collection('users');
+
+      emit(AddAuditorLoading());
+      try {
+        await users.add(
+          {
+            'first_Name': firstName,
+            'last_Name': lastName,
+            'fullName': firstName + lastName,
+            'userID': user.uid, // Use the user's ID here
+            'email': email,
+            'role': 'Auditor',
+            'status': '2',
+            'Email_status': 'enabled',
+          },
+        );
+
+        emit(AddAuditorSuccess());
+      } catch (e) {
+        emit(AddAuditorfaild(error: "Failed to add user:${e.toString()}"));
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        emit(Signupfaild(error: 'The password provided is too weak.'));
+      } else if (e.code == 'email-already-in-use') {
+        emit(Signupfaild(error: 'An account already exists for this email.'));
+      } else {
+        emit(Signupfaild(error: 'An error occurred. Please try again.'));
+      }
+    } catch (e) {
+      emit(Signupfaild(error: 'An error occurred. Please try again.'));
+    }
+  }
+
+  Future<void> addAccountant({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String password,
+  }) async {
+    // await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    //   email: email,
+    //   password: password,
+    // );
     final user = FirebaseAuth.instance.currentUser!.uid;
     DocumentReference users = firestore.collection('users').doc(user);
 
-    emit(SignupLoading());
+    emit(AddAuditorLoading());
     try {
       users.set({
         'first_Name': firstName,
@@ -166,9 +219,9 @@ class AuthCubit extends Cubit<AuthState> {
         'status': '2',
         'Email_status': 'enabled',
       });
-      emit(SignupSuccess());
+      emit(AddAuditorSuccess());
     } catch (e) {
-      Signupfaild(error: "Failed to add user:${e.toString()}");
+      AddAuditorfaild(error: "Failed to add user:${e.toString()}");
     }
   }
 

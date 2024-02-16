@@ -12,8 +12,10 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+
 	<key>CFBundleName</key>
-	<string>mohra_project</string>
+	<string>Mohra</string>
+
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -53,7 +55,10 @@
 	<!-- <key>NSCameraUsageDescription</key>
     <string>We need access to your camera for XYZ</string>
 	<key>NSPhotoLibraryUsageDescription</key> -->
-    
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+    <string>UIInterfaceOrientationPortrait</string>
+
 	<key>NSPhotoLibraryUsageDescription</key>
     <string> this app needs permission for choosing image from your library.</string>
 

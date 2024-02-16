@@ -161,8 +161,10 @@
    "TypeAmountoftheinvoice":"اكتب مبلغ الفاتورة",
    "AccountantaddedDocumentin":"اضاف اليك المحاسب مستند",
    "YouMustaddTypeOfDocument":"يجب اضافه نوع للملف ",
-   "ManageSubmit":"تنفيذ"
-   
-
+   "ManageSubmit":"تنفيذ",
+   "Bycreatinganaccountyouareagreeingtoour":"من خلال إنشاء حساب، فإنك توافق على",
+   "TermesCondations":"الشروط والأحكام",
+   "PrivacyPolicy":"سياسة الخصوصية",
+   "and":"و"
 
 }

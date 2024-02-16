@@ -35,6 +35,21 @@ final class Loginfaild extends AuthState {
 }
 
 //
+//add Aditor
+//
+final class AddAuditorInitial extends AuthState {}
+
+final class AddAuditorLoading extends AuthState {}
+
+final class AddAuditorSuccess extends AuthState {}
+
+final class AddAuditorfaild extends AuthState {
+  final String error;
+
+  const AddAuditorfaild({required this.error});
+}
+
+//
 // for log out
 //
 final class AuthlogOut extends AuthState {}

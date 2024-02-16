@@ -176,9 +176,11 @@
    "TypeAmountoftheinvoice":"Type Amount of the invoice",
    "AccountantaddedDocumentin":"Accountant added Document in",
    "YouMustaddTypeOfDocument":"You Must add Type Of Document",
-   "ManageSubmit":"تنفيذ"
-  
-   
+   "ManageSubmit":"Submit",
+   "Bycreatinganaccountyouareagreeingtoour":"Bycreatinganaccountyouareagreeingtoour\n",
+   "TermesCondations":"Termes & Condations",
+   "PrivacyPolicy":"Privacy Policy",
+   "and":"and"
   
    
     

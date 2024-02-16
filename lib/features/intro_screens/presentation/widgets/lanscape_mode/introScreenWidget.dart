@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mohra_project/core/device_type_and_orientation/orientation_widget.dart';
-import 'package:mohra_project/features/intro_screens/presentation/widgets/lanscape_mode/landscape_mode_Intro_screen.dart';
+// import 'package:mohra_project/core/device_type_and_orientation/orientation_widget.dart';
+// import 'package:mohra_project/features/intro_screens/presentation/widgets/lanscape_mode/landscape_mode_Intro_screen.dart';
 import 'package:mohra_project/features/intro_screens/presentation/widgets/protrate_mode/portrait_mode_Intro_screen.dart';
 
 class IntroBuildScreensWidget extends StatelessWidget {
@@ -28,25 +28,27 @@ class IntroBuildScreensWidget extends StatelessWidget {
   final Color colorForIntroImage;
   @override
   Widget build(BuildContext context) {
-    return Oriantation(
-      portrait: PortraitModeIntroScreen(
-          colorForIntroImage: colorForIntroImage,
-          colorForScreen: colorForScreen,
-          currentPage: currentPage,
-          image: image,
-          numberOfPage: numberOfPage,
-          subTitle: subtitle,
-          title: title,
-          onTapRightArrow: onTapRightArrow),
-      landscape: LandscapeModeIntroScreen(
-          colorForIntroImage: colorForIntroImage,
-          colorForScreen: colorForScreen,
-          currentPage: currentPage,
-          image: image,
-          numberOfPage: numberOfPage,
-          subTitle: subtitle,
-          title: title,
-          onTapRightArrow: onTapRightArrow),
-    );
+    return
+        //  Oriantation(
+        //   portrait:
+        PortraitModeIntroScreen(
+            colorForIntroImage: colorForIntroImage,
+            colorForScreen: colorForScreen,
+            currentPage: currentPage,
+            image: image,
+            numberOfPage: numberOfPage,
+            subTitle: subtitle,
+            title: title,
+            onTapRightArrow: onTapRightArrow);
+    //   landscape: LandscapeModeIntroScreen(
+    //       colorForIntroImage: colorForIntroImage,
+    //       colorForScreen: colorForScreen,
+    //       currentPage: currentPage,
+    //       image: image,
+    //       numberOfPage: numberOfPage,
+    //       subTitle: subtitle,
+    //       title: title,
+    //       onTapRightArrow: onTapRightArrow),
+    // );
   }
 }

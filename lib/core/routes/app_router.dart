@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
-import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/accountant_home_screen.dart';
-import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/accuntant_company_documents.dart';
-import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/documents_detatils_for_accountant.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/admin_home_screen.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/add_new_accountant.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/add_new_auditor.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/manage_assignment.dart';
-import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/auditor_home_screen.dart';
-import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_detatils_documents_screen.dart';
-import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/auditor_company_documents.dart';
 import 'package:mohra_project/features/login_screen/presentation/view/widgets/forget_password.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/create_company.dart';
 import 'package:mohra_project/features/intro_screens/presentation/views/first_intro_screen.dart';

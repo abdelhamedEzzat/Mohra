@@ -5,12 +5,14 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
+import 'package:mohra_project/core/constants/theme/themeManger.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_button_with_icon_or_image.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
@@ -18,6 +20,7 @@ import 'package:mohra_project/core/helpers/snackBar.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/register_screen/presentation/manger/signUp_cubit/auth_cubit.dart';
 import 'package:mohra_project/features/register_screen/presentation/view/widgets/class_morphism_Inside_screen.dart';
+import 'package:mohra_project/features/register_screen/presentation/view/widgets/protrait/privacy_dialog.dart';
 import 'package:mohra_project/features/register_screen/presentation/view/widgets/register_account_text.dart';
 import 'package:mohra_project/features/register_screen/presentation/view/widgets/user_have_account.dart';
 import 'package:mohra_project/generated/l10n.dart';
@@ -218,10 +221,10 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                     CustomTextFormField(
                                         validator: (value) {
                                           if (value!.isEmpty) {
-                                            return 'Please enter some text.';
+                                            return S.of(context).FeildRequierd;
                                           } else if (!RegExp(r'^[a-zA-Z\s]+$')
                                               .hasMatch(value)) {
-                                            return 'Please enter only letters.';
+                                            return S.of(context).LattersOnly;
                                           }
                                           return null;
                                         },
@@ -241,10 +244,10 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                     CustomTextFormField(
                                         validator: (value) {
                                           if (value!.isEmpty) {
-                                            return 'Please enter some text.';
+                                            return S.of(context).FeildRequierd;
                                           } else if (!RegExp(r'^[a-zA-Z\s]+$')
                                               .hasMatch(value)) {
-                                            return 'Please enter only letters.';
+                                            return S.of(context).LattersOnly;
                                           }
                                           return null;
                                         },
@@ -319,6 +322,64 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                     //
                                     //
 
+                                    RichText(
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan(
+                                          text: S
+                                              .of(context)
+                                              .Bycreatinganaccountyouareagreeingtoour,
+                                          style: TextStyle(
+                                              color: ColorManger.darkGray),
+                                          children: [
+                                            TextSpan(
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        // open dialog of Termes & Condations
+                                                        showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return PrivacyDaialog(
+                                                                mdFileName:
+                                                                    'Terms_and_Condations.md',
+                                                              );
+                                                            });
+                                                      },
+                                                text: S
+                                                    .of(context)
+                                                    .TermesCondations,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: ColorManger
+                                                        .backGroundColorToSplashScreen)),
+                                            TextSpan(
+                                              text: S.of(context).and,
+                                            ),
+                                            TextSpan(
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        // open dialog of Privacy Policy
+                                                        showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return PrivacyDaialog(
+                                                                mdFileName:
+                                                                    'privacy_policy.md',
+                                                              );
+                                                            });
+                                                      },
+                                                text:
+                                                    S.of(context).PrivacyPolicy,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: ColorManger
+                                                        .backGroundColorToSplashScreen))
+                                          ]),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
                                     CustomButton(
                                         nameOfButton:
                                             S.of(context).registerAccountBotton,

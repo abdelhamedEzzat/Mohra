@@ -37,7 +37,7 @@ class IfYouDidntHaveAccount extends StatelessWidget {
               child: Text(
                 S.of(context).register,
                 style: TextStyle(
-                    fontSize: FontSize.s14,
+                    fontSize: FontSize.s14.h,
                     color: ColorManger.backGroundColorToSplashScreen),
               ),
             )
@@ -63,7 +63,7 @@ class IfYouDidntHaveAccount extends StatelessWidget {
       child: Text(
         S.of(context).register,
         style: TextStyle(
-            fontSize: FontSize.s14,
+            fontSize: FontSize.s14.h,
             color: ColorManger.backGroundColorToSplashScreen),
       ),
     ));

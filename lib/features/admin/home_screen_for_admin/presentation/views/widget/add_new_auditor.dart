@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,9 +37,9 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
           )),
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is SignupLoading) {
+          if (state is AddAuditorLoading) {
             isLoading = true;
-          } else if (state is SignupSuccess) {
+          } else if (state is AddAuditorSuccess) {
             isLoading = false;
 
             // BlocProvider.of<AuthCubit>(context).verifyEmail();
@@ -48,7 +49,7 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
             );
             // Navigator.of(context)
             //     .pushReplacementNamed(RouterName.adminHomeScreen);
-          } else if (state is Signupfaild) {
+          } else if (state is AddAuditorfaild) {
             isLoading = false;
             showSnackBar(context, state.error);
           }
@@ -147,15 +148,16 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
                           onTap: () async {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
-                              await trigerCubit.userSignUP(
-                                email: trigerCubit.emailCubit,
-                                password: trigerCubit.passwordCubit,
-                              );
+                              await trigerCubit.staffSignIn(
+                                  email: trigerCubit.emailCubit,
+                                  password: trigerCubit.passwordCubit,
+                                  firstName: trigerCubit.firstName,
+                                  lastName: trigerCubit.lastName);
+                              // await trigerCubit.addAuditor(
+                              //     email: trigerCubit.emailCubit,
+                              //     firstName: trigerCubit.firstName,
+                              //     lastName: trigerCubit.lastName);
                             }
-                            await trigerCubit.addAuditor(
-                                email: trigerCubit.emailCubit,
-                                firstName: trigerCubit.firstName,
-                                lastName: trigerCubit.lastName);
 
                             // await trigerCubit.getUserdata();
                           }),

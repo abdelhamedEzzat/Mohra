@@ -260,30 +260,45 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
             BlocProvider.of<AuthCubit>(context).verifyEmail();
             Navigator.of(context).pushReplacementNamed(RouterName.vreifyEmail);
           }
-        } else if (role == 'Auditor'.toLowerCase() &&
-            emailStatus == "enabled") {
-          FirebaseFirestore.instance.collection('Notification').add({
-            'notificationMassage':
-                "the user  ${doc['fullName']}  Login in app to be $role ",
-            'role': role,
-            'MassgeSendBy': 'Auditor',
-            'NotificationCompanyID': '',
-            'NotificationUserID': "${doc['email']}"
-          });
+        } else if (FirebaseAuth.instance.currentUser!.emailVerified) {
+          if (role == 'Auditor'.toLowerCase() && emailStatus == "enabled") {
+            FirebaseFirestore.instance.collection('users').doc().update({
+              "userID": user,
+            });
+            FirebaseFirestore.instance.collection('Notification').add({
+              'notificationMassage':
+                  "the user  ${doc['fullName']}  Login in app to be $role ",
+              'role': role,
+              'MassgeSendBy': 'Auditor',
+              'NotificationCompanyID': '',
+              'NotificationUserID': "${doc['email']}"
+            });
 
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              RouterName.auditorHomeScreen, (route) => false);
-        } else if (role == 'Accountant' && emailStatus == "enabled") {
-          FirebaseFirestore.instance.collection('Notification').add({
-            'notificationMassage':
-                "the user  ${doc['fullName']}  Login in app to be $role ",
-            'role': role,
-            'MassgeSendBy': 'Accountant',
-            'NotificationCompanyID': '',
-            'NotificationUserID': "${doc['fullName']}"
-          });
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              RouterName.accountantHomeScreen, (route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                RouterName.auditorHomeScreen, (route) => false);
+          } else if (FirebaseAuth.instance.currentUser!.emailVerified) {
+            BlocProvider.of<AuthCubit>(context).verifyEmail();
+            Navigator.of(context).pushReplacementNamed(RouterName.vreifyEmail);
+          }
+        } else if (FirebaseAuth.instance.currentUser!.emailVerified) {
+          if (role == 'Accountant' && emailStatus == "enabled") {
+            FirebaseFirestore.instance.collection('users').doc().update({
+              "userID": user,
+            });
+            FirebaseFirestore.instance.collection('Notification').add({
+              'notificationMassage':
+                  "the user  ${doc['fullName']}  Login in app to be $role ",
+              'role': role,
+              'MassgeSendBy': 'Accountant',
+              'NotificationCompanyID': '',
+              'NotificationUserID': "${doc['fullName']}"
+            });
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                RouterName.accountantHomeScreen, (route) => false);
+          } else if (!FirebaseAuth.instance.currentUser!.emailVerified) {
+            BlocProvider.of<AuthCubit>(context).verifyEmail();
+            Navigator.of(context).pushReplacementNamed(RouterName.vreifyEmail);
+          }
         }
       } else if (user == null) {
         Navigator.of(context).pushNamed(RouterName.registerScreen);

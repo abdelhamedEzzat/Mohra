@@ -190,15 +190,15 @@ class _CreateCompanyState extends State<CreateCompany> {
                           nameOfButton: S.of(context).Submit,
                           onTap: () async {
                             setState(() {
-                              isLoading == true;
+                              isLoading = true;
                             });
 
-                            await Future.delayed(Duration(seconds: 2));
+                            await Future.delayed(const Duration(seconds: 2));
                             if (trigerCubit.file == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(S.of(context).MustSelectImage),
-                                  duration: Duration(seconds: 2),
+                                  duration: const Duration(seconds: 2),
                                 ),
                               );
                               return;
@@ -227,7 +227,7 @@ class _CreateCompanyState extends State<CreateCompany> {
                               trigerCubit.clearData();
                             }
                             setState(() {
-                              isLoading == false;
+                              isLoading = false;
                             });
                           }),
                       SizedBox(

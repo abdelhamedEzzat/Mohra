@@ -42,6 +42,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "Auditor": MessageLookupByLibrary.simpleMessage("Auditor"),
         "AuditorReviewyourDocumentin": MessageLookupByLibrary.simpleMessage(
             "Auditor Review your Document in"),
+        "Bycreatinganaccountyouareagreeingtoour":
+            MessageLookupByLibrary.simpleMessage(
+                "Bycreatinganaccountyouareagreeingtoour\n"),
         "Camera": MessageLookupByLibrary.simpleMessage("Camera "),
         "Canceled": MessageLookupByLibrary.simpleMessage("Canceled"),
         "ChooseFilter": MessageLookupByLibrary.simpleMessage("Choose Filter"),
@@ -94,7 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Login": MessageLookupByLibrary.simpleMessage("Login"),
         "ManageAssignment":
             MessageLookupByLibrary.simpleMessage("Manage Assignment"),
-        "ManageSubmit": MessageLookupByLibrary.simpleMessage("تنفيذ"),
+        "ManageSubmit": MessageLookupByLibrary.simpleMessage("Submit"),
         "MustSelectImage":
             MessageLookupByLibrary.simpleMessage(" Please select an image."),
         "MyAvailableCompanies":
@@ -120,6 +123,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Please write a comment"),
         "Pleaseentersometext":
             MessageLookupByLibrary.simpleMessage("Please enter some text"),
+        "PrivacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "Rejected": MessageLookupByLibrary.simpleMessage("Rejected"),
         "Review": MessageLookupByLibrary.simpleMessage("Review : "),
         "Search": MessageLookupByLibrary.simpleMessage("Search"),
@@ -139,6 +143,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "SubTitleVerify": MessageLookupByLibrary.simpleMessage(
             "We have just send email verification link on your email , please check email and click on that link to verify your email address"),
         "Submit": MessageLookupByLibrary.simpleMessage("Submit"),
+        "TermesCondations":
+            MessageLookupByLibrary.simpleMessage("Termes & Condations"),
         "Theemailmustcontainatleastoneletter":
             MessageLookupByLibrary.simpleMessage(
                 "The email must contain at least one letter."),
@@ -182,6 +188,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "amendment": MessageLookupByLibrary.simpleMessage("amendment"),
         "amountOfTheInvoice":
             MessageLookupByLibrary.simpleMessage("amount Of The Invoice :"),
+        "and": MessageLookupByLibrary.simpleMessage("and"),
         "buttonNameFirstAndSecoundIntroScreen":
             MessageLookupByLibrary.simpleMessage("Next"),
         "buttonNameThirdIntroScreen":

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
-import 'package:mohra_project/core/routes/name_router.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -53,6 +52,5 @@ class _CustomAppBarState extends State<CustomAppBar> {
     );
   }
 
-  @override
   Size get preferredSize => const Size.fromHeight(56);
 }

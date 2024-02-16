@@ -1520,11 +1520,51 @@ class S {
     );
   }
 
-  /// `تنفيذ`
+  /// `Submit`
   String get ManageSubmit {
     return Intl.message(
-      'تنفيذ',
+      'Submit',
       name: 'ManageSubmit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bycreatinganaccountyouareagreeingtoour\n`
+  String get Bycreatinganaccountyouareagreeingtoour {
+    return Intl.message(
+      'Bycreatinganaccountyouareagreeingtoour\n',
+      name: 'Bycreatinganaccountyouareagreeingtoour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Termes & Condations`
+  String get TermesCondations {
+    return Intl.message(
+      'Termes & Condations',
+      name: 'TermesCondations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Privacy Policy`
+  String get PrivacyPolicy {
+    return Intl.message(
+      'Privacy Policy',
+      name: 'PrivacyPolicy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `and`
+  String get and {
+    return Intl.message(
+      'and',
+      name: 'and',
       desc: '',
       args: [],
     );

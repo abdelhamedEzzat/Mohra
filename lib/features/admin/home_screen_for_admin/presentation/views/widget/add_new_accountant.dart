@@ -145,15 +145,17 @@ class _AddNewAuditorState extends State<AddNewAccountant> {
                           onTap: () async {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
-                              await trigerCubit.userSignUP(
-                                email: trigerCubit.emailCubit,
-                                password: trigerCubit.passwordCubit,
-                              );
+                              formKey.currentState!.save();
+                              await trigerCubit.staffSignIn(
+                                  email: trigerCubit.emailCubit,
+                                  password: trigerCubit.passwordCubit,
+                                  firstName: trigerCubit.firstName,
+                                  lastName: trigerCubit.lastName);
+                              // await trigerCubit.addAuditor(
+                              //     email: trigerCubit.emailCubit,
+                              //     firstName: trigerCubit.firstName,
+                              //     lastName: trigerCubit.lastName);
                             }
-                            await trigerCubit.addAccountant(
-                                email: trigerCubit.emailCubit,
-                                firstName: trigerCubit.firstName,
-                                lastName: trigerCubit.lastName);
 
                             // await trigerCubit.getUserdata();
                           }),

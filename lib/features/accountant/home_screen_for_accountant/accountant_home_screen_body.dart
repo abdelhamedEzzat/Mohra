@@ -38,11 +38,11 @@ class AccountantHomeScreenBody extends StatelessWidget {
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          List<String> companyId =
-                              snapshot.data?.docs.map((doc) {
-                                    return doc['companyId'] as String;
-                                  }).toList() ??
-                                  [];
+                          // List<String> companyId =
+                          //     snapshot.data?.docs.map((doc) {
+                          //           return doc['companyId'] as String;
+                          //         }).toList() ??
+                          //         [];
                           return StreamBuilder<QuerySnapshot>(
                             stream: FirebaseFirestore.instance
                                 .collection('Staff')

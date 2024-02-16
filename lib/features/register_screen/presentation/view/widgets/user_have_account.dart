@@ -34,7 +34,7 @@ class UserIfAlreadyHaveAccount extends StatelessWidget {
               child: Text(
                 S.of(context).Login,
                 style: TextStyle(
-                    fontSize: FontSize.s14,
+                    fontSize: FontSize.s14.h,
                     color: ColorManger.backGroundColorToSplashScreen),
               ),
             )

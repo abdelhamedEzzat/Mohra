@@ -42,6 +42,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "Auditor": MessageLookupByLibrary.simpleMessage("مدقق الحسابات"),
         "AuditorReviewyourDocumentin": MessageLookupByLibrary.simpleMessage(
             "تم مراجعه المستند بواسطه مدقق الحسابات في "),
+        "Bycreatinganaccountyouareagreeingtoour":
+            MessageLookupByLibrary.simpleMessage(
+                "من خلال إنشاء حساب، فإنك توافق على"),
         "Camera": MessageLookupByLibrary.simpleMessage("الكاميرا "),
         "Canceled": MessageLookupByLibrary.simpleMessage("ألغيت"),
         "ChooseFilter": MessageLookupByLibrary.simpleMessage("اختر الفلتر"),
@@ -113,6 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "يجب ان يحتوي الباسورد علي احرف وارقام وعلامات خاصه"),
         "Pleaseentersometext":
             MessageLookupByLibrary.simpleMessage("الرجاء إدخال بعض النص"),
+        "PrivacyPolicy": MessageLookupByLibrary.simpleMessage("سياسة الخصوصية"),
         "Rejected": MessageLookupByLibrary.simpleMessage("رفض"),
         "Review": MessageLookupByLibrary.simpleMessage("مراجعه  : "),
         "Search": MessageLookupByLibrary.simpleMessage("بحث"),
@@ -130,6 +134,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "StaffTypeReview":
             MessageLookupByLibrary.simpleMessage(" تمت المراجعه بواسطه : "),
         "Submit": MessageLookupByLibrary.simpleMessage("أنشئ"),
+        "TermesCondations":
+            MessageLookupByLibrary.simpleMessage("الشروط والأحكام"),
         "Theemailmustcontainatleastoneletter":
             MessageLookupByLibrary.simpleMessage(
                 "يجب أن يحتوي البريد الإلكتروني على حرف واحد على الأقل"),
@@ -171,6 +177,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "amendment": MessageLookupByLibrary.simpleMessage("تعديل"),
         "amountOfTheInvoice":
             MessageLookupByLibrary.simpleMessage(" مبلغ الفاتوره : "),
+        "and": MessageLookupByLibrary.simpleMessage("و"),
         "buttonNameFirstAndSecoundIntroScreen":
             MessageLookupByLibrary.simpleMessage("التالي"),
         "buttonNameThirdIntroScreen":

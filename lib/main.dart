@@ -41,7 +41,6 @@ import 'package:mohra_project/features/user/upload_document/presentation/views/u
 import 'package:mohra_project/features/vreify_email/vreify_email.dart';
 import 'package:mohra_project/firebase_options.dart';
 import 'package:mohra_project/generated/l10n.dart';
-import 'package:mohra_project/search.dart';
 
 void main() async {
   Bloc.observer = MyBlocObserver();
@@ -230,7 +229,9 @@ class AuthUsers extends StatelessWidget {
                   String userRole = userData['role'] ?? '';
                   String userStatus =
                       userData.containsKey('status') ? userData['status'] : '';
-
+                  String userEmailStatus = userData.containsKey('Email_status')
+                      ? userData['Email_status']
+                      : '';
                   // Now you can use the userRole to decide where to navigate
                   if (userRole == 'admin') {
                     return const AdminHomeScreen();
@@ -250,7 +251,8 @@ class AuthUsers extends StatelessWidget {
                     }
                   } else if (userRole == "Accountant") {
                     return AccountantHomeScreen();
-                  } else if (userRole == "Auditor") {
+                  } else if (userRole == "Auditor" &&
+                      userEmailStatus == "enabled") {
                     return AuditorHomeScreen();
                     // Add logic for userRole == "Auditor"
                   }
