@@ -37,16 +37,16 @@ final class Loginfaild extends AuthState {
 //
 //add Aditor
 //
-final class AddAuditorInitial extends AuthState {}
+final class AddStaffInitial extends AuthState {}
 
-final class AddAuditorLoading extends AuthState {}
+final class AddStaffLoading extends AuthState {}
 
-final class AddAuditorSuccess extends AuthState {}
+final class AddStaffSuccess extends AuthState {}
 
-final class AddAuditorfaild extends AuthState {
+final class AddStafffaild extends AuthState {
   final String error;
 
-  const AddAuditorfaild({required this.error});
+  const AddStafffaild({required this.error});
 }
 
 //

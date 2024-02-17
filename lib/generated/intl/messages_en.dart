@@ -44,7 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Auditor Review your Document in"),
         "Bycreatinganaccountyouareagreeingtoour":
             MessageLookupByLibrary.simpleMessage(
-                "Bycreatinganaccountyouareagreeingtoour\n"),
+                "By creating an account you areagreeing toour\n"),
         "Camera": MessageLookupByLibrary.simpleMessage("Camera "),
         "Canceled": MessageLookupByLibrary.simpleMessage("Canceled"),
         "ChooseFilter": MessageLookupByLibrary.simpleMessage("Choose Filter"),
@@ -90,6 +90,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "HasbeenRejected":
             MessageLookupByLibrary.simpleMessage("Has been Rejected"),
         "Home": MessageLookupByLibrary.simpleMessage("home"),
+        "Ithasbeensuccessfully": MessageLookupByLibrary.simpleMessage(
+            "It has been successfully added"),
         "Language": MessageLookupByLibrary.simpleMessage("Language"),
         "LattersOnly":
             MessageLookupByLibrary.simpleMessage("Please enter only letters"),
@@ -145,6 +147,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "Submit": MessageLookupByLibrary.simpleMessage("Submit"),
         "TermesCondations":
             MessageLookupByLibrary.simpleMessage("Termes & Condations"),
+        "TheAccountantHasBeenAddedSuccessfully":
+            MessageLookupByLibrary.simpleMessage(
+                "The accountant has been added successfully"),
+        "TheAuditorantHasBeenAddedSuccessfully":
+            MessageLookupByLibrary.simpleMessage(
+                "The Auditor Has Been Added Successfully"),
         "Theemailmustcontainatleastoneletter":
             MessageLookupByLibrary.simpleMessage(
                 "The email must contain at least one letter."),
@@ -185,10 +193,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "acceptable": MessageLookupByLibrary.simpleMessage("acceptable"),
         "addDocumentName":
             MessageLookupByLibrary.simpleMessage("add document number"),
+        "addedtothecompany":
+            MessageLookupByLibrary.simpleMessage("added to the company"),
         "amendment": MessageLookupByLibrary.simpleMessage("amendment"),
         "amountOfTheInvoice":
             MessageLookupByLibrary.simpleMessage("amount Of The Invoice :"),
-        "and": MessageLookupByLibrary.simpleMessage("and"),
+        "and": MessageLookupByLibrary.simpleMessage(" and "),
         "buttonNameFirstAndSecoundIntroScreen":
             MessageLookupByLibrary.simpleMessage("Next"),
         "buttonNameThirdIntroScreen":

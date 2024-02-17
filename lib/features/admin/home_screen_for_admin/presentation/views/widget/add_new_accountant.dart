@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
@@ -26,7 +29,7 @@ class _AddNewAuditorState extends State<AddNewAccountant> {
     bool isLoading = false;
     return Scaffold(
       appBar: CustomAppBar(
-          onPressed: () {
+          onPressed: () async {
             Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
           },
           title: Text(S.of(context).NewAccountant),
@@ -34,19 +37,28 @@ class _AddNewAuditorState extends State<AddNewAccountant> {
             color: Colors.white,
           )),
       body: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is SignupLoading) {
+        listener: (context, state) async {
+          if (state is AddStaffLoading) {
             isLoading = true;
-          } else if (state is SignupSuccess) {
+          } else if (state is AddStaffSuccess) {
             isLoading = false;
-
+            // showSnackBarAndNavigate(context);
             // BlocProvider.of<AuthCubit>(context).verifyEmail();
-
-            Navigator.of(context).pushNamedAndRemoveUntil(
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(
+                  backgroundColor: ColorManger.backGroundColorToSplashScreen
+                      .withOpacity(0.8),
+                  content: Text(
+                    S.of(context).TheAccountantHasBeenAddedSuccessfully,
+                  ),
+                  duration: Duration(seconds: 2),
+                ))
+                .close;
+            await Navigator.of(context).pushNamedAndRemoveUntil(
               RouterName.adminHomeScreen,
               (route) => false,
             );
-          } else if (state is Signupfaild) {
+          } else if (state is AddStafffaild) {
             isLoading = false;
             showSnackBar(context, state.error);
           }
@@ -146,18 +158,11 @@ class _AddNewAuditorState extends State<AddNewAccountant> {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
                               formKey.currentState!.save();
-                              await trigerCubit.staffSignIn(
-                                  email: trigerCubit.emailCubit,
-                                  password: trigerCubit.passwordCubit,
-                                  firstName: trigerCubit.firstName,
-                                  lastName: trigerCubit.lastName);
-                              // await trigerCubit.addAuditor(
-                              //     email: trigerCubit.emailCubit,
-                              //     firstName: trigerCubit.firstName,
-                              //     lastName: trigerCubit.lastName);
+                              await trigerCubit.staffAccontantSignUP(
+                                email: trigerCubit.emailCubit,
+                                password: trigerCubit.passwordCubit,
+                              );
                             }
-
-                            // await trigerCubit.getUserdata();
                           }),
                     ]),
                   ),
@@ -169,66 +174,50 @@ class _AddNewAuditorState extends State<AddNewAccountant> {
       ),
     );
   }
+
+// Future<void> showSnackBarAndNavigate(BuildContext context) async {
+//   final completer = Completer<void>();
+
+//   ScaffoldMessenger.of(context).showSnackBar(
+//     SnackBar(
+//       backgroundColor: ColorManger.backGroundColorToSplashScreen,
+//       content: Text(S.of(context).TheAccountantHasBeenAddedSuccessfully),
+//       duration: Duration(seconds: 2),
+
+//     ),
+//   );
+
+//   await completer.future; // Wait for the completer to complete
+
+//   Navigator.of(context).pushNamedAndRemoveUntil(
+//     RouterName.adminHomeScreen,
+//     (route) => false,
+//   );
+// }
+// }
+  // Future<void> showSnackBarAndNavigate(BuildContext context) async {
+  //   final completer = Completer<void>();
+
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       backgroundColor: ColorManger.backGroundColorToSplashScreen,
+  //       content: Text(S.of(context).TheAccountantHasBeenAddedSuccessfully),
+  //       // duration: Duration(seconds: 2),
+  //       action: SnackBarAction(
+  //         label: 'Close',
+  //         onPressed: () {
+  //           completer
+  //               .complete(); // Complete the future when the SnackBar action is pressed
+  //         },
+  //       ),
+  //     ),
+  //   );
+
+  //   await completer.future; // Wait for the completer to complete
+
+  //   Navigator.of(context).pushNamedAndRemoveUntil(
+  //     RouterName.adminHomeScreen,
+  //     (route) => false,
+  //   );
+  // }
 }
-
-
-
-
-
-
-
-
-
-
-//  CustomTextFormField(
-//                                       validator: (value) {
-//                                         if (value!.isEmpty) {
-//                                           return 'Please enter some text.';
-//                                         } else if (!RegExp(r'^[a-zA-Z\s]+$')
-//                                             .hasMatch(value)) {
-//                                           return 'Please enter only letters.';
-//                                         }
-//                                         return null;
-//                                       },
-//                                       onChanged: (value) {
-//                                         trigerCubit.firstName = value;
-//                                       },
-//                                       labelText: S
-//                                           .of(context)
-//                                           .nameLabelTextInRegisterScreen,
-//                                       hintText: S
-//                                           .of(context)
-//                                           .nameHintTextInRegisterScreen,
-//                                       prefixIcon: const Icon(Icons.person)),
-//                                   //
-//                                   //
-//                                   //
-//                                   CustomTextFormField(
-//                                       validator: (value) {
-//                                         if (value!.isEmpty) {
-//                                           return 'Please enter some text.';
-//                                         } else if (!RegExp(r'^[a-zA-Z\s]+$')
-//                                             .hasMatch(value)) {
-//                                           return 'Please enter only letters.';
-//                                         }
-//                                         return null;
-//                                       },
-//                                       onChanged: (value) {
-//                                         trigerCubit.lastName = value;
-//                                       },
-//                                       labelText: S
-//                                           .of(context)
-//                                           .nameLabelTextInRegisterScreen,
-//                                       hintText: S
-//                                           .of(context)
-//                                           .nameHintTextInRegisterScreen,
-//                                       prefixIcon: const Icon(Icons.person)),
-//                                   //
-//                                   //
-//                                   //
-
-
-
-
-
-

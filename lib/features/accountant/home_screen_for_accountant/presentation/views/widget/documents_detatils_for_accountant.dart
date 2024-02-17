@@ -598,7 +598,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
           height: 10.h,
         ),
         CustomTextFormField(
-          hight: mediaQueryHeight * 0.10,
+          height: mediaQueryHeight * 0.10,
           hintText: S.of(context).hintComments,
           prefixIcon: const Icon(Icons.comment),
           onChanged: (value) {

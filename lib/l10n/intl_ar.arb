@@ -165,6 +165,9 @@
    "Bycreatinganaccountyouareagreeingtoour":"من خلال إنشاء حساب، فإنك توافق على",
    "TermesCondations":"الشروط والأحكام",
    "PrivacyPolicy":"سياسة الخصوصية",
-   "and":"و"
-
+   "and":" و " ,
+   "TheAccountantHasBeenAddedSuccessfully":"تم اضافه المحاسب بنجاح",
+   "TheAuditorantHasBeenAddedSuccessfully":"تم اضافه المراجع بنجاح",
+   "Ithasbeensuccessfull":"تم بنجاح اضافه",
+   "addedtothecompany":"الي شركه"
 }

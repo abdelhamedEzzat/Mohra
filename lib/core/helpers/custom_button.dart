@@ -27,7 +27,7 @@ class CustomButton extends StatelessWidget {
             color: ColorManger.backGroundColorToSplashScreen,
             borderRadius: BorderRadius.circular(15),
             border: Border.all()),
-        padding: const EdgeInsets.only(top: 16, bottom: 16),
+        padding: const EdgeInsets.only(top: 14, bottom: 14),
         child: Text(
           nameOfButton,
           style: TextStyle(color: Colors.white, fontSize: FontSize.s16.h),

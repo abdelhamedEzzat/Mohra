@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
 import 'package:mohra_project/core/helpers/snackBar.dart';
@@ -36,20 +37,27 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
             color: Colors.white,
           )),
       body: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is AddAuditorLoading) {
+        listener: (context, state) async {
+          if (state is AddStaffLoading) {
             isLoading = true;
-          } else if (state is AddAuditorSuccess) {
+          } else if (state is AddStaffSuccess) {
             isLoading = false;
 
-            // BlocProvider.of<AuthCubit>(context).verifyEmail();
-            Navigator.of(context).pushNamedAndRemoveUntil(
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(
+                  backgroundColor: ColorManger.backGroundColorToSplashScreen
+                      .withOpacity(0.8),
+                  content: Text(
+                    S.of(context).TheAuditorantHasBeenAddedSuccessfully,
+                  ),
+                  duration: Duration(seconds: 3),
+                ))
+                .close;
+            await Navigator.of(context).pushNamedAndRemoveUntil(
               RouterName.adminHomeScreen,
               (route) => false,
             );
-            // Navigator.of(context)
-            //     .pushReplacementNamed(RouterName.adminHomeScreen);
-          } else if (state is AddAuditorfaild) {
+          } else if (state is AddStafffaild) {
             isLoading = false;
             showSnackBar(context, state.error);
           }
@@ -148,18 +156,11 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
                           onTap: () async {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
-                              await trigerCubit.staffSignIn(
-                                  email: trigerCubit.emailCubit,
-                                  password: trigerCubit.passwordCubit,
-                                  firstName: trigerCubit.firstName,
-                                  lastName: trigerCubit.lastName);
-                              // await trigerCubit.addAuditor(
-                              //     email: trigerCubit.emailCubit,
-                              //     firstName: trigerCubit.firstName,
-                              //     lastName: trigerCubit.lastName);
+                              await trigerCubit.staffAuditorSignUP(
+                                email: trigerCubit.emailCubit,
+                                password: trigerCubit.passwordCubit,
+                              );
                             }
-
-                            // await trigerCubit.getUserdata();
                           }),
                     ]),
                   ),

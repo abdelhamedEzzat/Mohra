@@ -8,7 +8,7 @@ import 'package:mohra_project/core/constants/font_manger/font_manger.dart';
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     Key? key,
-    this.hight,
+    this.height,
     this.labelText,
     required this.hintText,
     required this.prefixIcon,
@@ -20,8 +20,10 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText,
     this.min,
     this.max,
+    this.suffixIcon, // Added property for the suffix icon (eye icon)
   }) : super(key: key);
-  final double? hight;
+
+  final double? height;
   final String? labelText;
   final String hintText;
   final Widget prefixIcon;
@@ -33,49 +35,61 @@ class CustomTextFormField extends StatelessWidget {
   final bool? obscureText;
   final int? min;
   final int? max;
+  final Widget? suffixIcon; // Added property for the suffix icon (eye icon)
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 4.w, bottom: 8.w),
+      padding: EdgeInsets.only(top: 3.w, bottom: 7.w),
       child: SizedBox(
-        // height: hight?.h ?? 52.h,
+        // height: height?.h ?? 52.h,
         child: TextFormField(
-            style: TextStyle(fontSize: 15.h),
-            minLines: min,
-            maxLines: max ?? 1,
-            obscureText: obscureText ?? false,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: validator,
-            controller: controller,
-            onChanged: onChanged,
-            keyboardType: keyboardType,
-            cursorColor: ColorManger.backGroundColorToSplashScreen,
-            decoration: InputDecoration(
-                errorMaxLines: 2,
-                isDense: true,
-                filled: true,
-                fillColor: Colors.white,
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(
-                        color: ColorManger.backGroundColorToSplashScreen)),
-                labelText: labelText,
-                hintText: hintText,
-                prefixIcon: prefixIcon,
-                contentPadding: EdgeInsets.all(8.0.w),
-                hintStyle: TextStyle(
-                    color: ColorManger.darkGray, fontSize: FontSize.s14.h),
-                labelStyle: TextStyle(
-                    fontStyle: fontStyle ?? FontStyle.italic,
-                    fontSize: FontSize.s15.w,
-                    color: ColorManger.backGroundColorToSplashScreen),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: ColorManger.darkGray)))),
+          style: TextStyle(fontSize: 15.h),
+          minLines: min,
+          maxLines: max ?? 1,
+          obscureText: obscureText ?? false,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: validator,
+          controller: controller,
+          onChanged: onChanged,
+          keyboardType: keyboardType,
+          cursorColor: ColorManger.backGroundColorToSplashScreen,
+          decoration: InputDecoration(
+            suffixIcon: suffixIcon, // Added suffixIcon property here
+            errorMaxLines: 2,
+            isDense: true,
+            filled: true,
+            fillColor: Colors.white,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(
+                color: ColorManger.backGroundColorToSplashScreen,
+              ),
+            ),
+            labelText: labelText,
+            hintText: hintText,
+            prefixIcon: prefixIcon,
+            contentPadding: EdgeInsets.all(8.0.w),
+            hintStyle: TextStyle(
+              color: ColorManger.darkGray,
+              fontSize: FontSize.s14.h,
+            ),
+            labelStyle: TextStyle(
+              fontStyle: fontStyle ?? FontStyle.italic,
+              fontSize: FontSize.s15.w,
+              color: ColorManger.backGroundColorToSplashScreen,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(
+                color: ColorManger.darkGray,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

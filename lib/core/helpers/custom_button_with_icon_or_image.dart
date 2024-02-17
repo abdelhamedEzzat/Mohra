@@ -25,13 +25,13 @@ class CustomBottonWithIconOrImage extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.only(top: 8.h, bottom: 8.h),
+        margin: EdgeInsets.only(top: 7.h, bottom: 7.h),
         width: width ?? MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             color: color ?? ColorManger.black,
             borderRadius: BorderRadius.circular(15),
             border: Border.all()),
-        padding: const EdgeInsets.only(top: 16, bottom: 16),
+        padding: const EdgeInsets.only(top: 14, bottom: 14),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

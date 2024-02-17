@@ -213,7 +213,7 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                             },
                             min: 1,
                             max: 2,
-                            hight: mediaQueryHeight * 0.08,
+                            height: mediaQueryHeight * 0.08,
                             hintText: S.of(context).hintComments,
                             prefixIcon: Padding(
                               padding: EdgeInsets.all(8.0.w),

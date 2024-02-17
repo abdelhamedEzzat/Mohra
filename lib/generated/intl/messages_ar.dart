@@ -136,6 +136,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "Submit": MessageLookupByLibrary.simpleMessage("أنشئ"),
         "TermesCondations":
             MessageLookupByLibrary.simpleMessage("الشروط والأحكام"),
+        "TheAccountantHasBeenAddedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم اضافه المحاسب بنجاح"),
+        "TheAuditorantHasBeenAddedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم اضافه المراجع بنجاح"),
         "Theemailmustcontainatleastoneletter":
             MessageLookupByLibrary.simpleMessage(
                 "يجب أن يحتوي البريد الإلكتروني على حرف واحد على الأقل"),
@@ -174,10 +178,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "acceptable": MessageLookupByLibrary.simpleMessage("مقبول"),
         "addDocumentName":
             MessageLookupByLibrary.simpleMessage("اضاف مستند بأسم "),
+        "addedtothecompany": MessageLookupByLibrary.simpleMessage("الي شركه"),
         "amendment": MessageLookupByLibrary.simpleMessage("تعديل"),
         "amountOfTheInvoice":
             MessageLookupByLibrary.simpleMessage(" مبلغ الفاتوره : "),
-        "and": MessageLookupByLibrary.simpleMessage("و"),
+        "and": MessageLookupByLibrary.simpleMessage(" و "),
         "buttonNameFirstAndSecoundIntroScreen":
             MessageLookupByLibrary.simpleMessage("التالي"),
         "buttonNameThirdIntroScreen":

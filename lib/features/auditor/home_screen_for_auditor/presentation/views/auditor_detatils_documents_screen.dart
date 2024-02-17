@@ -435,7 +435,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
 
               comment = value;
             },
-            hight: mediaQueryHeight * 0.10,
+            height: mediaQueryHeight * 0.10,
             hintText: S.of(context).hintComments,
             prefixIcon: const Icon(Icons.comment),
           ),

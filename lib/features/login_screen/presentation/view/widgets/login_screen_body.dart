@@ -29,6 +29,7 @@ class LoginScreenBody extends StatelessWidget {
             return true;
           },
           child: const SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
             child: Stack(
               alignment: Alignment.center,
               children: [

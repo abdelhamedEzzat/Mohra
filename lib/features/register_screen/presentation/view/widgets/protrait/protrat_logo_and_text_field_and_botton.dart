@@ -135,6 +135,7 @@ class _LogoAndTextFieldAndbuttonProtraitState
     }
   }
 
+  bool obscureTexts = true;
   @override
   Widget build(BuildContext context) {
     final trigerCubit = BlocProvider.of<AuthCubit>(context);
@@ -193,21 +194,21 @@ class _LogoAndTextFieldAndbuttonProtraitState
                   children: [
                     Image.asset(
                       ImageManger.mohraLogo,
+                      height: 90.h,
                     ),
                     SizedBox(
-                      height: 20.h,
+                      height: 10.h,
                     ),
                     ClassMorphismInsideScreen(
                         blur: 20,
                         opacity: 0.5,
                         child: Container(
-                          height: 400.h,
+                          alignment: Alignment.center,
+                          // height: 480.h,
                           margin: const EdgeInsets.only(
-                            right: 8,
-                            left: 8,
-                          ),
+                              right: 8, left: 8, top: 10, bottom: 10),
                           padding: const EdgeInsets.only(
-                              top: 20, bottom: 20, right: 10, left: 10),
+                              top: 20, right: 10, left: 10),
                           child: SingleChildScrollView(
                             child: Form(
                               key: formKey,
@@ -293,31 +294,42 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                     //
                                     //
                                     CustomTextFormField(
-                                        obscureText: true,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return S.of(context).FeildRequierd;
-                                          } else if (!RegExp(
-                                                  r'^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[\W_]).+$')
-                                              .hasMatch(value)) {
-                                            return S
-                                                .of(context)
-                                                .Passwordmustcontainnumberslettersandspecialcharacter;
-                                          }
-                                          return null;
+                                      obscureText: obscureTexts,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return S.of(context).FeildRequierd;
+                                        } else if (!RegExp(
+                                                r'^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[\W_]).+$')
+                                            .hasMatch(value)) {
+                                          return S
+                                              .of(context)
+                                              .Passwordmustcontainnumberslettersandspecialcharacter;
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        trigerCubit.passwordCubit = value;
+                                      },
+                                      //
+                                      //
+                                      labelText: S
+                                          .of(context)
+                                          .passwordLabelTextInRegisterScreen,
+                                      hintText: S
+                                          .of(context)
+                                          .passwordHintTextInRegisterScreen,
+                                      prefixIcon: const Icon(Icons.lock),
+                                      suffixIcon: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            obscureTexts = !obscureTexts;
+                                          });
                                         },
-                                        onChanged: (value) {
-                                          trigerCubit.passwordCubit = value;
-                                        },
-                                        //
-                                        //
-                                        labelText: S
-                                            .of(context)
-                                            .passwordLabelTextInRegisterScreen,
-                                        hintText: S
-                                            .of(context)
-                                            .passwordHintTextInRegisterScreen,
-                                        prefixIcon: const Icon(Icons.lock)),
+                                        child: Icon(obscureTexts
+                                            ? Icons.visibility_off
+                                            : Icons.visibility),
+                                      ),
+                                    ),
                                     //
                                     //
                                     //
@@ -329,7 +341,9 @@ class _LogoAndTextFieldAndbuttonProtraitState
                                               .of(context)
                                               .Bycreatinganaccountyouareagreeingtoour,
                                           style: TextStyle(
-                                              color: ColorManger.darkGray),
+                                              color: ColorManger.darkGray
+                                                  .withOpacity(0.99),
+                                              fontSize: 12.w),
                                           children: [
                                             TextSpan(
                                                 recognizer:

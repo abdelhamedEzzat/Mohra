@@ -366,29 +366,38 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                               .collection('Staff')
                               .doc()
                               .set(
-                            {
-                              'CompanyId': companyID,
-                              'companyName': companyName,
-                              "StaffEmail": sttafuserEmail,
-                              'userid': sttafuserID,
-                              'StaffRole': selectItem,
-                              'StaffName': searchContraller.text,
-                            },
-                            SetOptions(merge: true),
-                          ).then((value) {
-                            FirebaseFirestore.instance
-                                .collection('Notification')
-                                .add({
-                              'notificationMassage':
-                                  "${S.of(context).YouAdded} $companyName ${S.of(context).tobe} $selectItem ${S.of(context).toit} ",
-                              'role': selectItem,
-                              'MassgeSendBy': 'ManagerMassage',
-                              'NotificationCompanyID': companyID,
-                              'NotificationUserID': sttafuserID
-                            });
-                          }).then((value) {
-                            Navigator.of(context).pop();
-                          });
+                                {
+                                  'CompanyId': companyID,
+                                  'companyName': companyName,
+                                  "StaffEmail": sttafuserEmail,
+                                  'userid': sttafuserID,
+                                  'StaffRole': selectItem,
+                                  'StaffName': searchContraller.text,
+                                },
+                                SetOptions(merge: true),
+                              )
+                              .then((value) {
+                                FirebaseFirestore.instance
+                                    .collection('Notification')
+                                    .add({
+                                  'notificationMassage':
+                                      "${S.of(context).YouAdded} $companyName ${S.of(context).tobe} $selectItem ${S.of(context).toit} ",
+                                  'role': selectItem,
+                                  'MassgeSendBy': 'ManagerMassage',
+                                  'NotificationCompanyID': companyID,
+                                  'NotificationUserID': sttafuserID
+                                });
+                              })
+                              .then((value) => ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                      backgroundColor: ColorManger
+                                          .backGroundColorToSplashScreen
+                                          .withOpacity(0.8),
+                                      content: Text(
+                                          "${S.of(context).Ithasbeensuccessfully}  $sttafuserEmail  ${S.of(context).addedtothecompany} $companyName"))))
+                              .then((value) {
+                                Navigator.of(context).pop();
+                              });
 
                           print(
                               'تم تحديث المعلومات بنجاح للمستخدم ذو البريد الإلكتروني: $sttafuserID');

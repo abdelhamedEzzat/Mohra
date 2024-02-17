@@ -19,11 +19,25 @@ import 'package:mohra_project/features/register_screen/presentation/manger/signU
 import 'package:mohra_project/features/register_screen/presentation/view/widgets/class_morphism_Inside_screen.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
-class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
+class LoginLogoAndTextFieldAndbuttonProtrait extends StatefulWidget {
   const LoginLogoAndTextFieldAndbuttonProtrait({
     super.key,
   });
 
+  @override
+  State<LoginLogoAndTextFieldAndbuttonProtrait> createState() =>
+      _LoginLogoAndTextFieldAndbuttonProtraitState();
+}
+
+class _LoginLogoAndTextFieldAndbuttonProtraitState
+    extends State<LoginLogoAndTextFieldAndbuttonProtrait> {
+  TextEditingController _passwordController = TextEditingController();
+  void initState() {
+    super.initState();
+    _passwordController = TextEditingController();
+  }
+
+  bool isPasswordVisible = true;
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> formKey = GlobalKey();
@@ -107,23 +121,37 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
                                 //   TextFormField fo password
 
                                 CustomTextFormField(
-                                    obscureText: true,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "* this Field is required You must enter data";
-                                      }
-                                      return null;
+                                  obscureText: isPasswordVisible,
+                                  controller: _passwordController,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "* this Field is required You must enter data";
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    trigerCubit.passwordCubit = value;
+                                  },
+                                  labelText: S
+                                      .of(context)
+                                      .passwordLabelTextInRegisterScreen,
+                                  hintText: S
+                                      .of(context)
+                                      .passwordHintTextInRegisterScreen,
+                                  prefixIcon: const Icon(Icons.lock),
+                                  suffixIcon: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        isPasswordVisible = !isPasswordVisible;
+                                      });
                                     },
-                                    onChanged: (value) {
-                                      trigerCubit.passwordCubit = value;
-                                    },
-                                    labelText: S
-                                        .of(context)
-                                        .passwordLabelTextInRegisterScreen,
-                                    hintText: S
-                                        .of(context)
-                                        .passwordHintTextInRegisterScreen,
-                                    prefixIcon: const Icon(Icons.lock)),
+                                    child: Icon(
+                                      isPasswordVisible
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                    ),
+                                  ),
+                                ),
                                 //
                                 //this widget for forget password
 
@@ -262,9 +290,9 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
           }
         } else if (FirebaseAuth.instance.currentUser!.emailVerified) {
           if (role == 'Auditor'.toLowerCase() && emailStatus == "enabled") {
-            FirebaseFirestore.instance.collection('users').doc().update({
-              "userID": user,
-            });
+            // FirebaseFirestore.instance.collection('users').doc().update({
+            //   "userID": user,
+            // });
             FirebaseFirestore.instance.collection('Notification').add({
               'notificationMassage':
                   "the user  ${doc['fullName']}  Login in app to be $role ",
@@ -282,9 +310,9 @@ class LoginLogoAndTextFieldAndbuttonProtrait extends StatelessWidget {
           }
         } else if (FirebaseAuth.instance.currentUser!.emailVerified) {
           if (role == 'Accountant' && emailStatus == "enabled") {
-            FirebaseFirestore.instance.collection('users').doc().update({
-              "userID": user,
-            });
+            // FirebaseFirestore.instance.collection('users').doc().update({
+            //   "userID": user,
+            // });
             FirebaseFirestore.instance.collection('Notification').add({
               'notificationMassage':
                   "the user  ${doc['fullName']}  Login in app to be $role ",

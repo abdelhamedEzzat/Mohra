@@ -123,106 +123,241 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> addAuditor(
-      {required String firstName,
-      required String lastName,
-      required String email}) async {
-    final user = FirebaseAuth.instance.currentUser!.uid;
-    DocumentReference users = firestore.collection('users').doc(user);
+  // Future<void> addAuditor(
+  //     {required String firstName,
+  //     required String lastName,
+  //     required String email}) async {
+  //   final user = FirebaseAuth.instance.currentUser!.uid;
+  //   DocumentReference users = firestore.collection('users').doc(user);
 
-    emit(AddAuditorLoading());
-    try {
-      users.set({
-        'first_Name': firstName,
-        'last_Name': lastName,
-        'fullName': firstName + lastName,
-        'userID': user,
-        'email': email,
-        'role': 'Auditor',
-        'status': '2',
-        'Email_status': 'enabled',
-      });
-      emit(AddAuditorSuccess());
-    } catch (e) {
-      AddAuditorfaild(error: "Failed to add user:${e.toString()}");
-    }
-  }
+  //   emit(AddAuditorLoading());
+  //   try {
+  //     users.set({
+  //       'first_Name': firstName,
+  //       'last_Name': lastName,
+  //       'fullName': firstName + lastName,
+  //       'userID': user,
+  //       'email': email,
+  //       'role': 'Auditor',
+  //       'status': '2',
+  //       'Email_status': 'enabled',
+  //     });
+  //     emit(AddAuditorSuccess());
+  //   } catch (e) {
+  //     AddAuditorfaild(error: "Failed to add user:${e.toString()}");
+  //   }
+  // }
 
-  Future<void> staffSignIn({
+  Future staffAuditorSignUP({
     required String email,
     required String password,
-    required String firstName,
-    required String lastName,
   }) async {
-    emit(SignupLoading());
+    emit(AddStaffLoading());
+    FirebaseApp secondaryApp = await Firebase.initializeApp(
+      name: 'SecondaryApp',
+      options: Firebase.app().options,
+    );
+
     try {
-      UserCredential credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-
-      final user = credential.user!;
-      CollectionReference users = firestore.collection('users');
-
-      emit(AddAuditorLoading());
-      try {
-        await users.add(
-          {
-            'first_Name': firstName,
-            'last_Name': lastName,
-            'fullName': firstName + lastName,
-            'userID': user.uid, // Use the user's ID here
-            'email': email,
-            'role': 'Auditor',
-            'status': '2',
-            'Email_status': 'enabled',
-          },
-        );
-
-        emit(AddAuditorSuccess());
-      } catch (e) {
-        emit(AddAuditorfaild(error: "Failed to add user:${e.toString()}"));
-      }
+      UserCredential credential =
+          await FirebaseAuth.instanceFor(app: secondaryApp)
+              .createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      String uid = credential.user!.uid;
+      DocumentReference<Map<String, dynamic>> users =
+          firestore.collection('users').doc(uid);
+      await users.set(
+        {
+          'first_Name': firstName,
+          'last_Name': lastName,
+          'fullName': firstName + lastName,
+          'userID': uid, // Use the user's ID here
+          'email': email,
+          'role': 'Auditor',
+          'status': '2',
+          'Email_status': 'enabled',
+        },
+      );
+      emit(AddStaffSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        emit(Signupfaild(error: 'The password provided is too weak.'));
+        emit(const AddStafffaild(error: 'The password provided is too weak.'));
       } else if (e.code == 'email-already-in-use') {
-        emit(Signupfaild(error: 'An account already exists for this email.'));
-      } else {
-        emit(Signupfaild(error: 'An error occurred. Please try again.'));
+        emit(const AddStafffaild(
+            error: 'An account already exists for this email.'));
+        return;
       }
-    } catch (e) {
-      emit(Signupfaild(error: 'An error occurred. Please try again.'));
     }
+
+// after creating the account, delete the secondary app as below:
+    await secondaryApp.delete();
   }
 
-  Future<void> addAccountant({
-    required String firstName,
-    required String lastName,
+  // Future<void> staffAuditorSignIn({
+  //   required String email,
+  //   required String password,
+  //   required String firstName,
+  //   required String lastName,
+  // }) async {
+  //   emit(SignupLoading());
+  //   try {
+  //     CollectionReference users = firestore.collection('users');
+
+  //     emit(AddAuditorLoading());
+  //     try {
+  //       await users.add(
+  //         {
+  //           'first_Name': firstName,
+  //           'last_Name': lastName,
+  //           'fullName': firstName + lastName,
+  //           'userID': "", // Use the user's ID here
+  //           'email': email,
+  //           'role': 'Auditor',
+  //           'status': '2',
+  //           'Email_status': 'enabled',
+  //         },
+  //       );
+
+  //       emit(AddAuditorSuccess());
+  //     } catch (e) {
+  //       emit(AddAuditorfaild(error: "Failed to add user:${e.toString()}"));
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'weak-password') {
+  //       emit(Signupfaild(error: 'The password provided is too weak.'));
+  //     } else if (e.code == 'email-already-in-use') {
+  //       emit(Signupfaild(error: 'An account already exists for this email.'));
+  //     } else {
+  //       emit(Signupfaild(error: 'An error occurred. Please try again.'));
+  //     }
+  //   } catch (e) {
+  //     emit(Signupfaild(error: 'An error occurred. Please try again.'));
+  //   }
+  // }
+
+  // Future<void> staffAccountantSignIn({
+  //   required String email,
+  //   required String password,
+  //   required String firstName,
+  //   required String lastName,
+  // }) async {
+  //   emit(SignupLoading());
+  //   try {
+  //     UserCredential credential = await FirebaseAuth.instance
+  //         .createUserWithEmailAndPassword(email: email, password: password);
+
+  //     final user = credential.user!;
+  //     CollectionReference users = firestore.collection('users');
+
+  //     emit(AddAuditorLoading());
+  //     try {
+  //       await users.add(
+  //         {
+  //           'first_Name': firstName,
+  //           'last_Name': lastName,
+  //           'fullName': firstName + lastName,
+  //           'userID': user,
+  //           'email': email,
+  //           'role': 'Accountant',
+  //           'status': '2',
+  //           'Email_status': 'enabled',
+  //         },
+  //       );
+
+  //       emit(AddAuditorSuccess());
+  //     } catch (e) {
+  //       emit(AddAuditorfaild(error: "Failed to add user:${e.toString()}"));
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'weak-password') {
+  //       emit(Signupfaild(error: 'The password provided is too weak.'));
+  //     } else if (e.code == 'email-already-in-use') {
+  //       emit(Signupfaild(error: 'An account already exists for this email.'));
+  //     } else {
+  //       emit(Signupfaild(error: 'An error occurred. Please try again.'));
+  //     }
+  //   } catch (e) {
+  //     emit(Signupfaild(error: 'An error occurred. Please try again.'));
+  //   }
+  // }
+
+  // Future<void> addAccountant({
+  //   required String firstName,
+  //   required String lastName,
+  //   required String email,
+  //   required String password,
+  // }) async {
+  //   // await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //   //   email: email,
+  //   //   password: password,
+  //   // );
+  //   final user = FirebaseAuth.instance.currentUser!.uid;
+  //   DocumentReference users = firestore.collection('users').doc(user);
+
+  //   emit(AddAuditorLoading());
+  //   try {
+  //     users.set({
+  //       'first_Name': firstName,
+  //       'last_Name': lastName,
+  //       'fullName': firstName + lastName,
+  //       'userID': user,
+  //       'email': email,
+  //       'role': 'Accountant',
+  //       'status': '2',
+  //       'Email_status': 'enabled',
+  //     });
+  //     emit(AddAuditorSuccess());
+  //   } catch (e) {
+  //     AddAuditorfaild(error: "Failed to add user:${e.toString()}");
+  //   }
+  // }
+  Future staffAccontantSignUP({
     required String email,
     required String password,
   }) async {
-    // await FirebaseAuth.instance.createUserWithEmailAndPassword(
-    //   email: email,
-    //   password: password,
-    // );
-    final user = FirebaseAuth.instance.currentUser!.uid;
-    DocumentReference users = firestore.collection('users').doc(user);
+    emit(AddStaffLoading());
+    FirebaseApp secondaryApp = await Firebase.initializeApp(
+      name: 'SecondaryApp',
+      options: Firebase.app().options,
+    );
 
-    emit(AddAuditorLoading());
     try {
-      users.set({
-        'first_Name': firstName,
-        'last_Name': lastName,
-        'fullName': firstName + lastName,
-        'userID': user,
-        'email': email,
-        'role': 'Accountant',
-        'status': '2',
-        'Email_status': 'enabled',
-      });
-      emit(AddAuditorSuccess());
-    } catch (e) {
-      AddAuditorfaild(error: "Failed to add user:${e.toString()}");
+      UserCredential credential =
+          await FirebaseAuth.instanceFor(app: secondaryApp)
+              .createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      String uid = credential.user!.uid;
+      DocumentReference<Map<String, dynamic>> users =
+          firestore.collection('users').doc(uid);
+      await users.set(
+        {
+          'first_Name': firstName,
+          'last_Name': lastName,
+          'fullName': firstName + lastName,
+          'userID': uid, // Use the user's ID here
+          'email': email,
+          'role': 'Accountant',
+          'status': '2',
+          'Email_status': 'enabled',
+        },
+      );
+      emit(AddStaffSuccess());
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        emit(const AddStafffaild(error: 'The password provided is too weak.'));
+      } else if (e.code == 'email-already-in-use') {
+        emit(const AddStafffaild(
+            error: 'An account already exists for this email.'));
+        return;
+      }
     }
+
+// after creating the account, delete the secondary app as below:
+    await secondaryApp.delete();
   }
 
   Future<void> getUserdata() async {
@@ -242,48 +377,48 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  void checkRole(context) async {
-    try {
-      emit(UserStutsLoading());
-      DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore
-          .instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get();
+  // void checkRole(context) async {
+  //   try {
+  //     emit(UserStutsLoading());
+  //     DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore
+  //         .instance
+  //         .collection('users')
+  //         .doc(FirebaseAuth.instance.currentUser!.uid)
+  //         .get();
 
-      String userRole = userData['role']; // Access the 'role' field
+  //     String userRole = userData['role']; // Access the 'role' field
 
-      // Now you can check the user's role and navigate accordingly
-      if (userRole == 'admin') {
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          RouterName.adminHomeScreen,
-          (route) => false,
-        );
-      } else if (userRole == 'Accountant') {
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          RouterName.accountantHomeScreen,
-          (route) => false,
-        );
-      } else if (userRole == 'Auditor') {
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          RouterName.auditorHomeScreen,
-          (route) => false,
-        );
-      } else if (userRole == 'Users') {
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          RouterName.homeScreenForUser,
-          (route) => false,
-        );
-      }
-      emit(UserStutsSuccess());
-    } catch (e) {
-      emit(UserStutsfaild(error: "Failed to get  user:${e.toString()}"));
-    }
-  }
+  //     // Now you can check the user's role and navigate accordingly
+  //     if (userRole == 'admin') {
+  //       // ignore: use_build_context_synchronously
+  //       Navigator.of(context).pushNamedAndRemoveUntil(
+  //         RouterName.adminHomeScreen,
+  //         (route) => false,
+  //       );
+  //     } else if (userRole == 'Accountant') {
+  //       // ignore: use_build_context_synchronously
+  //       Navigator.of(context).pushNamedAndRemoveUntil(
+  //         RouterName.accountantHomeScreen,
+  //         (route) => false,
+  //       );
+  //     } else if (userRole == 'Auditor') {
+  //       // ignore: use_build_context_synchronously
+  //       Navigator.of(context).pushNamedAndRemoveUntil(
+  //         RouterName.auditorHomeScreen,
+  //         (route) => false,
+  //       );
+  //     } else if (userRole == 'Users') {
+  //       // ignore: use_build_context_synchronously
+  //       Navigator.of(context).pushNamedAndRemoveUntil(
+  //         RouterName.homeScreenForUser,
+  //         (route) => false,
+  //       );
+  //     }
+  //     emit(UserStutsSuccess());
+  //   } catch (e) {
+  //     emit(UserStutsfaild(error: "Failed to get  user:${e.toString()}"));
+  //   }
+  // }
 
   Future signInWithGoogle() async {
     try {

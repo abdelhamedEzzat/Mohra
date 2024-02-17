@@ -42,7 +42,7 @@ class _IntroScreenBodyWidgetState extends State<SplashScreenBodyWidget>
 
   void initSlidingAnimation() {
     animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5));
+        AnimationController(vsync: this, duration: const Duration(seconds: 2));
 
     slidingAnimation =
         Tween<Offset>(begin: const Offset(0, 5), end: Offset.zero)
@@ -51,7 +51,7 @@ class _IntroScreenBodyWidgetState extends State<SplashScreenBodyWidget>
   }
 
   Future<Null> durationToNavigatorToIntroScreen() {
-    return Future.delayed(const Duration(seconds: 6), () {
+    return Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context)
           .pushReplacementNamed(RouterName.firstSplashScreenRoute);
     });

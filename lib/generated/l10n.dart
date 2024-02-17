@@ -1530,10 +1530,10 @@ class S {
     );
   }
 
-  /// `Bycreatinganaccountyouareagreeingtoour\n`
+  /// `By creating an account you areagreeing toour\n`
   String get Bycreatinganaccountyouareagreeingtoour {
     return Intl.message(
-      'Bycreatinganaccountyouareagreeingtoour\n',
+      'By creating an account you areagreeing toour\n',
       name: 'Bycreatinganaccountyouareagreeingtoour',
       desc: '',
       args: [],
@@ -1560,11 +1560,51 @@ class S {
     );
   }
 
-  /// `and`
+  /// ` and `
   String get and {
     return Intl.message(
-      'and',
+      ' and ',
       name: 'and',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The accountant has been added successfully`
+  String get TheAccountantHasBeenAddedSuccessfully {
+    return Intl.message(
+      'The accountant has been added successfully',
+      name: 'TheAccountantHasBeenAddedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The Auditor Has Been Added Successfully`
+  String get TheAuditorantHasBeenAddedSuccessfully {
+    return Intl.message(
+      'The Auditor Has Been Added Successfully',
+      name: 'TheAuditorantHasBeenAddedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It has been successfully added`
+  String get Ithasbeensuccessfully {
+    return Intl.message(
+      'It has been successfully added',
+      name: 'Ithasbeensuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `added to the company`
+  String get addedtothecompany {
+    return Intl.message(
+      'added to the company',
+      name: 'addedtothecompany',
       desc: '',
       args: [],
     );

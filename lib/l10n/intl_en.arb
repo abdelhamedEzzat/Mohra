@@ -177,11 +177,14 @@
    "AccountantaddedDocumentin":"Accountant added Document in",
    "YouMustaddTypeOfDocument":"You Must add Type Of Document",
    "ManageSubmit":"Submit",
-   "Bycreatinganaccountyouareagreeingtoour":"Bycreatinganaccountyouareagreeingtoour\n",
+   "Bycreatinganaccountyouareagreeingtoour":"By creating an account you areagreeing toour\n",
    "TermesCondations":"Termes & Condations",
    "PrivacyPolicy":"Privacy Policy",
-   "and":"and"
-  
+   "and":" and ",
+   "TheAccountantHasBeenAddedSuccessfully":"The accountant has been added successfully",
+   "TheAuditorantHasBeenAddedSuccessfully":"The Auditor Has Been Added Successfully",
+   "Ithasbeensuccessfully":"It has been successfully added",
+   "addedtothecompany":"added to the company"
    
     
 
