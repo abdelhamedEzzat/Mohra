@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -98,17 +99,8 @@ class VreifyEmailBody extends StatelessWidget {
                                   onTap: () async {
                                     await FirebaseAuth.instance.currentUser
                                         ?.reload();
-                                    if (FirebaseAuth
-                                        .instance.currentUser!.emailVerified) {
-                                      Constanscollection.userCollection.update({
-                                        'status': '1',
-                                      });
-                                      // ignore: use_build_context_synchronously
-                                      await Navigator.of(context)
-                                          .pushReplacementNamed(
-                                        RouterName.registerScreen,
-                                      );
-                                    }
+                                    // ignore: use_build_context_synchronously
+                                    await checkEmailAndNavigate(context);
                                   }),
                               const GoToLoginTextBotton()
                             ]),
@@ -120,6 +112,70 @@ class VreifyEmailBody extends StatelessWidget {
         ),
       )),
     );
+  }
+
+  Future<void> checkEmailAndNavigate(BuildContext context) async {
+    var user = FirebaseAuth.instance.currentUser;
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where("userID", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    return querySnapshot.docs.forEach((doc) {
+      print("User Data: ${doc.data()}");
+      String role = doc.get('role');
+      String emailStatus = doc.get('Email_status');
+      var user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        print("Role: $role, Email Status: $emailStatus");
+        if (role == 'admin' && emailStatus == "enabled") {
+          print("Navigating to admin home screen");
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            RouterName.adminHomeScreen,
+            (route) => false,
+          );
+        } else if (role == 'User') {
+          if (emailStatus.toLowerCase() == "disabled") {
+            if (FirebaseAuth.instance.currentUser!.emailVerified) {
+              print("Updating user status and navigating to register screen");
+              Constanscollection.userCollection.update({
+                'status': '1',
+              }).whenComplete(() {
+                Navigator.of(context).pushReplacementNamed(
+                  RouterName.watingForAdminAccepted,
+                );
+              });
+            } else {
+              print("Email not verified, skipping navigation");
+            }
+          } else {
+            if (FirebaseAuth.instance.currentUser!.emailVerified) {
+              print("Navigating to home screen for user");
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouterName.homeScreenForUser, (route) => false);
+            } else {
+              print("Email not verified, skipping navigation");
+            }
+          }
+        } else if (role == 'Auditor' && emailStatus == "enabled") {
+          if (FirebaseAuth.instance.currentUser!.emailVerified) {
+            print("Navigating to auditor home screen");
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                RouterName.auditorHomeScreen, (route) => false);
+          } else {
+            print("Email not verified, skipping navigation");
+          }
+        } else if (role == 'Accountant' && emailStatus == "enabled") {
+          if (FirebaseAuth.instance.currentUser!.emailVerified) {
+            print("Navigating to accountant home screen");
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                RouterName.accountantHomeScreen, (route) => false);
+          } else {
+            print("Email not verified, skipping navigation");
+          }
+        }
+      }
+    });
   }
 
   Text subTitleOfVerify(BuildContext context) {

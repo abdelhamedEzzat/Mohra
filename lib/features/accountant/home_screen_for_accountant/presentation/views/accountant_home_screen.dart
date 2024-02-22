@@ -33,7 +33,8 @@ class _AccountantHomeScreenState extends State<AccountantHomeScreen> {
         appBar: CustomAppBar(
           title: const GetNameForUser(),
           onPressed: () {
-            Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
+            Navigator.of(context)
+                .pushNamed(RouterName.searchScreenForAccountant);
           },
         ),
         body: pages[currentIndex]);

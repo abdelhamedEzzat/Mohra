@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -52,8 +53,13 @@ class _CreateCompanyState extends State<CreateCompany> {
             horizontal: 20.h,
           ),
           child: SingleChildScrollView(
-            child: BlocBuilder<FirebaseCreateCompanyCubit,
+            child: BlocConsumer<FirebaseCreateCompanyCubit,
                 FirebaseCreateCompanyState>(
+              listener: (context, state) {
+                if (state is FirestoreStoragefaild) {
+                  print(state.error);
+                }
+              },
               builder: (context, state) {
                 return Form(
                   key: formKey,
@@ -194,15 +200,37 @@ class _CreateCompanyState extends State<CreateCompany> {
                             });
 
                             await Future.delayed(const Duration(seconds: 2));
-                            if (trigerCubit.file == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(S.of(context).MustSelectImage),
-                                  duration: const Duration(seconds: 2),
-                                ),
-                              );
-                              return;
-                            }
+                            // if (trigerCubit.file == null) {
+                            //   setState(() {
+                            //     isLoading =
+                            //         false; // Set isLoading to false here
+                            //   });
+                            //   // ignore: use_build_context_synchronously
+                            //   // ScaffoldMessenger.of(context).showSnackBar(
+                            //   //   SnackBar(
+                            //   //     // ignore: use_build_context_synchronously
+                            //   //     content: Text(S.of(context).MustSelectImage),
+                            //   //     duration: const Duration(seconds: 2),
+                            //   //   ),
+                            //   // );
+
+                            //   await trigerCubit.addCompany(
+                            //       compnyCollectionID: compnyDocument,
+                            //       // docid: docid,
+                            //       file: trigerCubit.file,
+                            //       companyName: trigerCubit.companyName,
+                            //       companyAddress: trigerCubit.companyAddress,
+                            //       companyType: trigerCubit.companyType);
+
+                            //   // ignore: use_build_context_synchronously
+                            //   await trigerCubit.addCompanyToHive(
+                            //       file: trigerCubit.file,
+                            //       companyAddress: trigerCubit.companyAddress,
+                            //       companyName: trigerCubit.companyName,
+                            //       companyType: trigerCubit.companyType,
+                            //       logo: trigerCubit.url.toString());
+                            // }
+
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
 
@@ -210,17 +238,18 @@ class _CreateCompanyState extends State<CreateCompany> {
                                   compnyCollectionID: compnyDocument,
                                   // docid: docid,
                                   file: trigerCubit.file,
+                                  //  ?? trigerCubit.filebase,
                                   companyName: trigerCubit.companyName,
                                   companyAddress: trigerCubit.companyAddress,
                                   companyType: trigerCubit.companyType);
 
                               // ignore: use_build_context_synchronously
-                              await trigerCubit.addCompanyToHive(
-                                  file: trigerCubit.file,
-                                  companyAddress: trigerCubit.companyAddress,
-                                  companyName: trigerCubit.companyName,
-                                  companyType: trigerCubit.companyType,
-                                  logo: trigerCubit.url.toString());
+                              // await trigerCubit.addCompanyToHive(
+                              //     file: trigerCubit.file,
+                              //     companyAddress: trigerCubit.companyAddress,
+                              //     companyName: trigerCubit.companyName,
+                              //     companyType: trigerCubit.companyType,
+                              //     logo: trigerCubit.url.toString());
 
                               Navigator.of(context).pop();
 

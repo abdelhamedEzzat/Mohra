@@ -18,6 +18,10 @@ import 'package:mohra_project/features/accountant/home_screen_for_accountant/pre
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/accuntant_company_documents.dart';
 import 'package:mohra_project/features/accountant/home_screen_for_accountant/presentation/views/widget/documents_detatils_for_accountant.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/admin_home_screen.dart';
+import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/company-of-accountat_in-admin-screen.dart';
+import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/company_of_auditor_in_admin_screen.dart';
+import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/manageCompanyStaff.dart';
+import 'package:mohra_project/features/admin_accepted/adminstration_accepted.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/auditor_detatils_documents_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/auditor_home_screen.dart';
 import 'package:mohra_project/features/auditor/home_screen_for_auditor/presentation/views/widget/add_type_of_document_screen.dart';
@@ -30,7 +34,6 @@ import 'package:mohra_project/features/search_screen/search_screen_for_admin.dar
 import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
 import 'package:mohra_project/features/splash_screens/presentation/views/splash_screen.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/company_documents.dart';
-import 'package:mohra_project/features/user/create_company/data/add_company_hive.dart';
 import 'package:mohra_project/features/user/create_company/presentation/manger/firebase_company/create_company_cubit.dart';
 import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/home_screen_for_user.dart';
@@ -53,8 +56,8 @@ void main() async {
   await Hive.openBox<UserStatusModel>('userStatusBox');
   //
   //
-  Hive.registerAdapter(AddCompanyToHiveAdapter());
-  await Hive.openBox<AddCompanyToHive>('companyBox');
+  // Hive.registerAdapter(AddCompanyToHiveAdapter());
+  // await Hive.openBox<AddCompanyToHive>('companyBox');
 
   Hive.registerAdapter(CompanyDocumentAdapter());
   await Hive.openBox<CompanyDocument>('company_documents');
@@ -169,7 +172,16 @@ class MyApp extends StatelessWidget {
                         const AuditorDocumentDetails(),
                     RouterName.searchScreenForAdmin: (context) =>
                         const SearchScreenForAdmin(),
-                    RouterName.searchScreenForUser: (context) => searchuser()
+                    RouterName.searchScreenForUser: (context) => searchuser(),
+                    RouterName.watingForAdminAccepted: (context) =>
+                        const AdminstrationAccepted(),
+                    RouterName.mangeCompanyStaff: (context) =>
+                        const MangeCompanyStaff(),
+                    RouterName.companyOfAccountatinAdminScreen: (context) =>
+                        const CompanyOfAccountatinAdminScreen(),
+                    // ignore: equal_keys_in_map
+                    RouterName.companyOfAuditorinAdminScreen: (context) =>
+                        const CompanyOfAuditorinAdminScreen()
                   },
 
                   home:
@@ -239,7 +251,7 @@ class AuthUsers extends StatelessWidget {
                     if (userStatus == '0') {
                       return const RegisterScreen();
                     } else if (userStatus == '1') {
-                      return const RegisterScreen();
+                      return const AdminstrationAccepted();
                     } else if (userStatus == '2') {
                       if (FirebaseAuth.instance.currentUser!.emailVerified) {
                         return const HomeScreenForUser();
@@ -257,6 +269,9 @@ class AuthUsers extends StatelessWidget {
                     // Add logic for userRole == "Auditor"
                   }
                 } else {
+                  // FirebaseAuth.instance.currentUser!.delete();
+                  // // FirebaseAuth.instance.signOut();
+                  // return status == 0 ? SplashScreen() : RegisterScreen();
                   print(
                       "User data is null or not of type Map<String, dynamic>");
                 }
@@ -264,7 +279,7 @@ class AuthUsers extends StatelessWidget {
                 return const RegisterScreen();
               }
 
-              return const SplashScreen();
+              return const RegisterScreen();
             },
           );
         } else {
@@ -276,12 +291,3 @@ class AuthUsers extends StatelessWidget {
     );
   }
 }
-   // if (user != null) {
-            //   // المستخدم قام بتسجيل الدخول
-            //   print("User signed in");
-            //   // handleUserSignIn(user);
-            // } else {
-            //   // المستخدم قام بتسجيل الخروج أو غير مسجل
-            //   print("User signed out or not signed in");
-            //   // handleUserSignOut();
-            // }

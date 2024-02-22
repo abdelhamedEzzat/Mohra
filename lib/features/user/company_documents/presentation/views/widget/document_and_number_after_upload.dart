@@ -1,10 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
+import 'package:mohra_project/features/user/create_company/presentation/views/widget/add_Image_widget.dart';
+import 'package:mohra_project/features/user/upload_document/presentation/manger/upload_documents/upload_documents_cubit.dart';
 
 class DocumentImageAndNumberWithoutState extends StatelessWidget {
   const DocumentImageAndNumberWithoutState({
@@ -248,7 +253,7 @@ class FilesDocWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //   final trigerCubit = BlocProvider.of<UploadDocumentsCubit>(context);
+    final trigerCubit = BlocProvider.of<UploadDocumentsCubit>(context);
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -329,6 +334,96 @@ class FilesDocWidget extends StatelessWidget {
                           ],
                         ),
                       ),
+                      //      Column(
+                      //   mainAxisSize: MainAxisSize.min,
+                      //   children: [
+                      //     BlocBuilder<UploadDocumentsCubit, UploadDocumentsState>(
+                      //         builder: (context, state) {
+                      //       if (trigerCubit.filePlatforme != null &&
+                      //           trigerCubit.imagefile == null) {
+                      //         if (trigerCubit.filePlatforme!.extension == 'jpg' ||
+                      //             trigerCubit.filePlatforme!.extension == 'jpeg' ||
+                      //             trigerCubit.filePlatforme!.extension == 'JPG' ||
+                      //             trigerCubit.filePlatforme!.extension == 'JPEG') {
+                      //           return AddImageWidget(
+                      //             image: ClipRRect(
+                      //               borderRadius:
+                      //                   const BorderRadius.all(Radius.circular(24)),
+                      //               child: Image.file(
+                      //                 File(trigerCubit.filePlatforme!.path
+                      //                     .toString()),
+                      //                 fit: BoxFit.fitWidth,
+                      //               ),
+                      //             ),
+                      //           );
+                      //         } else if (trigerCubit.imagefile != null &&
+                      //             trigerCubit.filePlatforme == null) {
+                      //           return Expanded(
+                      //             child: Row(
+                      //               mainAxisSize: MainAxisSize.min,
+                      //               children: [
+                      //                 Expanded(
+                      //                     flex: 4,
+                      //                     child: Container(
+                      //                         decoration: BoxDecoration(
+                      //                             color: ColorManger.slogenColor,
+                      //                             borderRadius:
+                      //                                 const BorderRadius.only(
+                      //                                     bottomLeft:
+                      //                                         Radius.circular(25),
+                      //                                     bottomRight:
+                      //                                         Radius.circular(25))),
+                      //                         height: MediaQuery.of(context)
+                      //                             .size
+                      //                             .height,
+                      //                         child: Row(
+                      //                           children: [
+                      //                             SizedBox(
+                      //                               width: 10.w,
+                      //                             ),
+                      //                             CircleAvatar(
+                      //                               backgroundColor:
+                      //                                   ColorManger.darkGray,
+                      //                               maxRadius: 28.h,
+                      //                               minRadius: 22.h,
+                      //                               child: Text(
+                      //                                 pdfFileExtention,
+                      //                                 style: Theme.of(context)
+                      //                                     .textTheme
+                      //                                     .displayLarge!
+                      //                                     .copyWith(
+                      //                                         color: Colors.white),
+                      //                               ),
+                      //                             ),
+                      //                             SizedBox(
+                      //                               width: 10.w,
+                      //                             ),
+                      //                             SizedBox(
+                      //                               width: 200.w,
+                      //                               child: Text(
+                      //                                 pdfFileName,
+                      //                                 style: Theme.of(context)
+                      //                                     .textTheme
+                      //                                     .displayLarge!
+                      //                                     .copyWith(
+                      //                                         color: Colors.white),
+                      //                                 maxLines: 3,
+                      //                                 overflow:
+                      //                                     TextOverflow.ellipsis,
+                      //                               ),
+                      //                             )
+                      //                           ],
+                      //                         )))
+                      //               ],
+                      //             ),
+                      //           );
+                      //         }
+                      //       }
+                      //     }
+
+                      //     )
+                      //   ],
+                      // ),
                     ],
                   ),
                   Positioned(

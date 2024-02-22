@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/widgets/Language_wiget.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/widgets/delete_account.dart';
 import 'package:mohra_project/features/user/settings_screen/persentation/widgets/details_profile.dart';
@@ -54,7 +55,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(
             height: 10,
           ),
-          const DeleteAccount()
+          const Spacer(),
+          Container(
+              padding: EdgeInsets.only(bottom: 10.h),
+              child: const DeleteAccount())
         ]),
       ),
     );

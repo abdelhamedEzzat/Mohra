@@ -26,4 +26,12 @@ class RouterName {
   static const String searchScreenForAdmin = "SearchScreenForAdmin";
   static const String searchScreenForUser = "SearchScreenForUser";
   static const String test = "test";
+  static const String watingForAdminAccepted = "watingForAdminAccepted";
+  static const String mangeCompanyStaff = "mangeCompanyStaff";
+  static const String searchScreenForAuditor = "SearchScreenForAuditor";
+  static const String searchScreenForAccountant = "SearchScreenForAccountant";
+  static const String companyOfAccountatinAdminScreen =
+      "companyOfAccountatinAdminScreen";
+  static const String companyOfAuditorinAdminScreen =
+      "companyOfAuditorinAdminScreen";
 }

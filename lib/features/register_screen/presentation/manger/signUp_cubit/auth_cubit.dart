@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mohra_project/core/routes/name_router.dart';
 
 part 'auth_state.dart';
 
@@ -32,7 +30,19 @@ class AuthCubit extends Cubit<AuthState> {
       );
       emit(SignupSuccess());
     } on FirebaseAuthException catch (e) {
-      emit(Signupfaild(error: e.message.toString()));
+      if (e.code == 'weak-password') {
+        emit(const Signupfaild(error: 'The password provided is too weak.'));
+        if (e.code == 'email-already-in-use') {
+          emit(const Signupfaild(
+              error: 'The account already exists for that email.'));
+        } else if (e.code == 'google_services_blocked') {
+          emit(const Loginfaild(
+              error:
+                  'Google services are blocked in your area. Please try again later.'));
+        } else {
+          emit(Signupfaild(error: e.message.toString()));
+        }
+      }
     }
   }
 
@@ -50,7 +60,17 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(LoginSuccess());
     } on FirebaseAuthException catch (e) {
-      emit(Loginfaild(error: e.message.toString()));
+      if (e.code == 'user-not-found') {
+        emit(const Loginfaild(error: 'No user found for that email.'));
+      } else if (e.code == 'wrong-password') {
+        emit(const Loginfaild(error: 'Wrong password provided for that user.'));
+      } else if (e.code == 'google_services_blocked') {
+        emit(const Loginfaild(
+            error:
+                'Google services are blocked in your area. Please try again later.'));
+      } else {
+        emit(Loginfaild(error: e.message.toString()));
+      }
     }
   }
 
@@ -60,18 +80,31 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthlogOut());
   }
 
-  Future deleteAccount() async {
+  Future<bool> deleteAccount() async {
+    emit(AuthDeleteAccountLoading());
     try {
-      await FirebaseAuth.instance.currentUser!.delete();
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'requires-recent-login') {
-        // ignore: avoid_print
-        print(
-            'The user must reauthenticate before this operation can be executed.');
-      }
-    }
+      // Get the current user
+      final currentUser = FirebaseAuth.instance.currentUser;
 
-    emit(AuthDeleteAccount());
+      // Delete user document from Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser!.uid)
+          .delete();
+
+      // Delete user account from Firebase Authentication
+      await currentUser!.delete();
+
+      print('Account successfully deleted.');
+      emit(AuthDeleteAccountSuccess());
+      return true; // Return true indicating successful deletion
+    } catch (e) {
+      // Handle any errors here
+      print('Error deleting account: $e');
+      emit(AuthDeleteAccountFaild(
+          error: " faild Delete Account ${e.toString()}"));
+      return false; // Return false indicating deletion failure
+    }
   }
 
   Future resetAccount() async {

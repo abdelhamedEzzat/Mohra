@@ -17,17 +17,20 @@ class LogOutBotton extends StatelessWidget {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         return GestureDetector(
-            onTap: () {
-              GoogleSignIn googleSignIn = GoogleSignIn();
-              if (googleSignIn.currentUser != null) {
-                googleSignIn.disconnect();
-                Constanscollection.updateUserStatus(2);
-              } else {
-                // If not logged in with Google, perform email logout
-                Constanscollection.updateUserStatus(2);
-                BlocProvider.of<AuthCubit>(context).logOut().then((value) =>
-                    Navigator.of(context)
-                        .pushReplacementNamed(RouterName.loginScreen));
+            onTap: () async {
+              bool logoutConfirmed =
+                  await showLogoutConfirmationDialog(context);
+              if (logoutConfirmed) {
+                GoogleSignIn googleSignIn = GoogleSignIn();
+                if (googleSignIn.currentUser != null) {
+                  googleSignIn.disconnect();
+                  Constanscollection.updateUserStatus(2);
+                } else {
+                  Constanscollection.updateUserStatus(2);
+                  BlocProvider.of<AuthCubit>(context).logOut().then((value) =>
+                      Navigator.of(context)
+                          .pushReplacementNamed(RouterName.loginScreen));
+                }
               }
             },
             child: Padding(
@@ -43,4 +46,41 @@ class LogOutBotton extends StatelessWidget {
       },
     );
   }
+
+  showLogoutConfirmationDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).ConfirmLogout),
+          content: Text(S.of(context).Areyousureyouwanttologout),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // No
+              },
+              child: Text(S.of(context).no),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Yes
+              },
+              child: Text(S.of(context).yes),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+  // GoogleSignIn googleSignIn = GoogleSignIn();
+              // if (googleSignIn.currentUser != null) {
+              //   googleSignIn.disconnect();
+              //   Constanscollection.updateUserStatus(2);
+              // } else {
+              //   // If not logged in with Google, perform email logout
+              //   Constanscollection.updateUserStatus(2);
+              //   BlocProvider.of<AuthCubit>(context).logOut().then((value) =>
+              //       Navigator.of(context)
+              //           .pushReplacementNamed(RouterName.loginScreen));
+              // }

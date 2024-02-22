@@ -158,7 +158,7 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
               child: StreamBuilder(
                 stream: companyCollection,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasData) {
+                  if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -222,28 +222,32 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
                       ],
                     );
                   } else {
-                    return Container(
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 25.h,
-                          ),
-                          Icon(
-                            Icons.business_sharp,
-                            color: Colors.black87,
-                            size: 45.h,
-                          ),
-                          SizedBox(
-                            height: 25.h,
-                          ),
-                          Center(
-                            child: Text(S.of(context).NoAvailableCompanies,
-                                textAlign: TextAlign.center,
-                                style:
-                                    Theme.of(context).textTheme.displayMedium),
-                          ),
-                        ],
+                    return Center(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 25.h,
+                            ),
+                            Icon(
+                              Icons.business_sharp,
+                              color: Colors.black87,
+                              size: 45.h,
+                            ),
+                            SizedBox(
+                              height: 25.h,
+                            ),
+                            Center(
+                              child: Text(S.of(context).NoAvailableCompanies,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   }

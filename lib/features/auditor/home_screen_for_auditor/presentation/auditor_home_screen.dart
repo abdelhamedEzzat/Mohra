@@ -39,7 +39,20 @@ class _AccountantHomeScreenState extends State<AuditorHomeScreen> {
         appBar: CustomAppBar(
           title: const GetNameForUser(),
           onPressed: () {
-            Navigator.of(context).pushNamed(RouterName.searchScreenForAdmin);
+            // Navigator.of(context).push(MaterialPageRoute(
+            //   builder: (context) {
+            //  return   SearchScreenForAdmin(onLongPress:);
+            //   },
+            // ));
+            Navigator.of(context).pushNamed(RouterName.searchScreenForAuditor);
+            //     .then((value) {
+            //   return SearchScreenForAdmin(
+            //     onLongPress: () {
+            //       Navigator.of(context)
+            //           .pushNamed(RouterName.auditorCompanyDocuments);
+            //     },
+            //   );
+            // });
           },
           //leading: BackButton(color: Colors.white),
         ),

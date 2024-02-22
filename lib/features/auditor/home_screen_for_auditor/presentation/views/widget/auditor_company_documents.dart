@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
@@ -95,31 +96,41 @@ class AuditorCompanyDocuments extends StatelessWidget {
                       String fileExtension =
                           doc["fileExtention"].toLowerCase() ?? "";
 
-                      if (fileExtension == "image") {
+                      if (fileExtension == "image" ||
+                          fileExtension == "jpg" ||
+                          fileExtension == "PNG" ||
+                          fileExtension == "JPEG" ||
+                          fileExtension == "jpeg") {
+                        String imageUrl = doc["url"];
+                        DefaultCacheManager().getSingleFile(imageUrl);
                         itemList.add(ImageDocWidget(
                           ontapForNavToDetailsScreen: () {
                             Navigator.of(context).pushNamed(
                               RouterName.auditorDocumentDetails,
                               arguments: {
-                                'urlImage': doc["urlImage"],
-                                'comment': doc['comment']
+                                'url': doc["url"],
+                                'DocID': doc["DocID"],
+                                'fileExtention': doc["fileExtention"],
+                                'comment': doc['comment'],
                               },
                             );
                           },
-                          docImage: doc["urlImage"],
+                          docImage: doc["url"],
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute<void>(
                               builder: (BuildContext context) {
-                                // Retrieve all image URLs
                                 List imageUrls = allDocs
                                     .where((doc) =>
-                                        doc["fileExtention"] == "image")
-                                    .map((doc) => doc["urlImage"])
+                                        doc['fileExtention'] == "image" ||
+                                        doc['fileExtention'] == "jpg" ||
+                                        doc['fileExtention'] == "PNG" ||
+                                        doc['fileExtention'] == "JPEG" ||
+                                        doc['fileExtention'] == "jpeg")
+                                    .map((doc) => doc["url"])
                                     .toList();
 
-                                // Get the index of the selected image
                                 int initialIndex =
-                                    imageUrls.indexOf(doc["urlImage"]);
+                                    imageUrls.indexOf(doc["url"]);
 
                                 return PhotoViewGallery.builder(
                                   itemCount: imageUrls.length,
@@ -148,25 +159,31 @@ class AuditorCompanyDocuments extends StatelessWidget {
                           status: doc['status'],
                         ));
                       } else {
-                        itemList.add(FilesDocWidget(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
-                              RouterName.auditorDocumentDetails,
-                              arguments: {
-                                'companydocID': doc["companydocID"],
-                                'url': doc["url"],
-                                'name': doc["name"],
-                                'fileExtention': doc["fileExtention"],
-                                'comment': doc['comment']
-                              },
-                            );
-                          },
-                          pdfFileExtention: doc["fileExtention"],
-                          pdfFileName: doc["name"],
-                          color: ColorManger.darkGray,
-                          status: doc['status'],
-                          typeOfDocument: doc["docNumer"].toString(),
-                        ));
+                        String fileExtension =
+                            doc["fileExtention"].toLowerCase() ?? "";
+                        if (fileExtension == 'pdf' ||
+                            fileExtension == 'docx' ||
+                            fileExtension == 'xlsx') {
+                          itemList.add(FilesDocWidget(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                RouterName.auditorDocumentDetails,
+                                arguments: {
+                                  'name': doc["name"],
+                                  'url': doc["url"],
+                                  'DocID': doc["DocID"],
+                                  'comment': doc['comment'],
+                                  'fileExtention': doc['fileExtention']
+                                },
+                              );
+                            },
+                            pdfFileExtention: doc["fileExtention"],
+                            pdfFileName: doc["name"],
+                            color: ColorManger.darkGray,
+                            status: doc['status'],
+                            typeOfDocument: doc["docNumer"].toString(),
+                          ));
+                        }
                       }
                     });
 

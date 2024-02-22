@@ -21,7 +21,9 @@ class AuditorDocumentDetails extends StatefulWidget {
 
 class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
-  String? selectItem;
+  bool snackBarShown = false;
+
+  String? selectItem = "Select Type";
 
   List<String> typeDocumentDropDown = [];
   String? selectTypeItem;
@@ -46,7 +48,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
 
     final Stream<QuerySnapshot> documentDetatils = FirebaseFirestore.instance
         .collection('Document')
-        .where("companydocID", isEqualTo: docDitails['companydocID'])
+        .where("DocID", isEqualTo: docDitails['DocID'])
         .snapshots();
 
     final mediaQueryHeight = MediaQuery.of(context).size.height;
@@ -82,7 +84,9 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                       borderRadius: BorderRadius.circular(10)),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: docDitails['urlImage'] == null
+                      child: docDitails['fileExtention'] == 'pdf' ||
+                              docDitails['fileExtention'] == 'docx' ||
+                              docDitails['fileExtention'] == 'xlsx'
                           ? GestureDetector(
                               onTap: () => openFile(
                                       url: docDitails['url'],
@@ -126,9 +130,9 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                             )
                           : GestureDetector(
                               onTap: () => navigateToFullScreenImage(
-                                  context, docDitails['urlImage'].toString()),
+                                  context, docDitails['url'].toString()),
                               child: Image.network(
-                                docDitails['urlImage'].toString(),
+                                docDitails['url'].toString(),
                                 fit: BoxFit.fill,
                               ),
                             )),
@@ -189,14 +193,14 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                               accountantReviews, "Accountant Reviews");
                       List<Widget> auditorContainers =
                           _buildAuditorReviewContainers(
-                              auditorReviews, "Auditor Reviews");
+                              auditorReviews, "Auditor Reviews", context);
 
 //
 //
 //
 //
                       //todo
-                      if (document['isAccountantReview'] == true) {
+                      if (document['isAccountantReview'] == false) {
                         return Column(
                           children: [
                             if (accountantContainers.isNotEmpty)
@@ -266,18 +270,29 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
         ),
         borderRadius: BorderRadius.circular(10),
         isExpanded: true,
-        value: selectItem ?? stutsDocumentDropDown.first,
-        items: stutsDocumentDropDown
-            .map((item) => DropdownMenuItem(
-                  value: item,
-                  child: Text(
-                    item,
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
-                ))
-            .toList(),
+        value: selectItem,
+        items: [
+          // Add a DropdownMenuItem with the initial value
+          DropdownMenuItem(
+            value: "Select Type",
+            child: Text(
+              "Select Type",
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
+          ),
+          // Add other DropdownMenuItem instances from your stutsDocumentDropDown list
+          ...stutsDocumentDropDown
+              .map((item) => DropdownMenuItem(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: Theme.of(context).textTheme.displayMedium,
+                    ),
+                  ))
+              .toList(),
+        ],
         onChanged: (item) => setState(() {
-          selectItem = item;
+          selectItem = item!;
         }),
       ),
     );
@@ -303,7 +318,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
               Container(
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  color: Colors.amber,
+                  color: Colors.black12,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 height: 150,
@@ -353,7 +368,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
   }
 
   List<Widget> _buildAuditorReviewContainers(
-      List<dynamic> reviews, String title) {
+      List<dynamic> reviews, String title, BuildContext context) {
     List<Widget> containers = [];
 
     if (reviews.isNotEmpty) {
@@ -380,12 +395,11 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                   child: Column(
                     children: [
                       data(review, context,
-                          "${S.of(context).StaffTypeReview} ${review['staffTypeReview']}"),
+                          "Staff Type Review: ${review['staffTypeReview']}"),
                       data(review, context,
-                          "${S.of(context).Comments} ${review['comment']}"),
+                          "Comment: ${review['comment'] ?? 'No comment'}"),
                       data(review, context,
-                          "${S.of(context).DocumentStatus} ${review['statusDoc']}"),
-
+                          "Document Status: ${review['statusDoc'] != null ? review['statusDoc'] : 'No status'}"),
                       // Add more UI elements for auditors
                     ],
                   ),
@@ -466,6 +480,34 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                       "statusDoc": selectItem,
                       'isAccountantReview': false,
                       //  'accountant by':"email"
+                    }).then((value) {
+                      try {
+                        FirebaseFirestore.instance
+                            .collection('Document')
+                            .where("DocID", isEqualTo: docDitails["DocID"])
+                            .get()
+                            .then((QuerySnapshot querySnapshot) {
+                          querySnapshot.docs.forEach((doc) {
+                            // Check if the document exists
+                            if (doc.exists) {
+                              // Perform the update operation on the document
+                              doc.reference
+                                  .update({"status": selectItem})
+                                  .then((_) =>
+                                      print("Document updated successfully"))
+                                  .catchError((error) => print(
+                                      "Failed to update document: $error"));
+                            } else {
+                              print("Document does not exist");
+                            }
+                          });
+                        }).catchError((error) {
+                          print("Error getting documents: $error");
+                        });
+                      } catch (e) {
+                        print(e.toString());
+                        e.toString();
+                      }
                     }).then((value) {
                       if (selectItem == 'Canceled' ||
                           selectItem == 'Finished') {

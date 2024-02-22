@@ -169,5 +169,23 @@
    "TheAccountantHasBeenAddedSuccessfully":"تم اضافه المحاسب بنجاح",
    "TheAuditorantHasBeenAddedSuccessfully":"تم اضافه المراجع بنجاح",
    "Ithasbeensuccessfull":"تم بنجاح اضافه",
-   "addedtothecompany":"الي شركه"
+   "addedtothecompany":"الي شركه",
+
+   "adminstrationTitleMassage": "تهانينا، لقد تم توثيق بريدك الإلكتروني وستتم مراجعة بياناتك من قبل الإدارة خلال 24 ساعة، لا يمكنك التفكير بعد قبولها. ",
+   "snackParInAdminstrationPage":"مرحبا ايميلك في مرحله القبول من خلال الاداره",
+   "auditorCompany":"شركات المراجع :",
+   "accountantCompany":"شركات المحاسب :",
+   "SeeDocumentCompany":"رؤيه مستندات الشركة",
+   "Displaydatathroughtheaccountantscreen":"عرض البيانات من خلال شاشة المحاسب",
+   "DisplaydatathroughtheAuditorscreen":"عرض البيانات من خلال شاشة المدقق",
+   "AccountatCompany":"شركات المحاسب",
+   "AuditorCompany":"شركات المراجع",
+   "ConfirmLogout":"تأكيد الخروج",
+   "Areyousureyouwanttologout":"هل أنت متأكد أنك تريد تسجيل الخروج؟",
+   "no":"لا",
+   "yes":"نعم",
+   "Numberofcompanydocuments":"عدد مستندات الشركه",
+   "ConfirmAccountDeletion":"تأكيد حذف الحساب",
+   "Areyousureyouwanttodeleteyouraccount":"هل أنت متأكد من أنك تريد حذف حسابك؟"
+   
 }

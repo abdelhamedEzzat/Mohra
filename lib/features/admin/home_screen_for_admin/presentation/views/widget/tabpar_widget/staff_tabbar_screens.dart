@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
+import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
 class StaffTabBARScreens extends StatelessWidget {
@@ -24,10 +25,23 @@ class StaffTabBARScreens extends StatelessWidget {
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (BuildContext context, int index) {
-              return StaffShowWidget(
-                staffName: snapshot.data!.docs[index]["first_Name"],
-                staffTitle: snapshot.data!.docs[index]["role"],
-                staffemail: snapshot.data!.docs[index]["email"],
+              return GestureDetector(
+                onTap: () {
+                  if (snapshot.data!.docs[index]["role"] == "Accountant") {
+                    Navigator.of(context).pushNamed(
+                        RouterName.companyOfAccountatinAdminScreen,
+                        arguments: snapshot.data!.docs[index]["userID"]);
+                  } else if (snapshot.data!.docs[index]["role"] == "Auditor") {
+                    Navigator.of(context).pushNamed(
+                        RouterName.companyOfAuditorinAdminScreen,
+                        arguments: snapshot.data!.docs[index]["userID"]);
+                  }
+                },
+                child: StaffShowWidget(
+                  staffName: snapshot.data!.docs[index]["first_Name"],
+                  staffTitle: snapshot.data!.docs[index]["role"],
+                  staffemail: snapshot.data!.docs[index]["email"],
+                ),
               );
             },
           );
@@ -122,7 +136,7 @@ class StaffShowWidget extends StatelessWidget {
                       children: [
                         Expanded(
                             child: Text(
-                          "${S.of(context).UserName}  $staffName ",
+                          "${S.of(context).UserName} :  $staffName ",
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.displaySmall,
                         )),

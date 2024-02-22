@@ -194,7 +194,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
         int nextDocumentNumber = await getNextDocumentNumber(companydocID);
         await Constanscollection.compnyDocument.add(
           {
-            "urlImage": imageurl,
+            "url": imageurl,
             "comment": comment,
             "userid": userId,
             "companydocID": companydocID,

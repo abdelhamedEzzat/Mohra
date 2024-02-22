@@ -57,7 +57,15 @@ final class AuthlogOut extends AuthState {}
 //
 // for Delete account
 //
-final class AuthDeleteAccount extends AuthState {}
+final class AuthDeleteAccountSuccess extends AuthState {}
+
+final class AuthDeleteAccountLoading extends AuthState {}
+
+final class AuthDeleteAccountFaild extends AuthState {
+  final String error;
+
+  const AuthDeleteAccountFaild({required this.error});
+}
 
 //
 // for Reset account

@@ -1,25 +1,27 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:photo_view/photo_view.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
-import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
-class SearchScreenForAdmin extends StatefulWidget {
-  const SearchScreenForAdmin({
+class SearchScreenForAuditor extends StatefulWidget {
+  const SearchScreenForAuditor({
     Key? key,
+    // this.onLongPress,
   }) : super(key: key);
-
+  // final void Function()? onLongPress;
   @override
-  State<SearchScreenForAdmin> createState() => _SearchScreenState();
+  State<SearchScreenForAuditor> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreenForAdmin> {
+class _SearchScreenState extends State<SearchScreenForAuditor> {
   String? selectTypeItem;
   final TextEditingController companyContraller = TextEditingController();
   List companySearchList = [];
@@ -34,17 +36,30 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
 
   // Function to get the name of companies
   Future<void> getNameOfCompany() async {
-    var companiesData = await FirebaseFirestore.instance
-        .collection('Companys')
-        .orderBy("company_Name")
-        .get();
+    // Step 1: Get the company IDs from the staff collection
+    var staffData = await FirebaseFirestore.instance.collection('Staff').get();
 
-    setState(() {
-      companySearchList = companiesData.docs;
-    });
+    // Extracting company IDs from staff data
+    List<String> companyIDs = [];
+    for (var staffSnapshot in staffData.docs) {
+      String companyID = staffSnapshot['CompanyId'];
+      companyIDs.add(companyID);
+    }
+
+    // Step 2: Query companies collection for each company ID
+    for (var companyID in companyIDs) {
+      var companyQuery = await FirebaseFirestore.instance
+          .collection('Companys')
+          .where('companyId', isEqualTo: companyID)
+          .get();
+
+      setState(() {
+        companySearchList = companyQuery.docs;
+      });
+    }
   }
 
-  // Function to search and update the results
+// Function to search and update the results
   void searchResultListCompanys() {
     var showresultsCompanys = [];
     if (companyContraller.text.isNotEmpty) {
@@ -69,8 +84,6 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
         selectedCompanyId = companyId;
         fetchCompanyData();
       });
-    } else {
-      return;
     }
   }
 
@@ -79,13 +92,12 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
     fetchAdditionalInfo();
   }
 
-  // Function to fetch additional information based on the selected company
   void fetchAdditionalInfo() async {
-    // Check if a company is selected
     if (selectedCompanyId.isNotEmpty) {
       var snapshot = await FirebaseFirestore.instance
-          .collection('Companys')
-          .where('companyId', isEqualTo: selectedCompanyId)
+          .collection('Staff')
+          .where('userid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .where('CompanyId', isEqualTo: selectedCompanyId)
           .get();
 
       // Get the additional information
@@ -121,15 +133,10 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
           .where('companydocID', isEqualTo: selectedCompanyId)
           .where('selectTypeItem', isEqualTo: selectTypeItem)
           .get();
-
-      // Check if the widget is still mounted before calling setState
-      if (mounted) {
-        setState(() {
-          companyDocuments =
-              documentsSnapshot.docs.map((doc) => doc.data()).toList();
-        });
-      }
-
+      setState(() {
+        companyDocuments =
+            documentsSnapshot.docs.map((doc) => doc.data()).toList();
+      });
       print("Company Documents: $companyDocuments");
       print("selecttype $selectTypeItem");
       print("selecttype $selectedCompanyId");
@@ -140,8 +147,7 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
   void initState() {
     getNameOfCompany();
     companyContraller.addListener(onSearchChanged);
-    fetchCompanyDocuments();
-    fetchAdditionalInfo();
+
     super.initState();
   }
 
@@ -153,8 +159,8 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
   void dispose() {
     companyContraller.removeListener(onSearchChanged);
     companyContraller.dispose();
-    // Cancel any ongoing asynchronous operations here
-    // For example, cancel any streams or timers
+    //fetchCompanyDocuments();
+    //myStreamSubscription?.cancel();
     super.dispose();
   }
 
@@ -200,7 +206,9 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   children: [
-                    searchResults(),
+                    searchResults(
+                        // widget.onLongPress
+                        ),
                   ],
                 ),
               ),
@@ -297,7 +305,7 @@ class _SearchScreenState extends State<SearchScreenForAdmin> {
                 GestureDetector(
                   onLongPress: () {
                     Navigator.of(context).pushNamed(
-                        RouterName.accuntantCompanyDocuments,
+                        RouterName.auditorCompanyDocuments,
                         arguments: companySearchResults[index]['companyId']);
                   },
                   child: Container(

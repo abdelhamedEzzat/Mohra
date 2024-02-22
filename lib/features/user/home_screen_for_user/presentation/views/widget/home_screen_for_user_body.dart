@@ -64,44 +64,49 @@ class CompaniesListThatUserCreated extends StatefulWidget {
 
 class _CompaniesListThatUserCreatedState
     extends State<CompaniesListThatUserCreated> {
-  late Future<Box<AddCompanyToHive>> _companyBoxFuture;
+  // late Future<Box<AddCompanyToHive>> _companyBoxFuture;
 
-  @override
-  void initState() {
-    super.initState();
-    _companyBoxFuture = _openBox();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _companyBoxFuture = _openBox();
+  // }
 
-  Future<Box<AddCompanyToHive>> _openBox() async {
-    final boxExists = await Hive.boxExists('companyBox');
-    if (boxExists) {
-      final box = await Hive.openBox<AddCompanyToHive>('companyBox');
-      if (box.isNotEmpty) {
-        print('box is not empty');
-        return box;
-      }
-    }
-    final box = await Hive.openBox<AddCompanyToHive>('companyBox');
-    final companies = await _getCompaniesFromFirebase();
-    box.addAll(companies);
-    print('box is  empty');
-    return box;
-  }
+  // Future<Box<AddCompanyToHive>> _openBox() async {
+  //   final boxExists = await Hive.boxExists('companyBox');
+  //   if (boxExists) {
+  //     final box = await Hive.openBox<AddCompanyToHive>('companyBox');
+  //     if (box.isNotEmpty) {
+  //       print('box is not empty');
+  //       return box;
+  //     }
+  //   }
+  //   final box = await Hive.openBox<AddCompanyToHive>('companyBox');
+  //   final companies = await _getCompaniesFromFirebase();
+  //   box.addAll(companies);
+  //   print('box is  empty');
+  //   return box;
+  // }
 
-  Future<List<AddCompanyToHive>> _getCompaniesFromFirebase() async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection("Companys")
-        .where('userID', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-        .get();
+  // Future<List<AddCompanyToHive>> _getCompaniesFromFirebase() async {
+  //   final snapshot = await FirebaseFirestore.instance
+  //       .collection("Companys")
+  //       .where('userID', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+  //       .get();
 
-    final companies =
-        snapshot.docs.map((doc) => AddCompanyToHive.fromSnapshot(doc)).toList();
+  //   final companies =
+  //       snapshot.docs.map((doc) => AddCompanyToHive.fromSnapshot(doc)).toList();
 
-    return companies;
-  }
+  //   return companies;
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> companyCollection = FirebaseFirestore.instance
+        .collection("Companys")
+        .where('userID', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
+
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
@@ -113,122 +118,95 @@ class _CompaniesListThatUserCreatedState
             style: Theme.of(context).textTheme.displayLarge,
           ),
           const SizedBox(height: 20),
-          FutureBuilder<Box<AddCompanyToHive>>(
-            future: _companyBoxFuture,
+          StreamBuilder<QuerySnapshot>(
+            stream: companyCollection,
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
               if (snapshot.hasData) {
-                final _companyBox = snapshot.data!;
-                return StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection("Companys")
-                      .where('userID',
-                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    if (snapshot.hasData) {
-                      final documents = snapshot.data!.docs;
-                      if (documents.isEmpty) {
-                        return Container(
-                          alignment: Alignment.center,
-                          child: Column(
-                            children: [
-                              SizedBox(height: 25.h),
-                              const Icon(
-                                Icons.business_sharp,
-                                color: Colors.black87,
-                                size: 45,
+                if (snapshot.data!.docs.isEmpty) {
+                  return Container(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 25.h,
+                        ),
+                        Icon(
+                          Icons.business_sharp,
+                          color: Colors.black87,
+                          size: 45.h,
+                        ),
+                        SizedBox(
+                          height: 25.h,
+                        ),
+                        Center(
+                          child: Text(
+                              "You haven't created any companies yet. Click to create one!",
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.displayMedium),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return snapshot.data!.docs[index]["CompanyStatus"] ==
+                              'Waiting for Accepted'
+                          ? SingleChildScrollView(
+                              child: CompanyButton(
+                                onTap: () {},
+                                withStatus: true,
+                                companyName: snapshot.data!.docs[index]
+                                    ["company_Name"],
+                                logoCompany: snapshot.data!.docs[index]["logo"],
+                                colorOfStatus: ColorManger.darkGray,
+                                statusText: snapshot.data!.docs[index]
+                                    ["CompanyStatus"],
                               ),
-                              SizedBox(height: 25.h),
-                              Center(
-                                child: Text(
-                                  S.of(context).NoCompanyMassage,
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
+                            )
+                          : SingleChildScrollView(
+                              child: CompanyButton(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, RouterName.companyDocuments,
+                                      arguments: {
+                                        "companyId": snapshot.data!.docs[index]
+                                            ["companyId"],
+                                        "companyName": snapshot
+                                            .data!.docs[index]["company_Name"],
+                                        "CompanyAddress": snapshot.data!
+                                            .docs[index]["Company_Address"],
+                                        "Companytype": snapshot
+                                            .data!.docs[index]["Company_type"],
+                                      });
+                                },
+                                withStatus: true,
+                                companyName: snapshot.data!.docs[index]
+                                    ["company_Name"],
+                                logoCompany: snapshot.data!.docs[index]["logo"],
+                                colorOfStatus: snapshot.data!.docs[index]
+                                            ["CompanyStatus"] ==
+                                        'Accepted'
+                                    ? Colors.green
+                                    : Colors.red,
+                                statusText: snapshot.data!.docs[index]
+                                    ["CompanyStatus"],
                               ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        final companies = documents
-                            .map((doc) => AddCompanyToHive.fromSnapshot(doc))
-                            .toList();
-                        _companyBox.addAll(companies);
-                        return ListView.separated(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          reverse: true,
-                          itemCount: companies.length,
-                          separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(height: 10.h);
-                          },
-                          itemBuilder: (BuildContext context, int index) {
-                            final company = companies[index];
-                            print(
-                                "======================${company.companyName}");
-                            return snapshot.data!.docs[index]
-                                            ["CompanyStatus"] ==
-                                        'Waiting for Accepted' ||
-                                    snapshot.data!.docs[index]
-                                            ["CompanyStatus"] ==
-                                        'Rejected'
-                                ? CompanyButton(
-                                    onTap: () {},
-                                    withStatus: true,
-                                    companyName: company.companyName,
-                                    logoCompany: company.logo,
-                                    colorOfStatus: snapshot.data!.docs[index]
-                                                ["CompanyStatus"] ==
-                                            'Waiting for Accepted'
-                                        ? ColorManger.darkGray
-                                        : ColorManger.rejectedCompanyStatus,
-                                    statusText: company.companyStatus,
-                                  )
-                                : CompanyButton(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        RouterName.companyDocuments,
-                                        arguments: {
-                                          'companyId': company.companyId,
-                                          'companyAddress':
-                                              company.companyAddress,
-                                          'companyName': company.companyName,
-                                          'companyType': company.companyType
-                                        },
-                                      );
-                                    },
-                                    withStatus: true,
-                                    companyName: company.companyName,
-                                    logoCompany: company.logo,
-                                    colorOfStatus:
-                                        company.companyStatus == 'Accepted'
-                                            ? Colors.green
-                                            : Colors.red,
-                                    statusText: company.companyStatus,
-                                  );
-                          },
-                        );
-                      }
-                    }
-                    return Container();
-                  },
-                );
-              } else {
+                            );
+                    },
+                  );
+                }
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
-                  child: Text('Failed to open the Hive box'),
-                );
+                    child: CircularProgressIndicator(
+                  color: Colors.black,
+                ));
               }
+
+              return Container();
             },
           ),
         ],

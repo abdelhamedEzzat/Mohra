@@ -9,7 +9,7 @@ import 'package:mohra_project/features/user/home_screen_for_user/presentation/vi
 import 'package:mohra_project/generated/l10n.dart';
 
 class AccountantHomeScreenBody extends StatelessWidget {
-  const AccountantHomeScreenBody({super.key});
+  const AccountantHomeScreenBody({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +38,12 @@ class AccountantHomeScreenBody extends StatelessWidget {
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          // List<String> companyId =
-                          //     snapshot.data?.docs.map((doc) {
-                          //           return doc['companyId'] as String;
-                          //         }).toList() ??
-                          //         [];
                           return StreamBuilder<QuerySnapshot>(
                             stream: FirebaseFirestore.instance
                                 .collection('Staff')
                                 .where('userid',
                                     isEqualTo:
                                         FirebaseAuth.instance.currentUser!.uid)
-                                // .where('CompanyId', isEqualTo: companyId)
                                 .snapshots(),
                             builder:
                                 (BuildContext context, AsyncSnapshot snapshot) {
@@ -125,7 +119,6 @@ class AccountantHomeScreenBody extends StatelessWidget {
                         );
                       } else {
                         return IconsAndTextToCompany(
-                          //numberOfCompany: 1,
                           text: S.of(context).Documents,
                         );
                       }
@@ -158,8 +151,36 @@ class AccountantHomeScreenBody extends StatelessWidget {
                     return Text('Error: ${staffSnapshot.error}');
                   }
 
-                  if (!staffSnapshot.hasData) {
-                    return Text(S.of(context).Nodocumentsfoundforyou);
+                  if (!staffSnapshot.hasData ||
+                      staffSnapshot.data!.docs.isEmpty) {
+                    return Center(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 25.h,
+                            ),
+                            Icon(
+                              Icons.business_sharp,
+                              color: Colors.black87,
+                              size: 45.h,
+                            ),
+                            SizedBox(
+                              height: 25.h,
+                            ),
+                            Center(
+                              child: Text(S.of(context).NoAvailableCompanies,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   }
 
                   return Container(

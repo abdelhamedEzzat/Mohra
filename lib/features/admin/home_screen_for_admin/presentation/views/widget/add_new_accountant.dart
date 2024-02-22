@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
@@ -80,7 +78,7 @@ class _AddNewAuditorState extends State<AddNewAccountant> {
                           validator: (value) {
                             if (value!.isEmpty) {
                               return S.of(context).Pleaseentersometext;
-                            } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                            } else if (!RegExp(r'^[a-zA-Z\u0600-\u06FF\s]+$')
                                 .hasMatch(value)) {
                               return S.of(context).LattersOnly;
                             }
@@ -98,7 +96,7 @@ class _AddNewAuditorState extends State<AddNewAccountant> {
                           validator: (value) {
                             if (value!.isEmpty) {
                               return S.of(context).Pleaseentersometext;
-                            } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                            } else if (!RegExp(r'^[a-zA-Z\u0600-\u06FF\s]+$')
                                 .hasMatch(value)) {
                               return S.of(context).LattersOnly;
                             }

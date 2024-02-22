@@ -1609,6 +1609,166 @@ class S {
       args: [],
     );
   }
+
+  /// `Congratulations, your email has been authenticated and your data will be reviewed by the administration within 24 hours you cant do anythink after accepted. `
+  String get adminstrationTitleMassage {
+    return Intl.message(
+      'Congratulations, your email has been authenticated and your data will be reviewed by the administration within 24 hours you cant do anythink after accepted. ',
+      name: 'adminstrationTitleMassage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hello, your email is in the acceptance stage of administration`
+  String get snackParInAdminstrationPage {
+    return Intl.message(
+      'Hello, your email is in the acceptance stage of administration',
+      name: 'snackParInAdminstrationPage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `AuditorCompany :`
+  String get auditorCompany {
+    return Intl.message(
+      'AuditorCompany :',
+      name: 'auditorCompany',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accountant Company :`
+  String get accountantCompany {
+    return Intl.message(
+      'Accountant Company :',
+      name: 'accountantCompany',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See Document Company`
+  String get SeeDocumentCompany {
+    return Intl.message(
+      'See Document Company',
+      name: 'SeeDocumentCompany',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Display data through the accountant screen`
+  String get Displaydatathroughtheaccountantscreen {
+    return Intl.message(
+      'Display data through the accountant screen',
+      name: 'Displaydatathroughtheaccountantscreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Display data through the Auditor screen`
+  String get DisplaydatathroughtheAuditorscreen {
+    return Intl.message(
+      'Display data through the Auditor screen',
+      name: 'DisplaydatathroughtheAuditorscreen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accountat Company`
+  String get AccountatCompany {
+    return Intl.message(
+      'Accountat Company',
+      name: 'AccountatCompany',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auditor Company`
+  String get AuditorCompany {
+    return Intl.message(
+      'Auditor Company',
+      name: 'AuditorCompany',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Logout`
+  String get ConfirmLogout {
+    return Intl.message(
+      'Confirm Logout',
+      name: 'ConfirmLogout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to logout?`
+  String get Areyousureyouwanttologout {
+    return Intl.message(
+      'Are you sure you want to logout?',
+      name: 'Areyousureyouwanttologout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get no {
+    return Intl.message(
+      'No',
+      name: 'no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `yes`
+  String get yes {
+    return Intl.message(
+      'yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of company documents`
+  String get Numberofcompanydocuments {
+    return Intl.message(
+      'Number of company documents',
+      name: 'Numberofcompanydocuments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Account Deletion`
+  String get ConfirmAccountDeletion {
+    return Intl.message(
+      'Confirm Account Deletion',
+      name: 'ConfirmAccountDeletion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete your account?`
+  String get Areyousureyouwanttodeleteyouraccount {
+    return Intl.message(
+      'Are you sure you want to delete your account?',
+      name: 'Areyousureyouwanttodeleteyouraccount',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

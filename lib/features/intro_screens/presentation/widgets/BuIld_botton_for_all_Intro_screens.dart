@@ -37,7 +37,7 @@ class BuIldBottonforAllIntroScreens extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          for (int index = 0; index < numberOfPage; index++)
+          for (int index = 0; index < numberOfPage - 1; index++)
             createSolidIconAndEmbtyIcon((index == currentPage) ? true : false),
           const Spacer(),
           MaterialButton(

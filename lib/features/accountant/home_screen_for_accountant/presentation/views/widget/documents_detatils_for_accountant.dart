@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/helpers/custom_button.dart';
@@ -20,6 +21,8 @@ class AccountantDocumentDetails extends StatefulWidget {
 }
 
 class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
+  bool snackBarShown = false;
+
   List<String> stutsDocumentDropDown = [
     "new Document",
     "registered",
@@ -39,7 +42,8 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
   bool accountantReview = false;
 
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
-
+  TextEditingController _controller = TextEditingController();
+  DateTime date = DateTime.now();
   List<String> typeDocumentDropDown = [];
   String? selectTypeItem;
   @override
@@ -54,7 +58,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
 
     final Stream<QuerySnapshot> documentDetatils = FirebaseFirestore.instance
         .collection('Document')
-        .where("companydocID", isEqualTo: docDitails['companydocID'])
+        .where("DocID", isEqualTo: docDitails['DocID'])
         .snapshots();
 
     final mediaQueryHeight = MediaQuery.of(context).size.height;
@@ -87,7 +91,9 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                         borderRadius: BorderRadius.circular(10)),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: docDitails['urlImage'] == null
+                        child: docDitails['fileExtention'] == 'pdf' ||
+                                docDitails['fileExtention'] == 'docx' ||
+                                docDitails['fileExtention'] == 'xlsx'
                             ? GestureDetector(
                                 onTap: () => openFile(
                                         url: docDitails['url'],
@@ -132,9 +138,9 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                               )
                             : GestureDetector(
                                 onTap: () => navigateToFullScreenImage(
-                                    context, docDitails['urlImage'].toString()),
+                                    context, docDitails['url'].toString()),
                                 child: Image.network(
-                                  docDitails['urlImage'].toString(),
+                                  docDitails['url'].toString(),
                                   fit: BoxFit.fill,
                                 ),
                               )),
@@ -285,7 +291,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
               Container(
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  color: Colors.amber,
+                  color: Colors.black12,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 height: 150,
@@ -353,7 +359,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
               Container(
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  color: Colors.amber,
+                  color: Colors.amber.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 height: 150,
@@ -419,23 +425,56 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
         SizedBox(
           height: 10.h,
         ),
+
+//DatePickerDialog(firstDate: firstDate, lastDate: lastDate)
         CustomTextFormField(
+          controller: _controller,
           fontStyle: FontStyle.normal,
           labelText: S.of(context).invoiceDate,
           hintText: S.of(context).TypeInvoicedate,
           prefixIcon: Icon(Icons.date_range),
           keyboardType: TextInputType.number,
-          // validator: (value) {
-          //   if (value == null || value.isEmpty) {
-          //     return "* this Invoice data is required You must enter data";
-          //   }
-          // },
+          onTap: () async {
+            // Show Date Picker when the field is tapped
+            DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: date,
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2101),
+            );
+            // If a date is selected, update the text field
+            if (pickedDate != null) {
+              String formattedDate =
+                  DateFormat('yyyy-MM-dd').format(pickedDate);
+              setState(() {
+                _controller.text = formattedDate
+                    .toString(); // You may want to format the date as per your requirement
+              });
+            }
+          },
           onChanged: (value) {
             setState(() {
-              invoiceDate = value;
+              _controller.text = value;
             });
           },
         ),
+        // CustomTextFormField(
+        //   fontStyle: FontStyle.normal,
+        //   labelText: S.of(context).invoiceDate,
+        //   hintText: S.of(context).TypeInvoicedate,
+        //   prefixIcon: Icon(Icons.date_range),
+        //   keyboardType: TextInputType.number,
+        //   // validator: (value) {
+        //   //   if (value == null || value.isEmpty) {
+        //   //     return "* this Invoice data is required You must enter data";
+        //   //   }
+        //   // },
+        //   onChanged: (value) {
+        //     setState(() {
+        //       invoiceDate = value;
+        //     });
+        //   },
+        // ),
         SizedBox(
           height: 10.h,
         ),
@@ -612,6 +651,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
               //   return
               // }
               print(docDitails['companydocID'].toString());
+
               if (globalKey.currentState!.validate() &&
                   selectItem != null &&
                   selectTypeItem != null) {
@@ -620,6 +660,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                     .collection('Document')
                     .where("DocID", isEqualTo: docDitails['DocID']);
 
+                print("---------------------------------------------$query");
                 QuerySnapshot<Map<String, dynamic>> querySnapshot =
                     await query.get(); // Execute the query to get documents
 
@@ -635,12 +676,12 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                         'invoiceNumber': invoiceNumber,
                         'amountOfTheInvoice': amountOfTheInvoice,
                         'selectItem': selectItem,
-                        'selectTypeItem': selectTypeItem,
                         "statusDoc": 'success',
                         'comment': comment,
                         'staffTypeReview': 'Accountant',
                       }
                     ]),
+                    'selectTypeItem': selectTypeItem,
                     'isAccountantReview': true
                     //  'accountant by':"email"
                   }).then((value) {
@@ -655,14 +696,15 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                     });
                   });
 
-                  setState(() {
-                    isAccountantReviewDoc = true;
+                  isAccountantReviewDoc = true;
+                  if (!snackBarShown) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: const Text("Successfull"),
                       backgroundColor:
                           ColorManger.backGroundColorToSplashScreen,
                     ));
-                  });
+                    snackBarShown = true;
+                  }
                 }
               } else if (selectItem == null) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(

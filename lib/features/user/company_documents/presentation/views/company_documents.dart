@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class CompanyDocuments extends StatefulWidget {
-  const CompanyDocuments({super.key});
+  const CompanyDocuments({Key? key}) : super(key: key);
 
   @override
   State<CompanyDocuments> createState() => _CompanyDocumentsState();
@@ -26,211 +25,154 @@ class CompanyDocuments extends StatefulWidget {
 class _CompanyDocumentsState extends State<CompanyDocuments> {
   @override
   Widget build(BuildContext context) {
-    var companyData =
+    Map<String, dynamic> companyData =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
 
     final Stream<QuerySnapshot> compnyDocument = FirebaseFirestore.instance
         .collection("Document")
         .where('companydocID', isEqualTo: companyData["companyId"])
         .snapshots();
-    //  var comment = ModalRoute.of(context)?.settings.arguments;
 
     return Scaffold(
-        appBar: CustomAppBarForUsers(
-          leading: const BackButton(color: Colors.white),
-          title: Text(
-            S.of(context).CompanyDocuments,
-          ),
-        ),
-        body: Container(
-          margin: EdgeInsets.only(top: 10.h),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                DetailsPeofileAndCompanyWidget(
-                  profile: S.of(context).CompanyDetails,
-                  key1: S.of(context).Name,
-                  value1: companyData["companyName"],
-                  key2: S.of(context).Address,
-                  value2: companyData["companyAddress"],
-                  key3: S.of(context).Type,
-                  value3: companyData["companyType"],
+      appBar: CustomAppBarForUsers(
+        leading: const BackButton(color: Colors.white),
+        title: Text(S.of(context).CompanyDocuments),
+      ),
+      body: Container(
+        margin: EdgeInsets.only(top: 10.h),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              DetailsPeofileAndCompanyWidget(
+                profile: S.of(context).CompanyDetails,
+                key1: S.of(context).Name,
+                value1: companyData["companyName"],
+                key2: S.of(context).Address,
+                value2: companyData["CompanyAddress"],
+                key3: S.of(context).Type,
+                value3: companyData["Companytype"],
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              GestureDetector(
+                onTap: () async {
+                  await Navigator.pushNamed(context, RouterName.uploadDocuments,
+                      arguments: companyData["companyId"].toString());
+                },
+                child: const UploadDocumentsBotton(),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Divider(
+                  color: Colors.black,
                 ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    await Navigator.pushNamed(
-                        context, RouterName.uploadDocuments,
-                        arguments: companyData["companyId"].toString());
-                  },
-                  child: const UploadDocumentsBotton(),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Divider(
-                    color: Colors.black,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    S.of(context).MyDocument,
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      S.of(context).MyDocument,
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 15.h,
-                ),
-                StreamBuilder<QuerySnapshot>(
-                  stream: compnyDocument,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<Widget> itemList = [];
-                      List<DocumentSnapshot> allDocs = [];
+                ],
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: compnyDocument,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<Widget> itemList = [];
+                    List<DocumentSnapshot> allDocs = [];
 
-                      snapshot.data!.docs.forEach((doc) {
-                        allDocs.add(doc);
-                      });
+                    snapshot.data!.docs.forEach((doc) {
+                      allDocs.add(doc);
+                    });
 
-                      Comparator<DocumentSnapshot> compareByDocNumer =
-                          (doc1, doc2) =>
-                              doc2["docNumer"].compareTo(doc1["docNumer"]);
+                    Comparator<DocumentSnapshot> compareByDocNumer =
+                        (doc1, doc2) =>
+                            doc2["docNumer"].compareTo(doc1["docNumer"]);
 
-                      allDocs.sort(compareByDocNumer);
+                    allDocs.sort(compareByDocNumer);
 
-                      allDocs.forEach((doc) async {
+                    allDocs.forEach((doc) async {
+                      String fileExtension =
+                          doc["fileExtention"].toLowerCase() ?? "";
+                      print("======================= $fileExtension");
+
+                      if (fileExtension == "image" ||
+                          fileExtension == "jpg" ||
+                          fileExtension == "PNG" ||
+                          fileExtension == "JPEG" ||
+                          fileExtension == "jpeg") {
+                        String imageUrl = doc["url"];
+                        DefaultCacheManager().getSingleFile(imageUrl);
+                        itemList.add(ImageDocWidget(
+                          ontapForNavToDetailsScreen: () {
+                            Navigator.of(context).pushNamed(
+                              RouterName.detailsDocuments,
+                              arguments: {
+                                'url': doc["url"],
+                                'fileExtention': doc["fileExtention"],
+                                'comment': doc['comment'],
+                              },
+                            );
+                          },
+                          docImage: doc["url"],
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute<void>(
+                              builder: (BuildContext context) {
+                                List imageUrls = allDocs
+                                    .where((doc) =>
+                                        doc['fileExtention'] == "image" ||
+                                        doc['fileExtention'] == "jpg" ||
+                                        doc['fileExtention'] == "PNG" ||
+                                        doc['fileExtention'] == "JPEG" ||
+                                        doc['fileExtention'] == "jpeg")
+                                    .map((doc) => doc["url"])
+                                    .toList();
+
+                                int initialIndex =
+                                    imageUrls.indexOf(doc["url"]);
+
+                                return PhotoViewGallery.builder(
+                                  itemCount: imageUrls.length,
+                                  builder: (context, index) {
+                                    return PhotoViewGalleryPageOptions(
+                                      imageProvider:
+                                          NetworkImage(imageUrls[index]),
+                                      minScale:
+                                          PhotoViewComputedScale.contained,
+                                      maxScale:
+                                          PhotoViewComputedScale.covered * 2,
+                                    );
+                                  },
+                                  scrollPhysics: const BouncingScrollPhysics(),
+                                  backgroundDecoration: const BoxDecoration(
+                                    color: Colors.black,
+                                  ),
+                                  pageController:
+                                      PageController(initialPage: initialIndex),
+                                );
+                              },
+                            ));
+                          },
+                          typeOfDocument: doc["docNumer"].toString(),
+                          color: ColorManger.darkGray,
+                          status: doc['status'],
+                        ));
+                      } else {
                         String fileExtension =
                             doc["fileExtention"].toLowerCase() ?? "";
-
-                        if (fileExtension == "image") {
-                          String imageUrl = doc["urlImage"];
-                          DefaultCacheManager().getSingleFile(imageUrl);
-                          if (imageUrl.isEmpty) {
-                            itemList.add(ImageDocWidget(
-                              ontapForNavToDetailsScreen: () {
-                                Navigator.of(context).pushNamed(
-                                  RouterName.detailsDocuments,
-                                  arguments: {
-                                    'urlImage': doc["urlImage"],
-                                    'comment': doc['comment'],
-                                  },
-                                );
-                              },
-                              docImage: doc["urlImage"],
-                              onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute<void>(
-                                  builder: (BuildContext context) {
-                                    // Retrieve all image URLs
-                                    List imageUrls = allDocs
-                                        .where((doc) =>
-                                            doc["fileExtention"] == "image")
-                                        .map((doc) => doc["urlImage"])
-                                        .toList();
-
-                                    // Get the index of the selected image
-                                    int initialIndex =
-                                        imageUrls.indexOf(doc["urlImage"]);
-
-                                    return PhotoViewGallery.builder(
-                                      itemCount: imageUrls.length,
-                                      builder: (context, index) {
-                                        return PhotoViewGalleryPageOptions(
-                                          imageProvider:
-                                              NetworkImage(imageUrls[index]),
-                                          minScale:
-                                              PhotoViewComputedScale.contained,
-                                          maxScale:
-                                              PhotoViewComputedScale.covered *
-                                                  2,
-                                        );
-                                      },
-                                      scrollPhysics:
-                                          const BouncingScrollPhysics(),
-                                      backgroundDecoration: const BoxDecoration(
-                                        color: Colors.black,
-                                      ),
-                                      pageController: PageController(
-                                          initialPage: initialIndex),
-                                    );
-                                  },
-                                ));
-                              },
-                              typeOfDocument: doc["docNumer"].toString(),
-                              color: ColorManger.darkGray,
-                              status: doc['status'],
-                            ));
-                          } else {
-                            itemList.add(ImageDocWidget(
-                              ontapForNavToDetailsScreen: () {
-                                Navigator.of(context).pushNamed(
-                                  RouterName.detailsDocuments,
-                                  arguments: {
-                                    'urlImage': doc["urlImage"],
-                                    'comment': doc['comment'],
-                                  },
-                                );
-                              },
-                              docImage: imageUrl,
-                              onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute<void>(
-                                  builder: (BuildContext context) {
-                                    // Retrieve all image URLs
-                                    List imageUrls = allDocs
-                                        .where((doc) =>
-                                            doc["fileExtention"] == "image")
-                                        .map((doc) => imageUrl)
-                                        .toList();
-
-                                    // Get the index of the selected image
-                                    int initialIndex =
-                                        imageUrls.indexOf(imageUrl);
-
-                                    return PhotoViewGallery.builder(
-                                      itemCount: imageUrls.length,
-                                      builder: (context, index) {
-                                        return PhotoViewGalleryPageOptions(
-                                          imageProvider:
-                                              NetworkImage(imageUrls[index]),
-                                          minScale:
-                                              PhotoViewComputedScale.contained,
-                                          maxScale:
-                                              PhotoViewComputedScale.covered *
-                                                  2,
-                                        );
-                                      },
-                                      scrollPhysics:
-                                          const BouncingScrollPhysics(),
-                                      backgroundDecoration: const BoxDecoration(
-                                        color: Colors.black,
-                                      ),
-                                      pageController: PageController(
-                                          initialPage: initialIndex),
-                                    );
-                                  },
-                                ));
-                              },
-                              typeOfDocument: doc["docNumer"].toString(),
-                              color: ColorManger.darkGray,
-                              status: doc['status'],
-                            ));
-                          }
-                        } else {
-                          String fileUrl = doc["url"];
-                          DefaultCacheManager()
-                              .getSingleFile(fileUrl)
-                              .then((File file) {
-                            print(fileUrl);
-                          });
+                        if (fileExtension == 'pdf' ||
+                            fileExtension == 'docx' ||
+                            fileExtension == 'xlsx') {
                           itemList.add(FilesDocWidget(
                             onTap: () {
                               Navigator.of(context).pushNamed(
@@ -250,60 +192,70 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
                             typeOfDocument: doc["docNumer"].toString(),
                           ));
                         }
-                      });
-
-                      if (itemList.isEmpty) {
-                        return Column(
-                          children: [
-                            SizedBox(height: 50.h),
-                            Center(
-                              child: Icon(
-                                Icons.document_scanner,
-                                size: 60.h,
-                              ),
-                            ),
-                            SizedBox(height: 30.h),
-                            Center(
-                              child: Text(
-                                S.of(context).DidntHaveDocument,
-                                style: Theme.of(context).textTheme.displaySmall,
-                              ),
-                            ),
-                          ],
-                        );
+                        // else {
+                        //   itemList.add(Container(
+                        //     child: Text(
+                        //       'Unsupported File Type: ${doc["fileExtension"]}',
+                        //       style: TextStyle(color: Colors.red),
+                        //     ),
+                        //   ));
+                        // }
                       }
+                    });
 
-                      return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: itemList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return itemList[index];
-                        },
-                      );
-                    } else if (snapshot.data == null) {
-                      return Text("No Data");
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.black,
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      return const Center(child: Text("You have an error."));
-                    } else {
-                      return Center(
-                        child: Text(
-                          S.of(context).DidntHaveDocument,
-                        ),
+                    if (itemList.isEmpty) {
+                      return Column(
+                        children: [
+                          SizedBox(height: 50.h),
+                          Center(
+                            child: Icon(
+                              Icons.document_scanner,
+                              size: 60.h,
+                            ),
+                          ),
+                          SizedBox(height: 30.h),
+                          Center(
+                            child: Text(
+                              S.of(context).DidntHaveDocument,
+                              style: Theme.of(context).textTheme.displaySmall,
+                            ),
+                          ),
+                        ],
                       );
                     }
-                  },
-                )
-              ],
-            ),
+
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: itemList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return itemList[index];
+                      },
+                    );
+                  } else if (snapshot.data == null) {
+                    return Text("No Data");
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text("You have an error."));
+                  } else {
+                    return Center(
+                      child: Text(
+                        S.of(context).DidntHaveDocument,
+                      ),
+                    );
+                  }
+                },
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

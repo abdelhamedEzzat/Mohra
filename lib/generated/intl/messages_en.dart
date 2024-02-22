@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Accepted": MessageLookupByLibrary.simpleMessage("Accepted"),
         "AccountantaddedDocumentin": MessageLookupByLibrary.simpleMessage(
             "Accountant added Document in"),
+        "AccountatCompany":
+            MessageLookupByLibrary.simpleMessage("Accountat Company"),
         "AddDocumentType":
             MessageLookupByLibrary.simpleMessage("Add Document Type"),
         "AddLogo": MessageLookupByLibrary.simpleMessage("Add Logo"),
@@ -38,8 +40,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "AlreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("Already Have Account? "),
         "Arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
+        "Areyousureyouwanttodeleteyouraccount":
+            MessageLookupByLibrary.simpleMessage(
+                "Are you sure you want to delete your account?"),
+        "Areyousureyouwanttologout": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to logout?"),
         "Assignment": MessageLookupByLibrary.simpleMessage("Sttaf Assignment"),
         "Auditor": MessageLookupByLibrary.simpleMessage("Auditor"),
+        "AuditorCompany":
+            MessageLookupByLibrary.simpleMessage("Auditor Company"),
         "AuditorReviewyourDocumentin": MessageLookupByLibrary.simpleMessage(
             "Auditor Review your Document in"),
         "Bycreatinganaccountyouareagreeingtoour":
@@ -61,6 +70,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "Companydocumentnotfound":
             MessageLookupByLibrary.simpleMessage("Company document not found"),
         "Companys": MessageLookupByLibrary.simpleMessage("Companys"),
+        "ConfirmAccountDeletion":
+            MessageLookupByLibrary.simpleMessage("Confirm Account Deletion"),
+        "ConfirmLogout": MessageLookupByLibrary.simpleMessage("Confirm Logout"),
         "ContinueAfterSendVerify":
             MessageLookupByLibrary.simpleMessage("Continue"),
         "Controller": MessageLookupByLibrary.simpleMessage("Controller"),
@@ -76,6 +88,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Details Documents"),
         "DidntHaveDocument": MessageLookupByLibrary.simpleMessage(
             "You didn\'t have any documents."),
+        "DisplaydatathroughtheAuditorscreen":
+            MessageLookupByLibrary.simpleMessage(
+                "Display data through the Auditor screen"),
+        "Displaydatathroughtheaccountantscreen":
+            MessageLookupByLibrary.simpleMessage(
+                "Display data through the accountant screen"),
         "DocumentStatus":
             MessageLookupByLibrary.simpleMessage("Document Status :"),
         "Documents": MessageLookupByLibrary.simpleMessage("Documents"),
@@ -118,6 +136,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Nodocumentsfoundforyou":
             MessageLookupByLibrary.simpleMessage("No documents found for you"),
         "Notification": MessageLookupByLibrary.simpleMessage("Notification"),
+        "Numberofcompanydocuments":
+            MessageLookupByLibrary.simpleMessage("Number of company documents"),
         "Passwordmustcontainnumberslettersandspecialcharacter":
             MessageLookupByLibrary.simpleMessage(
                 "Password must contain  numbers, letters, and special character."),
@@ -132,6 +152,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "SearchForCompany":
             MessageLookupByLibrary.simpleMessage("Search For Company"),
         "SearchScreen": MessageLookupByLibrary.simpleMessage("Search..."),
+        "SeeDocumentCompany":
+            MessageLookupByLibrary.simpleMessage("See Document Company"),
         "SelectStaffType":
             MessageLookupByLibrary.simpleMessage("Select Staff Type"),
         "SelectStatusOfDocument":
@@ -191,14 +213,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "Youdidnthaveanydocuments": MessageLookupByLibrary.simpleMessage(
             "You didn\'t have any documents."),
         "acceptable": MessageLookupByLibrary.simpleMessage("acceptable"),
+        "accountantCompany":
+            MessageLookupByLibrary.simpleMessage("Accountant Company :"),
         "addDocumentName":
             MessageLookupByLibrary.simpleMessage("add document number"),
         "addedtothecompany":
             MessageLookupByLibrary.simpleMessage("added to the company"),
+        "adminstrationTitleMassage": MessageLookupByLibrary.simpleMessage(
+            "Congratulations, your email has been authenticated and your data will be reviewed by the administration within 24 hours you cant do anythink after accepted. "),
         "amendment": MessageLookupByLibrary.simpleMessage("amendment"),
         "amountOfTheInvoice":
             MessageLookupByLibrary.simpleMessage("amount Of The Invoice :"),
         "and": MessageLookupByLibrary.simpleMessage(" and "),
+        "auditorCompany":
+            MessageLookupByLibrary.simpleMessage("AuditorCompany :"),
         "buttonNameFirstAndSecoundIntroScreen":
             MessageLookupByLibrary.simpleMessage("Next"),
         "buttonNameThirdIntroScreen":
@@ -240,6 +268,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter first name"),
         "nameHintTextInRegisterScreenLast":
             MessageLookupByLibrary.simpleMessage("Enter Last name"),
+        "no": MessageLookupByLibrary.simpleMessage("No"),
         "passwordHintTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("Enter Your Pasword"),
         "passwordLabelTextInRegisterScreen":
@@ -256,6 +285,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectTypeItem":
             MessageLookupByLibrary.simpleMessage("select Type Item :"),
         "sendRequest": MessageLookupByLibrary.simpleMessage("Send Request"),
+        "snackParInAdminstrationPage": MessageLookupByLibrary.simpleMessage(
+            "Hello, your email is in the acceptance stage of administration"),
         "subtitleForFirstIntroScreen": MessageLookupByLibrary.simpleMessage(
             "You can easily upload documents, follow the progress of work on them, and you can also write comments"),
         "subtitleForSecondIntroScreen": MessageLookupByLibrary.simpleMessage(
@@ -274,6 +305,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "user": MessageLookupByLibrary.simpleMessage("user"),
         "userin": MessageLookupByLibrary.simpleMessage("user in"),
         "witha": MessageLookupByLibrary.simpleMessage("with"),
+        "yes": MessageLookupByLibrary.simpleMessage("yes"),
         "yourCompany": MessageLookupByLibrary.simpleMessage("your Company")
       };
 }

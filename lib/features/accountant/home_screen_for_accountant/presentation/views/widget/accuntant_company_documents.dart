@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
@@ -58,31 +59,41 @@ class AccuntantCompanyDocuments extends StatelessWidget {
                       String fileExtension =
                           doc["fileExtention"].toLowerCase() ?? "";
 
-                      if (fileExtension == "image") {
+                      if (fileExtension == "image" ||
+                          fileExtension == "jpg" ||
+                          fileExtension == "PNG" ||
+                          fileExtension == "JPEG" ||
+                          fileExtension == "jpeg") {
+                        String imageUrl = doc["url"];
+                        DefaultCacheManager().getSingleFile(imageUrl);
                         itemList.add(ImageDocWidget(
                           ontapForNavToDetailsScreen: () {
                             Navigator.of(context).pushNamed(
-                              RouterName.detailsDocuments,
+                              RouterName.accountantDocumentDetails,
                               arguments: {
-                                'urlImage': doc["urlImage"],
+                                'url': doc["url"],
+                                'fileExtention': doc["fileExtention"],
                                 'comment': doc['comment'],
+                                'DocID': doc["DocID"],
                               },
                             );
                           },
-                          docImage: doc["urlImage"],
+                          docImage: doc["url"],
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute<void>(
                               builder: (BuildContext context) {
-                                // Retrieve all image URLs
                                 List imageUrls = allDocs
                                     .where((doc) =>
-                                        doc["fileExtention"] == "image")
-                                    .map((doc) => doc["urlImage"])
+                                        doc['fileExtention'] == "image" ||
+                                        doc['fileExtention'] == "jpg" ||
+                                        doc['fileExtention'] == "PNG" ||
+                                        doc['fileExtention'] == "JPEG" ||
+                                        doc['fileExtention'] == "jpeg")
+                                    .map((doc) => doc["url"])
                                     .toList();
 
-                                // Get the index of the selected image
                                 int initialIndex =
-                                    imageUrls.indexOf(doc["urlImage"]);
+                                    imageUrls.indexOf(doc["url"]);
 
                                 return PhotoViewGallery.builder(
                                   itemCount: imageUrls.length,
@@ -111,25 +122,31 @@ class AccuntantCompanyDocuments extends StatelessWidget {
                           status: doc['status'],
                         ));
                       } else {
-                        itemList.add(FilesDocWidget(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
-                              RouterName.accountantDocumentDetails,
-                              arguments: {
-                                'companydocID': doc["companydocID"],
-                                'url': doc["url"],
-                                'comment': doc['comment'],
-                                'fileExtention': doc['fileExtention'],
-                                'name': doc['name']
-                              },
-                            );
-                          },
-                          pdfFileExtention: doc["fileExtention"],
-                          pdfFileName: doc["name"],
-                          color: ColorManger.darkGray,
-                          status: doc['status'],
-                          typeOfDocument: doc["docNumer"].toString(),
-                        ));
+                        String fileExtension =
+                            doc["fileExtention"].toLowerCase() ?? "";
+                        if (fileExtension == 'pdf' ||
+                            fileExtension == 'docx' ||
+                            fileExtension == 'xlsx') {
+                          itemList.add(FilesDocWidget(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                RouterName.accountantDocumentDetails,
+                                arguments: {
+                                  'name': doc["name"],
+                                  'DocID': doc["DocID"],
+                                  'url': doc["url"],
+                                  'comment': doc['comment'],
+                                  'fileExtention': doc['fileExtention']
+                                },
+                              );
+                            },
+                            pdfFileExtention: doc["fileExtention"],
+                            pdfFileName: doc["name"],
+                            color: ColorManger.darkGray,
+                            status: doc['status'],
+                            typeOfDocument: doc["docNumer"].toString(),
+                          ));
+                        }
                       }
                     });
 

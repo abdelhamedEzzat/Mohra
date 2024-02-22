@@ -20,6 +20,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText,
     this.min,
     this.max,
+    this.onTap,
     this.suffixIcon, // Added property for the suffix icon (eye icon)
   }) : super(key: key);
 
@@ -35,7 +36,8 @@ class CustomTextFormField extends StatelessWidget {
   final bool? obscureText;
   final int? min;
   final int? max;
-  final Widget? suffixIcon; // Added property for the suffix icon (eye icon)
+  final Widget? suffixIcon;
+  final void Function()? onTap; // Added property for the suffix icon (eye icon)
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,7 @@ class CustomTextFormField extends StatelessWidget {
           validator: validator,
           controller: controller,
           onChanged: onChanged,
+          onTap: onTap,
           keyboardType: keyboardType,
           cursorColor: ColorManger.backGroundColorToSplashScreen,
           decoration: InputDecoration(

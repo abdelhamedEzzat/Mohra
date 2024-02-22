@@ -184,7 +184,23 @@
    "TheAccountantHasBeenAddedSuccessfully":"The accountant has been added successfully",
    "TheAuditorantHasBeenAddedSuccessfully":"The Auditor Has Been Added Successfully",
    "Ithasbeensuccessfully":"It has been successfully added",
-   "addedtothecompany":"added to the company"
+   "addedtothecompany":"added to the company",
+   "adminstrationTitleMassage": "Congratulations, your email has been authenticated and your data will be reviewed by the administration within 24 hours you cant do anythink after accepted. ",
+   "snackParInAdminstrationPage":"Hello, your email is in the acceptance stage of administration",
+   "auditorCompany":"AuditorCompany :",
+   "accountantCompany":"Accountant Company :",
+   "SeeDocumentCompany":"See Document Company",
+   "Displaydatathroughtheaccountantscreen":"Display data through the accountant screen",
+   "DisplaydatathroughtheAuditorscreen":"Display data through the Auditor screen",
+   "AccountatCompany":"Accountat Company",
+   "AuditorCompany":"Auditor Company",
+   "ConfirmLogout":"Confirm Logout",
+   "Areyousureyouwanttologout":"Are you sure you want to logout?",
+   "no":"No",
+   "yes":"yes",
+   "Numberofcompanydocuments":"Number of company documents",
+   "ConfirmAccountDeletion":"Confirm Account Deletion",
+   "Areyousureyouwanttodeleteyouraccount":"Are you sure you want to delete your account?"
    
     
 

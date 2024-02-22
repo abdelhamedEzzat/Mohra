@@ -10,12 +10,17 @@ import 'package:mohra_project/generated/l10n.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
-class DetailsDocuments extends StatelessWidget {
+class DetailsDocuments extends StatefulWidget {
   const DetailsDocuments({super.key});
 
   @override
+  State<DetailsDocuments> createState() => _DetailsDocumentsState();
+}
+
+class _DetailsDocumentsState extends State<DetailsDocuments> {
+  bool isLoading = false;
+  @override
   Widget build(BuildContext context) {
-    var documentUploaded = ModalRoute.of(context)?.settings.arguments;
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
     final Map<String, dynamic> doc =
@@ -32,7 +37,9 @@ class DetailsDocuments extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             height: mediaQueryHeight,
             width: mediaQueryWidth,
-            child: doc['urlImage'] == null
+            child: doc['fileExtention'] == 'pdf' ||
+                    doc['fileExtention'] == 'docx' ||
+                    doc['fileExtention'] == 'xlsx'
                 ? Column(
                     children: [
                       Container(
@@ -49,10 +56,16 @@ class DetailsDocuments extends StatelessWidget {
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(25),
                                 child: GestureDetector(
-                                  onTap: () => openFile(
-                                          url: doc['url'],
-                                          fileName: doc['name'])
-                                      .toString(),
+                                  onTap: () async {
+                                    isLoading == true;
+
+                                    await openFile(
+                                            url: doc['url'],
+                                            fileName: doc['name'])
+                                        .toString();
+
+                                    isLoading == false;
+                                  },
                                   child: Row(
                                     children: [
                                       CircleAvatar(
@@ -60,7 +73,10 @@ class DetailsDocuments extends StatelessWidget {
                                             ColorManger.white.withOpacity(0.5),
                                         radius: 30.h,
                                         child: Text(
-                                            doc['fileExtention'].toString(),
+                                            isLoading == true
+                                                ? "please Wait..."
+                                                : doc['fileExtention']
+                                                    .toString(),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .displayMedium!
@@ -115,9 +131,9 @@ class DetailsDocuments extends StatelessWidget {
                           borderRadius: BorderRadius.circular(25),
                           child: GestureDetector(
                             onTap: () => navigateToFullScreenImage(
-                                context, doc['urlImage'].toString()),
+                                context, doc['url'].toString()),
                             child: Image.network(
-                              doc['urlImage'],
+                              doc['url'],
                               fit: BoxFit
                                   .cover, // Adjust the fit property as needed
                               width: double

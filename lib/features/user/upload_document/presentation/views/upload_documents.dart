@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -103,64 +105,88 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                             builder: (context, state) {
                               if (trigerCubit.filePlatforme != null &&
                                   trigerCubit.imagefile == null) {
-                                return AddImageWidget(
-                                  image: Container(
-                                      //   margin: EdgeInsets.only(bottom: 10.h),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(25),
-                                        color: Colors.black12,
+                                if (trigerCubit.filePlatforme!.extension == 'jpg' ||
+                                    trigerCubit.filePlatforme!.extension ==
+                                        'jpeg' ||
+                                    trigerCubit.filePlatforme!.extension ==
+                                        'JPG' ||
+                                    trigerCubit.filePlatforme!.extension ==
+                                        'JPEG') {
+                                  return AddImageWidget(
+                                    image: ClipRRect(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(24)),
+                                      child: Image.file(
+                                        File(trigerCubit.filePlatforme!.path
+                                            .toString()),
+                                        fit: BoxFit.fitWidth,
                                       ),
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.13,
-                                      padding: EdgeInsets.only(
-                                          left: 10.w, right: 10.w, top: 10.h),
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Row(
-                                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Expanded(
-                                            flex: 3,
-                                            child: Container(
-                                              padding:
-                                                  EdgeInsets.only(left: 12.w),
-                                              child: Text(
-                                                trigerCubit.filePlatforme!.name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displayMedium,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              padding:
-                                                  EdgeInsets.only(right: 12.w),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(75),
-                                                child: CircleAvatar(
-                                                  backgroundColor: ColorManger
-                                                      .backGroundColorToSplashScreen,
-                                                  maxRadius: 28.h,
-                                                  minRadius: 22.h,
-                                                  child: Text(
-                                                    "${trigerCubit.filePlatforme!.extension}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .displayLarge!
-                                                        .copyWith(
-                                                            color:
-                                                                Colors.white),
-                                                  ),
+                                    ),
+                                  );
+                                } else {
+                                  return AddImageWidget(
+                                    image: Container(
+                                        //   margin: EdgeInsets.only(bottom: 10.h),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          color: Colors.black12,
+                                        ),
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.13,
+                                        padding: EdgeInsets.only(
+                                            left: 10.w, right: 10.w, top: 10.h),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Row(
+                                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Expanded(
+                                              flex: 3,
+                                              child: Container(
+                                                padding:
+                                                    EdgeInsets.only(left: 12.w),
+                                                child: Text(
+                                                  trigerCubit
+                                                      .filePlatforme!.name,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displayMedium,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
                                               ),
                                             ),
-                                          )
-                                        ],
-                                      )),
-                                );
+                                            Expanded(
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                    right: 12.w),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(75),
+                                                  child: CircleAvatar(
+                                                    backgroundColor: ColorManger
+                                                        .backGroundColorToSplashScreen,
+                                                    maxRadius: 28.h,
+                                                    minRadius: 22.h,
+                                                    child: Text(
+                                                      "${trigerCubit.filePlatforme!.extension}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .displayLarge!
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )),
+                                  );
+                                }
                               } else if (trigerCubit.imagefile != null &&
                                   trigerCubit.filePlatforme == null) {
                                 return AddImageWidget(

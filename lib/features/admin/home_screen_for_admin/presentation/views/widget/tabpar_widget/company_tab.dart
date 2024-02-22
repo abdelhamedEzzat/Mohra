@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
+import 'package:mohra_project/core/routes/name_router.dart';
+import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/company_bottom_for_admin.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/icon_and_text_company.dart';
 import 'package:mohra_project/generated/l10n.dart';
@@ -218,19 +220,101 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                                     )),
                                   ])))
                           : SingleChildScrollView(
-                              child: CompanyButton(
-                                onTap: () {},
-                                withStatus: true,
-                                companyName: snapshot.data!.docs[index]
-                                    ["company_Name"],
-                                logoCompany: snapshot.data!.docs[index]["logo"],
-                                colorOfStatus: snapshot.data!.docs[index]
-                                            ["CompanyStatus"] ==
-                                        'Accepted'
-                                    ? Colors.green
-                                    : Colors.red,
-                                statusText: snapshot.data!.docs[index]
-                                    ["CompanyStatus"],
+                              child: Column(
+                                children: [
+                                  CompanyButtonForAdmin(
+                                    onTap: () {
+                                      if (snapshot.data!.docs[index]
+                                              ["CompanyStatus"] ==
+                                          'Accepted') {
+                                        Navigator.of(context).pushNamed(
+                                            RouterName.mangeCompanyStaff,
+                                            arguments: snapshot.data!
+                                                .docs[index]["companyId"]);
+                                      }
+                                    },
+                                    withStatus: true,
+                                    companyName: snapshot.data!.docs[index]
+                                        ["company_Name"],
+                                    logoCompany: snapshot.data!.docs[index]
+                                        ["logo"],
+                                    colorOfStatus: snapshot.data!.docs[index]
+                                                ["CompanyStatus"] ==
+                                            'Accepted'
+                                        ? Colors.green
+                                        : Colors.red,
+                                    statusText: snapshot.data!.docs[index]
+                                        ["CompanyStatus"],
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(25),
+                                          bottomRight: Radius.circular(25)),
+                                      color: ColorManger
+                                          .backGroundColorToSplashScreen
+                                          .withOpacity(0.1),
+                                    ),
+                                    padding: EdgeInsets.only(
+                                        left: 10.w, right: 10.w, bottom: 10.h),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: StreamBuilder(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('Staff')
+                                          .where('CompanyId',
+                                              isEqualTo: snapshot.data!
+                                                  .docs[index]["companyId"])
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot snapshot) {
+                                        if (snapshot.hasData) {
+                                          return Container(
+                                            padding: EdgeInsets.only(
+                                              left: 12.w,
+                                            ),
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemCount:
+                                                  snapshot.data.docs.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return Row(
+                                                  children: [
+                                                    Container(
+                                                      child: Text(snapshot
+                                                              .data!.docs[index]
+                                                          ['StaffRole']),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 2.w,
+                                                    ),
+                                                    const Text(":"),
+                                                    SizedBox(
+                                                      width: 5.w,
+                                                    ),
+                                                    Container(
+                                                      child: Text(snapshot
+                                                              .data!.docs[index]
+                                                          ['StaffName']),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        } else {
+                                          return Text("you didnt have data");
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  )
+                                ],
                               ),
                             );
                     },
@@ -381,3 +465,66 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
     );
   }
 }
+                // Container(
+                //   padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+                //   child: Column(
+                //     children: [
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //         children: [
+                //           Expanded(
+                //             flex: 3,
+                //             child: Container(
+                //               padding: EdgeInsets.only(top: 6.h),
+                //               child: Text(
+                //                 "Auditor :",
+                //                 style: Theme.of(context).textTheme.displaySmall,
+                //                 overflow: TextOverflow.ellipsis,
+                //               ),
+                //             ),
+                //           ),
+                //           Expanded(
+                //             flex: 11,
+                //             child: Container(
+                //                 padding: EdgeInsets.only(right: 12.w, top: 6.h),
+                //                 child: Text(
+                //                   "sdadadsadasdasdasdasdasdasdasdsd",
+                //                   overflow: TextOverflow.ellipsis,
+                //                   style:
+                //                       Theme.of(context).textTheme.displayMedium,
+                //                 )),
+                //           ),
+                //         ],
+                //       ),
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //         children: [
+                //           Expanded(
+                //             flex: 6,
+                //             child: Container(
+                //               padding: EdgeInsets.only(top: 6.h),
+                //               child: Text(
+                //                 "Accountant :",
+                //                 style: Theme.of(context).textTheme.displaySmall,
+                //                 overflow: TextOverflow.ellipsis,
+                //               ),
+                //             ),
+                //           ),
+                //           Expanded(
+                //             flex: 14,
+                //             child: Container(
+                //                 padding: EdgeInsets.only(right: 12.w, top: 6.h),
+                //                 child: Text(
+                //                   "sdadadsadasdasdasdasdasdasdasdsd",
+                //                   overflow: TextOverflow.ellipsis,
+                //                   style:
+                //                       Theme.of(context).textTheme.displayMedium,
+                //                 )),
+                //           ),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // ),

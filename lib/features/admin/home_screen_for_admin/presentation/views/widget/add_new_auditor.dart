@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -79,7 +78,7 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
                           validator: (value) {
                             if (value!.isEmpty) {
                               return S.of(context).Pleaseentersometext;
-                            } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                            } else if (!RegExp(r'^[a-zA-Z\u0600-\u06FF\s]+$')
                                 .hasMatch(value)) {
                               return S.of(context).LattersOnly;
                             }
@@ -97,7 +96,7 @@ class _AddNewAuditorState extends State<AddNewAuditor> {
                           validator: (value) {
                             if (value!.isEmpty) {
                               return S.of(context).Pleaseentersometext;
-                            } else if (!RegExp(r'^[a-zA-Z\s]+$')
+                            } else if (!RegExp(r'^[a-zA-Z\u0600-\u06FF\s]+$')
                                 .hasMatch(value)) {
                               return S.of(context).LattersOnly;
                             }

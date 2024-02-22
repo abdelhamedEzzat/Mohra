@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:flutter/material.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
@@ -8,28 +6,31 @@ import 'package:mohra_project/features/intro_screens/presentation/widgets/lansca
 import 'package:mohra_project/generated/l10n.dart';
 
 class IntroScreenWidget extends StatefulWidget {
-  const IntroScreenWidget({super.key});
+  const IntroScreenWidget({Key? key}) : super(key: key);
 
   @override
   State<IntroScreenWidget> createState() => _IntroScreenForMobileState();
 }
 
-PageController pageController = PageController();
-
 class _IntroScreenForMobileState extends State<IntroScreenWidget> {
+  late PageController pageController;
+
   @override
   void initState() {
     super.initState();
-    // ignore: unused_element
-    void dispose() {
-      pageController.dispose();
-    }
+    pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return PageView(
-      //   physics: const NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       controller: pageController,
       children: [
         IntroBuildScreensWidget(
@@ -40,8 +41,9 @@ class _IntroScreenForMobileState extends State<IntroScreenWidget> {
           numberOfPage: 3,
           onTapRightArrow: () {
             pageController.nextPage(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeIn);
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+            );
           },
           colorForScreen: ColorManger.backGroundColorToSplashScreen,
           colorForIntroImage: ColorManger.introScreenBackgroundColor,
@@ -54,8 +56,9 @@ class _IntroScreenForMobileState extends State<IntroScreenWidget> {
           numberOfPage: 3,
           onTapRightArrow: () {
             pageController.nextPage(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeIn);
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+            );
           },
           colorForScreen: ColorManger.backGroundColorToSplashScreen,
           colorForIntroImage: ColorManger.introScreenBackgroundColor,
@@ -68,8 +71,9 @@ class _IntroScreenForMobileState extends State<IntroScreenWidget> {
           numberOfPage: 3,
           onTapRightArrow: () {
             pageController.nextPage(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeIn);
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+            );
           },
           colorForScreen: ColorManger.backGroundColorToSplashScreen,
           colorForIntroImage: ColorManger.introScreenBackgroundColor,
