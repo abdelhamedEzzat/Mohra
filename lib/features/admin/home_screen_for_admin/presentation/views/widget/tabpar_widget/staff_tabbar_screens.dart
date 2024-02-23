@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/manger/language/language_cubit.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
 class StaffTabBARScreens extends StatelessWidget {
@@ -16,22 +18,27 @@ class StaffTabBARScreens extends StatelessWidget {
   Widget build(BuildContext context) {
     final Stream<QuerySnapshot> sttafList = FirebaseFirestore.instance
         .collection("users")
-        .where('role', whereIn: ["Auditor", "Accountant"]).snapshots();
-
+        .where('role.en', whereIn: ['Auditor', 'Accountant']).snapshots();
     return StreamBuilder<QuerySnapshot>(
       stream: sttafList,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          Language currentLanguage =
+              BlocProvider.of<LanguageCubit>(context).state;
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: () {
-                  if (snapshot.data!.docs[index]["role"] == "Accountant") {
+                  if (snapshot.data!.docs[index]["role"]["en"] ==
+                          "Accountant" ||
+                      snapshot.data!.docs[index]["role"]["ar"] == "محاسب") {
                     Navigator.of(context).pushNamed(
                         RouterName.companyOfAccountatinAdminScreen,
                         arguments: snapshot.data!.docs[index]["userID"]);
-                  } else if (snapshot.data!.docs[index]["role"] == "Auditor") {
+                  } else if (snapshot.data!.docs[index]["role"]["en"] ==
+                          "Auditor" ||
+                      snapshot.data!.docs[index]["role"]["ar"] == 'مراجع') {
                     Navigator.of(context).pushNamed(
                         RouterName.companyOfAuditorinAdminScreen,
                         arguments: snapshot.data!.docs[index]["userID"]);
@@ -39,7 +46,9 @@ class StaffTabBARScreens extends StatelessWidget {
                 },
                 child: StaffShowWidget(
                   staffName: snapshot.data!.docs[index]["first_Name"],
-                  staffTitle: snapshot.data!.docs[index]["role"],
+                  staffTitle: currentLanguage == Language.arabic
+                      ? snapshot.data!.docs[index]["role"]["ar"]
+                      : snapshot.data!.docs[index]["role"]["en"],
                   staffemail: snapshot.data!.docs[index]["email"],
                 ),
               );
@@ -91,14 +100,14 @@ class StaffShowWidget extends StatelessWidget {
           child: Column(
             children: [
               Container(
+                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15)),
                   color: ColorManger.darkGray,
                 ),
-                padding: EdgeInsets.only(left: 10.w),
-                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
                 height: 50.h,
                 child: Text(
                   staffTitle,

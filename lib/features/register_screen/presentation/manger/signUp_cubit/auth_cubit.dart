@@ -146,7 +146,7 @@ class AuthCubit extends Cubit<AuthState> {
         'fullName': firstName + lastName,
         'userID': user.uid,
         'email': email,
-        'role': 'User',
+        'role': {"en": 'User', "ar": "مستخدم"},
         'status': '0',
         'Email_status': 'disabled',
       });
@@ -208,7 +208,7 @@ class AuthCubit extends Cubit<AuthState> {
           'fullName': firstName + lastName,
           'userID': uid, // Use the user's ID here
           'email': email,
-          'role': 'Auditor',
+          'role': {"en": 'Auditor', "ar": "مراجع"},
           'status': '2',
           'Email_status': 'enabled',
         },
@@ -228,124 +228,6 @@ class AuthCubit extends Cubit<AuthState> {
     await secondaryApp.delete();
   }
 
-  // Future<void> staffAuditorSignIn({
-  //   required String email,
-  //   required String password,
-  //   required String firstName,
-  //   required String lastName,
-  // }) async {
-  //   emit(SignupLoading());
-  //   try {
-  //     CollectionReference users = firestore.collection('users');
-
-  //     emit(AddAuditorLoading());
-  //     try {
-  //       await users.add(
-  //         {
-  //           'first_Name': firstName,
-  //           'last_Name': lastName,
-  //           'fullName': firstName + lastName,
-  //           'userID': "", // Use the user's ID here
-  //           'email': email,
-  //           'role': 'Auditor',
-  //           'status': '2',
-  //           'Email_status': 'enabled',
-  //         },
-  //       );
-
-  //       emit(AddAuditorSuccess());
-  //     } catch (e) {
-  //       emit(AddAuditorfaild(error: "Failed to add user:${e.toString()}"));
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == 'weak-password') {
-  //       emit(Signupfaild(error: 'The password provided is too weak.'));
-  //     } else if (e.code == 'email-already-in-use') {
-  //       emit(Signupfaild(error: 'An account already exists for this email.'));
-  //     } else {
-  //       emit(Signupfaild(error: 'An error occurred. Please try again.'));
-  //     }
-  //   } catch (e) {
-  //     emit(Signupfaild(error: 'An error occurred. Please try again.'));
-  //   }
-  // }
-
-  // Future<void> staffAccountantSignIn({
-  //   required String email,
-  //   required String password,
-  //   required String firstName,
-  //   required String lastName,
-  // }) async {
-  //   emit(SignupLoading());
-  //   try {
-  //     UserCredential credential = await FirebaseAuth.instance
-  //         .createUserWithEmailAndPassword(email: email, password: password);
-
-  //     final user = credential.user!;
-  //     CollectionReference users = firestore.collection('users');
-
-  //     emit(AddAuditorLoading());
-  //     try {
-  //       await users.add(
-  //         {
-  //           'first_Name': firstName,
-  //           'last_Name': lastName,
-  //           'fullName': firstName + lastName,
-  //           'userID': user,
-  //           'email': email,
-  //           'role': 'Accountant',
-  //           'status': '2',
-  //           'Email_status': 'enabled',
-  //         },
-  //       );
-
-  //       emit(AddAuditorSuccess());
-  //     } catch (e) {
-  //       emit(AddAuditorfaild(error: "Failed to add user:${e.toString()}"));
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == 'weak-password') {
-  //       emit(Signupfaild(error: 'The password provided is too weak.'));
-  //     } else if (e.code == 'email-already-in-use') {
-  //       emit(Signupfaild(error: 'An account already exists for this email.'));
-  //     } else {
-  //       emit(Signupfaild(error: 'An error occurred. Please try again.'));
-  //     }
-  //   } catch (e) {
-  //     emit(Signupfaild(error: 'An error occurred. Please try again.'));
-  //   }
-  // }
-
-  // Future<void> addAccountant({
-  //   required String firstName,
-  //   required String lastName,
-  //   required String email,
-  //   required String password,
-  // }) async {
-  //   // await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //   //   email: email,
-  //   //   password: password,
-  //   // );
-  //   final user = FirebaseAuth.instance.currentUser!.uid;
-  //   DocumentReference users = firestore.collection('users').doc(user);
-
-  //   emit(AddAuditorLoading());
-  //   try {
-  //     users.set({
-  //       'first_Name': firstName,
-  //       'last_Name': lastName,
-  //       'fullName': firstName + lastName,
-  //       'userID': user,
-  //       'email': email,
-  //       'role': 'Accountant',
-  //       'status': '2',
-  //       'Email_status': 'enabled',
-  //     });
-  //     emit(AddAuditorSuccess());
-  //   } catch (e) {
-  //     AddAuditorfaild(error: "Failed to add user:${e.toString()}");
-  //   }
-  // }
   Future staffAccontantSignUP({
     required String email,
     required String password,
@@ -373,7 +255,7 @@ class AuthCubit extends Cubit<AuthState> {
           'fullName': firstName + lastName,
           'userID': uid, // Use the user's ID here
           'email': email,
-          'role': 'Accountant',
+          'role': {"en": 'Accountant', "ar": "محاسب"},
           'status': '2',
           'Email_status': 'enabled',
         },
@@ -491,7 +373,7 @@ class AuthCubit extends Cubit<AuthState> {
         'email': user.email,
         'first_Name': user.displayName?.split(" ").first,
         'last_Name': user.displayName?.split(" ").last,
-        'role': 'User',
+        'role': {"en": 'User', "ar": "مستخدم"},
         'status': '0',
         'Email_status': 'disabled',
         // Add more fields as needed

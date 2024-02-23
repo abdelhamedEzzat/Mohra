@@ -258,6 +258,7 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                           onTap: () async {
                             if (trigerCubit.filePlatforme != null) {
                               await trigerCubit.pickFile(
+                                  status: S.of(context).status,
                                   docNumber: trigerCubit.docNumber++,
                                   // fileExtention: trigerCubit.file!.extension,
                                   companydocID: companyId as String,
@@ -270,6 +271,7 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                             } else if (trigerCubit.imagefile != null) {
                               await trigerCubit
                                   .uploadImageAndAddInfoToFirestore(
+                                      status: S.of(context).status,
                                       docNumber: trigerCubit.docNumber++,
                                       companydocID: companyId as String,
                                       comment: trigerCubit.comment);

@@ -63,6 +63,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "CompanyDocuments":
             MessageLookupByLibrary.simpleMessage("مستندات الشركه"),
         "CompanyName": MessageLookupByLibrary.simpleMessage("اسم الشركه"),
+        "CompanyStatus":
+            MessageLookupByLibrary.simpleMessage("في انتظار الموافقه"),
         "CompanyType":
             MessageLookupByLibrary.simpleMessage(" مجال عمل الشركه "),
         "Companydocumentnotfound":
@@ -115,7 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "MustSelectImage": MessageLookupByLibrary.simpleMessage(
             " من فضلك يجب اختيار صوره للشركه"),
         "MyAvailableCompanies":
-            MessageLookupByLibrary.simpleMessage(" : شركاتي المتاحه "),
+            MessageLookupByLibrary.simpleMessage(" شركاتي المتاحه :"),
         "MyCompany": MessageLookupByLibrary.simpleMessage("شركاتي :"),
         "MyDocument": MessageLookupByLibrary.simpleMessage("مستندات الشركه :"),
         "Name": MessageLookupByLibrary.simpleMessage("الاسم :"),
@@ -136,6 +138,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Pleaseentersometext":
             MessageLookupByLibrary.simpleMessage("الرجاء إدخال بعض النص"),
         "PrivacyPolicy": MessageLookupByLibrary.simpleMessage("سياسة الخصوصية"),
+        "Profile": MessageLookupByLibrary.simpleMessage("معلومات الحساب"),
+        "Regected": MessageLookupByLibrary.simpleMessage("رفض"),
         "Rejected": MessageLookupByLibrary.simpleMessage("رفض"),
         "Review": MessageLookupByLibrary.simpleMessage("مراجعه  : "),
         "Search": MessageLookupByLibrary.simpleMessage("بحث"),
@@ -219,10 +223,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "didntHaveAccount":
             MessageLookupByLibrary.simpleMessage("اذا لم تكن تمتلك حساب ؟ "),
         "email": MessageLookupByLibrary.simpleMessage("ايميل المستخدم : "),
-        "emailHintTextInRegisterScreen":
-            MessageLookupByLibrary.simpleMessage("اكتب الايميل الخاص بك "),
+        "emailHintTextInRegisterScreen": MessageLookupByLibrary.simpleMessage(
+            "اكتب البريد الالكتروني الخاص بك "),
         "emailLabelTextInRegisterScreen":
-            MessageLookupByLibrary.simpleMessage("الايميل"),
+            MessageLookupByLibrary.simpleMessage("البريد الالكتروني"),
         "firstnameLabelTextInRegisterScreen":
             MessageLookupByLibrary.simpleMessage("الاسم الاول"),
         "forgetPassword":
@@ -254,9 +258,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("اكتب الاسم الاخير"),
         "no": MessageLookupByLibrary.simpleMessage("لا"),
         "passwordHintTextInRegisterScreen":
-            MessageLookupByLibrary.simpleMessage("اكتب الباسورد الخاص بك"),
+            MessageLookupByLibrary.simpleMessage("اكتب كلمه السر الخاصه بك"),
         "passwordLabelTextInRegisterScreen":
-            MessageLookupByLibrary.simpleMessage("باسورد"),
+            MessageLookupByLibrary.simpleMessage("كلمه السر"),
         "register": MessageLookupByLibrary.simpleMessage("انشاء حساب "),
         "registerAccount": MessageLookupByLibrary.simpleMessage("تسجيل حساب"),
         "registerAccountBotton":
@@ -268,6 +272,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("حدد نوع العنصر : "),
         "snackParInAdminstrationPage": MessageLookupByLibrary.simpleMessage(
             "مرحبا ايميلك في مرحله القبول من خلال الاداره"),
+        "status": MessageLookupByLibrary.simpleMessage("في انتظار المراجعة"),
         "subtitleForFirstIntroScreen": MessageLookupByLibrary.simpleMessage(
             "يمكنك بسهولة تحميل المستندات ومتابعة سير العمل عليها ويمكنك أيضًا كتابة التعليقات"),
         "subtitleForSecondIntroScreen": MessageLookupByLibrary.simpleMessage(

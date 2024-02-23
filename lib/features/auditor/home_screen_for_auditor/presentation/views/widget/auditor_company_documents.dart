@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/user/company_documents/presentation/views/widget/document_and_number_after_upload.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/manger/language/language_cubit.dart';
 import 'package:mohra_project/generated/l10n.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -78,6 +80,8 @@ class AuditorCompanyDocuments extends StatelessWidget {
                 stream: documentCompany,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    Language currentLanguage =
+                        BlocProvider.of<LanguageCubit>(context).state;
                     List<Widget> itemList = [];
 
                     List<DocumentSnapshot> allDocs = [];
@@ -156,7 +160,9 @@ class AuditorCompanyDocuments extends StatelessWidget {
                           },
                           typeOfDocument: doc["docNumer"].toString(),
                           color: ColorManger.darkGray,
-                          status: doc['status'],
+                          status: currentLanguage == Language.arabic
+                              ? doc['status']['ar']
+                              : doc['status']['en'],
                         ));
                       } else {
                         String fileExtension =

@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/icon_and_text_company.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/manger/language/language_cubit.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
 class AuditorHomeScreenBody extends StatefulWidget {
@@ -159,11 +161,15 @@ class _AuditorHomeScreenBodyState extends State<AuditorHomeScreenBody> {
                 stream: companyCollection,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                    Language currentLanguage =
+                        BlocProvider.of<LanguageCubit>(context).state;
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Align(
-                          alignment: Alignment.centerLeft,
+                          alignment: currentLanguage == Language.arabic
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
                           child: Text(
                             S.of(context).MyAvailableCompanies,
                             style: Theme.of(context).textTheme.displayLarge,

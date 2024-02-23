@@ -169,7 +169,7 @@ class ImageDocWidget extends StatelessWidget {
                         padding: EdgeInsets.only(left: 15.h),
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                            color: color,
+                            color: color ?? ColorManger.darkGray,
                             borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(25),
                                 topRight: Radius.circular(25))),

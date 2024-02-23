@@ -1769,6 +1769,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Waiting for Accepted`
+  String get CompanyStatus {
+    return Intl.message(
+      'Waiting for Accepted',
+      name: 'CompanyStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Waiting for Review`
+  String get status {
+    return Intl.message(
+      'Waiting for Review',
+      name: 'status',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Regected`
+  String get Regected {
+    return Intl.message(
+      'Regected',
+      name: 'Regected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get Profile {
+    return Intl.message(
+      'Profile',
+      name: 'Profile',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -235,6 +235,7 @@ class _CreateCompanyState extends State<CreateCompany> {
                               formKey.currentState!.save();
 
                               await trigerCubit.addCompany(
+                                  companyStatus: S.of(context).CompanyStatus,
                                   compnyCollectionID: compnyDocument,
                                   // docid: docid,
                                   file: trigerCubit.file,

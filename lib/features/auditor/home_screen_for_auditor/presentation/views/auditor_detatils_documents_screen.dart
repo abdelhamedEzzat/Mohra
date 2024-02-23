@@ -387,7 +387,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
               Container(
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  color: Colors.amber,
+                  color: Colors.amber.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 height: 150,
@@ -474,7 +474,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                         {
                           'comment': comment,
                           // ignore: use_build_context_synchronously
-                          'staffTypeReview': S.of(context).Auditor,
+                          'staffTypeReview': "Auditor",
                         }
                       ]),
                       "statusDoc": selectItem,
@@ -490,13 +490,55 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                           querySnapshot.docs.forEach((doc) {
                             // Check if the document exists
                             if (doc.exists) {
-                              // Perform the update operation on the document
-                              doc.reference
-                                  .update({"status": selectItem})
-                                  .then((_) =>
-                                      print("Document updated successfully"))
-                                  .catchError((error) => print(
-                                      "Failed to update document: $error"));
+                              if (selectItem == "amendment") {
+                                doc.reference
+                                    .update({
+                                      "status": {
+                                        'en': "amendment",
+                                        'ar': "مكرر",
+                                      }
+                                    })
+                                    .then((_) =>
+                                        print("Document updated successfully"))
+                                    .catchError((error) => print(
+                                        "Failed to update document: $error"));
+                              } else if (selectItem == "Finished") {
+                                doc.reference
+                                    .update({
+                                      "status": {
+                                        'en': "Finished",
+                                        'ar': "تم الانتهاء من المستند",
+                                      }
+                                    })
+                                    .then((_) =>
+                                        print("Document updated successfully"))
+                                    .catchError((error) => print(
+                                        "Failed to update document: $error"));
+                              } else if (selectItem == "Canceled") {
+                                doc.reference
+                                    .update({
+                                      "status": {
+                                        'en': "Canceled",
+                                        'ar': "المستند ملغي",
+                                      }
+                                    })
+                                    .then((_) =>
+                                        print("Document updated successfully"))
+                                    .catchError((error) => print(
+                                        "Failed to update document: $error"));
+                              } else if (selectItem == "Finished") {
+                                doc.reference
+                                    .update({
+                                      "status": {
+                                        'en': "acceptable",
+                                        'ar': "تم قبول المستند",
+                                      }
+                                    })
+                                    .then((_) =>
+                                        print("Document updated successfully"))
+                                    .catchError((error) => print(
+                                        "Failed to update document: $error"));
+                              }
                             } else {
                               print("Document does not exist");
                             }

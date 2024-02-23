@@ -119,78 +119,80 @@ class MyApp extends StatelessWidget {
             ],
             child: BlocBuilder<LanguageCubit, Language>(
                 builder: (context, languageState) {
-              TextDirection textDirection = languageState == Language.arabic
-                  ? TextDirection.rtl
-                  : TextDirection.ltr;
-              return Directionality(
-                textDirection: textDirection,
-                child: MaterialApp(
-                  locale: (languageState == Language.arabic)
-                      ? Locale('ar', '')
-                      : Locale('en', ''),
-                  //locale: Locale("ar"),
+              // TextDirection textDirection = languageState == Language.arabic
+              //     ? TextDirection.rtl
+              //     : TextDirection.ltr;
+              return
+                  //  Directionality(
+                  // textDirection: textDirection,
+                  // child:
+                  MaterialApp(
+                locale: (languageState == Language.arabic)
+                    ? Locale('ar', '')
+                    : Locale('en', ''),
+                //locale: Locale("ar"),
 
-                  theme: theme(),
-                  debugShowCheckedModeBanner: false,
-                  // for Responcive Screens
-                  builder: DevicePreview.appBuilder,
-                  //
-                  // For Localization Screens
-                  localizationsDelegates: const [
-                    S.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                  ],
-                  supportedLocales: S.delegate.supportedLocales,
+                theme: theme(),
+                debugShowCheckedModeBanner: false,
+                // for Responcive Screens
+                builder: DevicePreview.appBuilder,
+                //
+                // For Localization Screens
+                localizationsDelegates: const [
+                  S.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: S.delegate.supportedLocales,
 
-                  // for Routing Screens
-                  onGenerateRoute: AppRouter.onGenrateRoute,
-                  // initialRoute: RouterName.loginScreen,
+                // for Routing Screens
+                onGenerateRoute: AppRouter.onGenrateRoute,
+                // initialRoute: RouterName.loginScreen,
 
-                  routes: {
-                    RouterName.companyDocuments: (context) =>
-                        const CompanyDocuments(),
-                    RouterName.homeScreenForUser: (context) =>
-                        const HomeScreenForUser(),
-                    RouterName.uploadDocuments: (context) =>
-                        const UploadDocuments(),
-                    RouterName.detailsDocuments: (context) =>
-                        const DetailsDocuments(),
-                    RouterName.addDocumetType: (context) => AddDocumentType(),
-                    RouterName.auditorCompanyDocuments: (context) =>
-                        const AuditorCompanyDocuments(),
-                    RouterName.auditorHomeScreen: (context) =>
-                        const AuditorHomeScreen(),
-                    RouterName.accountantHomeScreen: (context) =>
-                        const AccountantHomeScreen(),
-                    RouterName.accountantDocumentDetails: (context) =>
-                        const AccountantDocumentDetails(),
-                    RouterName.accuntantCompanyDocuments: (context) =>
-                        const AccuntantCompanyDocuments(),
-                    RouterName.auditorDocumentDetails: (context) =>
-                        const AuditorDocumentDetails(),
-                    RouterName.searchScreenForAdmin: (context) =>
-                        const SearchScreenForAdmin(),
-                    RouterName.searchScreenForUser: (context) => searchuser(),
-                    RouterName.watingForAdminAccepted: (context) =>
-                        const AdminstrationAccepted(),
-                    RouterName.mangeCompanyStaff: (context) =>
-                        const MangeCompanyStaff(),
-                    RouterName.companyOfAccountatinAdminScreen: (context) =>
-                        const CompanyOfAccountatinAdminScreen(),
-                    // ignore: equal_keys_in_map
-                    RouterName.companyOfAuditorinAdminScreen: (context) =>
-                        const CompanyOfAuditorinAdminScreen()
-                  },
+                routes: {
+                  RouterName.companyDocuments: (context) =>
+                      const CompanyDocuments(),
+                  RouterName.homeScreenForUser: (context) =>
+                      const HomeScreenForUser(),
+                  RouterName.uploadDocuments: (context) =>
+                      const UploadDocuments(),
+                  RouterName.detailsDocuments: (context) =>
+                      const DetailsDocuments(),
+                  RouterName.addDocumetType: (context) => AddDocumentType(),
+                  RouterName.auditorCompanyDocuments: (context) =>
+                      const AuditorCompanyDocuments(),
+                  RouterName.auditorHomeScreen: (context) =>
+                      const AuditorHomeScreen(),
+                  RouterName.accountantHomeScreen: (context) =>
+                      const AccountantHomeScreen(),
+                  RouterName.accountantDocumentDetails: (context) =>
+                      const AccountantDocumentDetails(),
+                  RouterName.accuntantCompanyDocuments: (context) =>
+                      const AccuntantCompanyDocuments(),
+                  RouterName.auditorDocumentDetails: (context) =>
+                      const AuditorDocumentDetails(),
+                  RouterName.searchScreenForAdmin: (context) =>
+                      const SearchScreenForAdmin(),
+                  RouterName.searchScreenForUser: (context) => searchuser(),
+                  RouterName.watingForAdminAccepted: (context) =>
+                      const AdminstrationAccepted(),
+                  RouterName.mangeCompanyStaff: (context) =>
+                      const MangeCompanyStaff(),
+                  RouterName.companyOfAccountatinAdminScreen: (context) =>
+                      const CompanyOfAccountatinAdminScreen(),
+                  // ignore: equal_keys_in_map
+                  RouterName.companyOfAuditorinAdminScreen: (context) =>
+                      const CompanyOfAuditorinAdminScreen()
+                },
 
-                  home:
-                      //MyAppppp()
-                      // MyApppp()
-                      // AddDocumentType(),
+                home:
+                    //MyAppppp()
+                    // MyApppp()
+                    // AddDocumentType(),
 
-                      const AuthUsers(),
-                ),
+                    const AuthUsers(),
+                // ),
               );
             }),
           );
@@ -238,7 +240,9 @@ class AuthUsers extends StatelessWidget {
                 var userData = userSnapshot.data!.data();
 
                 if (userData != null && userData is Map<String, dynamic>) {
-                  String userRole = userData['role'] ?? '';
+                  //  String userRole = userData['role.en'] ?? '';
+                  Map<String, dynamic> roleMap = userData['role'] ?? '';
+                  String userRole = roleMap['en']; // Accessing the English role
                   String userStatus =
                       userData.containsKey('status') ? userData['status'] : '';
                   String userEmailStatus = userData.containsKey('Email_status')

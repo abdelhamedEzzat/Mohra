@@ -66,6 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "CompanyDocuments":
             MessageLookupByLibrary.simpleMessage("Company Documents"),
         "CompanyName": MessageLookupByLibrary.simpleMessage("Company Name"),
+        "CompanyStatus":
+            MessageLookupByLibrary.simpleMessage("Waiting for Accepted"),
         "CompanyType": MessageLookupByLibrary.simpleMessage(" Company Type"),
         "Companydocumentnotfound":
             MessageLookupByLibrary.simpleMessage("Company document not found"),
@@ -146,6 +148,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Pleaseentersometext":
             MessageLookupByLibrary.simpleMessage("Please enter some text"),
         "PrivacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+        "Profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "Regected": MessageLookupByLibrary.simpleMessage("Regected"),
         "Rejected": MessageLookupByLibrary.simpleMessage("Rejected"),
         "Review": MessageLookupByLibrary.simpleMessage("Review : "),
         "Search": MessageLookupByLibrary.simpleMessage("Search"),
@@ -287,6 +291,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendRequest": MessageLookupByLibrary.simpleMessage("Send Request"),
         "snackParInAdminstrationPage": MessageLookupByLibrary.simpleMessage(
             "Hello, your email is in the acceptance stage of administration"),
+        "status": MessageLookupByLibrary.simpleMessage("Waiting for Review"),
         "subtitleForFirstIntroScreen": MessageLookupByLibrary.simpleMessage(
             "You can easily upload documents, follow the progress of work on them, and you can also write comments"),
         "subtitleForSecondIntroScreen": MessageLookupByLibrary.simpleMessage(

@@ -200,9 +200,15 @@
    "yes":"yes",
    "Numberofcompanydocuments":"Number of company documents",
    "ConfirmAccountDeletion":"Confirm Account Deletion",
-   "Areyousureyouwanttodeleteyouraccount":"Are you sure you want to delete your account?"
+   "Areyousureyouwanttodeleteyouraccount":"Are you sure you want to delete your account?",
+   "CompanyStatus": "Waiting for Accepted",
    
-    
-
+   "status": "Waiting for Review",
+   "Regected":"Regected",
+  
+   
+   
+   "Profile":"Profile"
+   
    
 }

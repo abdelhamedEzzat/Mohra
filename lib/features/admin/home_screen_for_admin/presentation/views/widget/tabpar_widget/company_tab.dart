@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/admin/home_screen_for_admin/presentation/views/widget/company_bottom_for_admin.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/icon_and_text_company.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/manger/language/language_cubit.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
 // class AllCampanyWithStatus extends StatelessWidget {
@@ -178,13 +180,19 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
               } else if (snapshot.hasError) {
                 print("you have error in company tao ");
               } else if (snapshot.hasData) {
+                Language currentLanguage =
+                    BlocProvider.of<LanguageCubit>(context).state;
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return snapshot.data.docs[index]['CompanyStatus'] ==
-                              'Waiting for Accepted'
+                      return snapshot.data!.docs[index]["CompanyStatus"]
+                                      .containsKey('en') ==
+                                  "Waiting for Review" ||
+                              snapshot.data!.docs[index]["CompanyStatus"]
+                                      .containsKey('ar') ==
+                                  "في انتظار المراجعة"
                           ? SingleChildScrollView(
                               child: Container(
                                   height: 135.h,
@@ -202,8 +210,12 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                                       logoCompany: snapshot.data!.docs[index]
                                           ["logo"],
                                       colorOfStatus: ColorManger.darkGray,
-                                      statusText: snapshot.data!.docs[index]
-                                          ["CompanyStatus"],
+                                      statusText:
+                                          currentLanguage == Language.arabic
+                                              ? snapshot.data!.docs[index]
+                                                  ["CompanyStatus"]["ar"]
+                                              : snapshot.data!.docs[index]
+                                                  ["CompanyStatus"]["en"],
                                     ),
                                     SizedBox(
                                       height: 2.h,
@@ -224,13 +236,23 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                                 children: [
                                   CompanyButtonForAdmin(
                                     onTap: () {
-                                      if (snapshot.data!.docs[index]
-                                              ["CompanyStatus"] ==
-                                          'Accepted') {
-                                        Navigator.of(context).pushNamed(
-                                            RouterName.mangeCompanyStaff,
-                                            arguments: snapshot.data!
-                                                .docs[index]["companyId"]);
+                                      if (snapshot.data!
+                                              .docs[index]["CompanyStatus"]
+                                              .containsKey('en') &&
+                                          snapshot.data!
+                                              .docs[index]["CompanyStatus"]
+                                              .containsKey('ar')) {
+                                        if (snapshot.data!.docs[index]
+                                                    ["CompanyStatus"]['en'] ==
+                                                "Accepted" ||
+                                            snapshot.data!.docs[index]
+                                                    ["CompanyStatus"]['ar'] ==
+                                                "مقبول") {
+                                          Navigator.of(context).pushNamed(
+                                              RouterName.mangeCompanyStaff,
+                                              arguments: snapshot.data!
+                                                  .docs[index]["companyId"]);
+                                        }
                                       }
                                     },
                                     withStatus: true,
@@ -239,12 +261,19 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                                     logoCompany: snapshot.data!.docs[index]
                                         ["logo"],
                                     colorOfStatus: snapshot.data!.docs[index]
-                                                ["CompanyStatus"] ==
-                                            'Accepted'
-                                        ? Colors.green
+                                                    ["CompanyStatus"]['en'] ==
+                                                'Accepted' ||
+                                            snapshot.data!.docs[index]
+                                                    ["CompanyStatus"]['ar'] ==
+                                                'مقبول'
+                                        ? Colors.black.withOpacity(0.8)
                                         : Colors.red,
-                                    statusText: snapshot.data!.docs[index]
-                                        ["CompanyStatus"],
+                                    statusText:
+                                        currentLanguage == Language.arabic
+                                            ? snapshot.data!.docs[index]
+                                                ["CompanyStatus"]["ar"]
+                                            : snapshot.data!.docs[index]
+                                                ["CompanyStatus"]["en"],
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
@@ -360,7 +389,9 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                 await FirebaseFirestore.instance
                     .collection('Companys')
                     .doc(companyDocument.id)
-                    .update({'CompanyStatus': 'Rejected'});
+                    .update({
+                  'CompanyStatus': {"ar": "مرفوض", "en": "rejected"}
+                });
 
                 await FirebaseFirestore.instance
                     .collection('Notification')
@@ -377,7 +408,7 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
               print('Error querying for company: $e');
             }
           },
-          child: const Text('Rojected'),
+          child: Text(S.of(context).Regected),
         ),
       ),
     );
@@ -420,7 +451,9 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                       await FirebaseFirestore.instance
                           .collection('Companys')
                           .doc(companyDocument.id)
-                          .update({'CompanyStatus': 'Accepted'});
+                          .update({
+                        'CompanyStatus': {"ar": "مقبول", "en": "Accepted"}
+                      });
 
                       await FirebaseFirestore.instance
                           .collection('Notification')
@@ -437,94 +470,12 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                     print('Error querying for company: $e');
                   }
                 },
-                child: const Text('Accepted'),
+                child: Text(S.of(context).Accepted),
               ),
             ),
           ),
-          // Expanded(
-          //   child: Container(
-          //     decoration: BoxDecoration(
-          //       borderRadius:
-          //           BorderRadius.circular(25),
-          //       color: Colors.green,
-          //     ),
-          //     margin:
-          //         EdgeInsets.only(left: 5.w),
-          //     alignment: Alignment.center,
-          //     height: MediaQuery.of(context)
-          //         .size
-          //         .height,
-          //     width: MediaQuery.of(context)
-          //         .size
-          //         .width,
-          //     child: const Text('Accepted'),
-          //   ),
-          // )
         ],
       ),
     );
   }
 }
-                // Container(
-                //   padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-                //   child: Column(
-                //     children: [
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //         children: [
-                //           Expanded(
-                //             flex: 3,
-                //             child: Container(
-                //               padding: EdgeInsets.only(top: 6.h),
-                //               child: Text(
-                //                 "Auditor :",
-                //                 style: Theme.of(context).textTheme.displaySmall,
-                //                 overflow: TextOverflow.ellipsis,
-                //               ),
-                //             ),
-                //           ),
-                //           Expanded(
-                //             flex: 11,
-                //             child: Container(
-                //                 padding: EdgeInsets.only(right: 12.w, top: 6.h),
-                //                 child: Text(
-                //                   "sdadadsadasdasdasdasdasdasdasdsd",
-                //                   overflow: TextOverflow.ellipsis,
-                //                   style:
-                //                       Theme.of(context).textTheme.displayMedium,
-                //                 )),
-                //           ),
-                //         ],
-                //       ),
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //         children: [
-                //           Expanded(
-                //             flex: 6,
-                //             child: Container(
-                //               padding: EdgeInsets.only(top: 6.h),
-                //               child: Text(
-                //                 "Accountant :",
-                //                 style: Theme.of(context).textTheme.displaySmall,
-                //                 overflow: TextOverflow.ellipsis,
-                //               ),
-                //             ),
-                //           ),
-                //           Expanded(
-                //             flex: 14,
-                //             child: Container(
-                //                 padding: EdgeInsets.only(right: 12.w, top: 6.h),
-                //                 child: Text(
-                //                   "sdadadsadasdasdasdasdasdasdasdsd",
-                //                   overflow: TextOverflow.ellipsis,
-                //                   style:
-                //                       Theme.of(context).textTheme.displayMedium,
-                //                 )),
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),

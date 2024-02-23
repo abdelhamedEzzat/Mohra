@@ -4,14 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mohra_project/core/constants/constans_collections/collections.dart';
-import 'package:mohra_project/features/user/create_company/data/add_company_hive.dart';
+import 'package:mohra_project/generated/l10n.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 part 'create_company_state.dart';
 
 class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
@@ -34,6 +32,7 @@ class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
     required String companyAddress,
     required String companyType,
     required File? file,
+    required String companyStatus,
     required String compnyCollectionID,
   }) async {
     try {
@@ -56,21 +55,7 @@ class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
             "https://st3.depositphotos.com/23594922/31822/v/450/depositphotos_318221368-stock-illustration-missing-picture-page-for-website.jpg"; // Replace this with your actual default image URL
         print("url:$url");
       }
-      // Use the default image path if file is null
-      // final storage = FirebaseStorage.instanceFor(
-      //     bucket: "gs://mohra-project.appspot.com");
-      // var companyImageRef =
-      //     storage.ref("company images/default_company_image.png");
 
-      // var defaultImageBytes =
-      //     await rootBundle.load('assets/images/company-no_logo.png');
-      // var defaultImageFile =
-      //     File('${(await getTemporaryDirectory()).path}/company-no_logo.png');
-      // await defaultImageFile
-      //     .writeAsBytes(defaultImageBytes.buffer.asUint8List());
-
-      // await companyImageRef.putFile(defaultImageFile);
-      // url = await companyImageRef.getDownloadURL();
       compnydocID = Constanscollection.companyCollection.id;
       await Constanscollection.companyCollection.add(
         {
@@ -82,7 +67,10 @@ class FirebaseCreateCompanyCubit extends Cubit<FirebaseCreateCompanyState> {
           'companyDocId': compnydocID,
           'userID': FirebaseAuth.instance.currentUser!.uid,
           'additionalInformation': additionalInformation,
-          'CompanyStatus': "Waiting for Accepted",
+          'CompanyStatus': {
+            'en': "Waiting for Accepted",
+            'ar': "في انتظار الموافقه",
+          },
           'timesTamp': formattedStamp(timestamp),
         },
       );

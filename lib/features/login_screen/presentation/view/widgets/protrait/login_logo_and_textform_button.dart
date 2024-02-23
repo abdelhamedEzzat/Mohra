@@ -263,7 +263,8 @@ class _LoginLogoAndTextFieldAndbuttonProtraitState
 
     return querySnapshot.docs.forEach((doc) {
       print("User Data: ${doc.data()}");
-      String role = doc.get('role');
+      Map<String, dynamic> roleMap = doc.get('role');
+      String role = roleMap['en']; // Accessing the English role
       String emailStatus = doc.get('Email_status');
       var user = FirebaseAuth.instance.currentUser;
       if (user != null) {

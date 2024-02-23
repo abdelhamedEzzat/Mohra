@@ -10,6 +10,7 @@ import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mohra_project/core/constants/constans_collections/collections.dart';
 import 'package:mohra_project/features/user/upload_document/data/company_document_model.dart';
+import 'package:mohra_project/generated/l10n.dart';
 import 'package:path/path.dart';
 
 part 'upload_documents_state.dart';
@@ -78,6 +79,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
     required File file,
     required String comment,
     required String companydocID,
+    required String status,
   }) async {
     emit(UploadDocumentLoading());
 
@@ -106,7 +108,10 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
             "companydocID": companydocID,
             "fileExtention": filePlatforme!.extension,
             'DocID': docID,
-            "status": "Wating for Review",
+            "status": {
+              'en': "Waiting for Review",
+              'ar': "في انتظار المراجعة",
+            },
             'companyName': "",
             'invoiceDate': "",
             'invoiceNumber': "",
@@ -170,6 +175,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
     required String comment,
     required String companydocID,
     required int docNumber,
+    required String status,
   }) async {
     emit(UploadDocumentLoading());
 
@@ -200,7 +206,10 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
             "companydocID": companydocID,
             "fileExtention": "image",
             "DocID": docID,
-            "status": "Wating for Review ",
+            "status": {
+              'en': "Waiting for Review",
+              'ar': "في انتظار المراجعة",
+            },
             'companyName': "",
             'invoiceDate': "",
             'invoiceNumber': "",

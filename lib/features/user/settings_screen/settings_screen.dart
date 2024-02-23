@@ -36,7 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   String fullName = userData["fullName"] ?? "";
                   String email = userData["email"] ?? "";
                   return DetailsPeofileAndCompanyWidget(
-                    profile: "Profile",
+                    profile: S.of(context).Profile,
                     key1: S.of(context).name,
                     value1: fullName,
                     key2: S.of(context).email,

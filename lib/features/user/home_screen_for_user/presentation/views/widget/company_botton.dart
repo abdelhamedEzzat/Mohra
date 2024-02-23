@@ -27,10 +27,6 @@ class CompanyButton extends StatelessWidget {
   // final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
-    // Stream<QuerySnapshot> allCompany = FirebaseFirestore.instance
-    //     .collection('Companys')
-    //     // .where('CompanyStatus', isEqualTo: selectItem)
-    //     .snapshots();
     return GestureDetector(
       onTap: onTap,
       child: withStatus == true
@@ -101,87 +97,9 @@ class CompanyButton extends StatelessWidget {
                             ],
                           ),
                         ),
-                        // StreamBuilder<QuerySnapshot>(
-                        //   stream: allCompany,
-                        //   builder:
-                        //       (BuildContext context, AsyncSnapshot snapshot) {
-                        //     if (snapshot.connectionState ==
-                        //         ConnectionState.waiting) {
-                        //       return Center(
-                        //         child: CircularProgressIndicator(
-                        //             color: Colors.black),
-                        //       );
-                        //     } else if (snapshot.hasError) {
-                        //       print("you have error in company tao ");
-                        //     } else if (snapshot.hasData) {
-                        //       return ListView.separated(
-                        //         shrinkWrap: true,
-                        //         physics: NeverScrollableScrollPhysics(),
-                        //         itemCount: snapshot.data!.docs.length,
-                        //         separatorBuilder:
-                        //             (BuildContext context, int index) {
-                        //           return Divider(); // Add a divider between companies
-                        //         },
-                        //         itemBuilder: (BuildContext context, int index) {
-                        //           final companyData =
-                        //               snapshot.data!.docs[index];
-                        //           return Column(
-                        //             crossAxisAlignment:
-                        //                 CrossAxisAlignment.start,
-                        //             children: [
-                        //               Text(
-                        //                 companyData[
-                        //                     "company_Name"], // Display company name
-                        //                 style: TextStyle(
-                        //                     fontWeight: FontWeight.bold),
-                        //               ),
-                        //               StreamBuilder(
-                        //                 stream: FirebaseFirestore.instance
-                        //                     .collection('Staff')
-                        //                     .where('CompanyId',
-                        //                         isEqualTo:
-                        //                             companyData["companyId"])
-                        //                     .snapshots(),
-                        //                 builder: (BuildContext context,
-                        //                     AsyncSnapshot staffSnapshot) {
-                        //                   if (staffSnapshot.hasData) {
-                        //                     return ListView.builder(
-                        //                       shrinkWrap: true,
-                        //                       physics:
-                        //                           const NeverScrollableScrollPhysics(),
-                        //                       itemCount: staffSnapshot
-                        //                           .data.docs.length,
-                        //                       itemBuilder:
-                        //                           (BuildContext context,
-                        //                               int index) {
-                        //                         final staffData = staffSnapshot
-                        //                             .data.docs[index];
-                        //                         return Row(
-                        //                           children: [
-                        //                             Text(
-                        //                                 staffData['StaffRole']),
-                        //                             SizedBox(width: 5),
-                        //                             Text(":"),
-                        //                             SizedBox(width: 5),
-                        //                             Text(
-                        //                                 staffData['StaffName']),
-                        //                           ],
-                        //                         );
-                        //                       },
-                        //                     );
-                        //                   } else {
-                        //                     return Text("you didnt have data");
-                        //                   }
-                        //                 },
-                        //               ),
-                        //             ],
-                        //           );
-                        //         },
-                        //       );
-                        //     }
-                        //     return Container();
-                        //   },
-                        // ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
                       ],
                     ),
                     // ),

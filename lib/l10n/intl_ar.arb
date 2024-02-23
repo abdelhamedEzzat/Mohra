@@ -18,10 +18,10 @@
     "firstnameLabelTextInRegisterScreen" : "الاسم الاول" , 
     "lastnameLabelTextInRegisterScreen" : "الاسم الاخير" , 
     "registerAccount" : "تسجيل حساب" , 
-    "emailLabelTextInRegisterScreen" : "الايميل" , 
-    "emailHintTextInRegisterScreen" : "اكتب الايميل الخاص بك " , 
-    "passwordLabelTextInRegisterScreen" : "باسورد" , 
-    "passwordHintTextInRegisterScreen" : "اكتب الباسورد الخاص بك"  , 
+    "emailLabelTextInRegisterScreen" : "البريد الالكتروني" , 
+    "emailHintTextInRegisterScreen" : "اكتب البريد الالكتروني الخاص بك " , 
+    "passwordLabelTextInRegisterScreen" : "كلمه السر" , 
+    "passwordHintTextInRegisterScreen" : "اكتب كلمه السر الخاصه بك"  , 
     "nameLabelTextInRegisterScreen" : "الاسم" , 
     "nameHintTextInRegisterScreenFirst" : "اكتب الاسم الاول" ,
     "nameHintTextInRegisterScreenLast" : "اكتب الاسم الاخير" , 
@@ -101,7 +101,7 @@
     "NoDataAvailable":"لا يوجد بيانات",
     "Writeanythingtosearch":"اكتب اي شئ للبحث",
     "SearchScreen":"بحث... ",
-    "MyAvailableCompanies": " : شركاتي المتاحه ",
+    "MyAvailableCompanies": " شركاتي المتاحه :",
     "NoAvailableCompanies.":"لا يوجد شركات متاحه ",
     "amendment": "تعديل" ,
     "Finished": "منتهي",
@@ -186,6 +186,10 @@
    "yes":"نعم",
    "Numberofcompanydocuments":"عدد مستندات الشركه",
    "ConfirmAccountDeletion":"تأكيد حذف الحساب",
-   "Areyousureyouwanttodeleteyouraccount":"هل أنت متأكد من أنك تريد حذف حسابك؟"
-   
+   "Areyousureyouwanttodeleteyouraccount":"هل أنت متأكد من أنك تريد حذف حسابك؟",
+  
+   "status": "في انتظار المراجعة",
+   "CompanyStatus":"في انتظار الموافقه",
+   "Regected":"رفض",
+   "Profile":"معلومات الحساب"
 }
