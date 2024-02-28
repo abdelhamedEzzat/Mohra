@@ -1809,6 +1809,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Accountant Reviews`
+  String get AccountantReviews {
+    return Intl.message(
+      'Accountant Reviews',
+      name: 'AccountantReviews',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auditor Reviews`
+  String get AuditorReviews {
+    return Intl.message(
+      'Auditor Reviews',
+      name: 'AuditorReviews',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

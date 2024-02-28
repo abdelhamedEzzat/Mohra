@@ -1,14 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/constants/image_manger/image_manger.dart';
-import 'package:mohra_project/features/user/create_company/presentation/views/widget/add_Image_widget.dart';
 import 'package:mohra_project/features/user/upload_document/presentation/manger/upload_documents/upload_documents_cubit.dart';
 
 class DocumentImageAndNumberWithoutState extends StatelessWidget {
@@ -165,8 +162,9 @@ class ImageDocWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.only(left: 15.h),
+                        //  alignment: Alignment.centerLeft,
+                        padding:
+                            EdgeInsets.only(left: 15.h, right: 15.h, top: 7.h),
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             color: color ?? ColorManger.darkGray,
@@ -270,8 +268,9 @@ class FilesDocWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.only(left: 15.h),
+                        //alignment: Alignment.centerLeft,
+                        padding:
+                            EdgeInsets.only(left: 15.h, right: 15.h, top: 7.h),
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             color: color,

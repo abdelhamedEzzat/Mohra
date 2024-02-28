@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
@@ -10,6 +11,7 @@ import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/title_of_form_create_company.dart';
 import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/manger/language/language_cubit.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
 class AccountantDocumentDetails extends StatefulWidget {
@@ -23,7 +25,7 @@ class AccountantDocumentDetails extends StatefulWidget {
 class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
   bool snackBarShown = false;
 
-  List<String> stutsDocumentDropDown = [
+  List<String> stutsDocumentDropDownEnglish = [
     "new Document",
     "registered",
     "Auditor",
@@ -31,13 +33,21 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
     "redundant",
     "Canceled",
   ];
+  List<String> stutsDocumentDropDownArabic = [
+    "مستند جديد",
+    "مسجل",
+    "مدقق حسابات",
+    "مستعد",
+    "متكرر",
+    "ألغيت"
+  ];
 
   String? companyName;
-  String? invoiceDate;
+  String? invoiceDate = "";
   String? invoiceNumber;
   String? amountOfTheInvoice;
   String? comment = "";
-  String? selectItem = "new Document";
+  String? selectItem;
   bool isAccountantReviewDoc = false;
   bool accountantReview = false;
 
@@ -46,8 +56,11 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
   DateTime date = DateTime.now();
   List<String> typeDocumentDropDown = [];
   String? selectTypeItem;
+
   @override
   Widget build(BuildContext context) {
+    Language currentLanguage = BlocProvider.of<LanguageCubit>(context).state;
+
     Map<String, dynamic> docDitails =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
@@ -189,11 +202,11 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                             (document?['AuditorReview'] as List<dynamic>?) ??
                                 [];
                         List<Widget> accountantContainers =
-                            _buildAccountantReviewContainers(
-                                accountantReviews, "Accountant Reviews");
+                            _buildAccountantReviewContainers(accountantReviews,
+                                S.of(context).AccountantReviews);
                         List<Widget> auditorContainers =
                             _buildAuditorReviewContainers(
-                                auditorReviews, "Auditor Reviews");
+                                auditorReviews, S.of(context).AuditorReviews);
 
 //
 //
@@ -223,8 +236,12 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                               SizedBox(
                                 height: 10.h,
                               ),
-                              accountantData(documentCompany, context,
-                                  mediaQueryHeight, docDitails),
+                              accountantData(
+                                  documentCompany,
+                                  context,
+                                  mediaQueryHeight,
+                                  docDitails,
+                                  currentLanguage),
                               SizedBox(
                                 height: 10.h,
                               )
@@ -258,8 +275,13 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                           child: Text("No data available."),
                         );
                       }
-                      return accountantData(documentCompany, context,
-                          mediaQueryHeight, docDitails);
+                      return accountantData(
+                        documentCompany,
+                        context,
+                        mediaQueryHeight,
+                        docDitails,
+                        currentLanguage,
+                      );
                     },
                   ),
 
@@ -359,16 +381,19 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
               Container(
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  color: Colors.amber.withOpacity(0.5),
+                  color: Colors.amber.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 height: 150,
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      data(review, context, "comment: ${review['comment']}"),
+                      data(review, context,
+                          "${S.of(context).Comments} ${review['comment']}"),
                       data(review, context,
                           "${S.of(context).StaffTypeReview} ${review['staffTypeReview']}"),
+                      data(review, context,
+                          "${S.of(context).DocumentStatus} ${review['statusDoc'] != null ? review['statusDoc'] : 'No status'}"),
                       // Add more UI elements for auditors
                     ],
                   ),
@@ -400,10 +425,12 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
   }
 
   Column accountantData(
-      Stream<QuerySnapshot<Object?>> documentCompany,
-      BuildContext context,
-      double mediaQueryHeight,
-      Map<String, dynamic> docDitails) {
+    Stream<QuerySnapshot<Object?>> documentCompany,
+    BuildContext context,
+    double mediaQueryHeight,
+    Map<String, dynamic> docDitails,
+    Language currentLanguage,
+  ) {
     return Column(
       children: [
         CustomTextFormField(
@@ -426,7 +453,7 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
           height: 10.h,
         ),
 
-//DatePickerDialog(firstDate: firstDate, lastDate: lastDate)
+        //DatePickerDialog(firstDate: firstDate, lastDate: lastDate)
         CustomTextFormField(
           controller: _controller,
           fontStyle: FontStyle.normal,
@@ -442,20 +469,15 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
               firstDate: DateTime(2000),
               lastDate: DateTime(2101),
             );
-            // If a date is selected, update the text field
+            // If a date is selected, update the text field and the invoiceDate variable
             if (pickedDate != null) {
               String formattedDate =
                   DateFormat('yyyy-MM-dd').format(pickedDate);
               setState(() {
-                _controller.text = formattedDate
-                    .toString(); // You may want to format the date as per your requirement
+                _controller.text = formattedDate;
+                invoiceDate = formattedDate;
               });
             }
-          },
-          onChanged: (value) {
-            setState(() {
-              _controller.text = value;
-            });
           },
         ),
         // CustomTextFormField(
@@ -566,7 +588,9 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                   isExpanded: true,
                   value: selectTypeItem!.isNotEmpty
                       ? selectTypeItem
-                      : "No items Selected",
+                      : currentLanguage == Language.english
+                          ? "No items Selected"
+                          : "لم يتم تحديد اي اختيار",
                   items: dropdownItems.map((String item) {
                     return DropdownMenuItem(
                       value: item,
@@ -606,6 +630,9 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
           ),
           child: DropdownButton<String>(
             hint: Text(
+              // currentLanguage == Language.english
+              //     ? 'حدد حالة المستند'
+              //     :
               S.of(context).SelectStatusOfDocument,
               style: Theme.of(context)
                   .textTheme
@@ -615,15 +642,29 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
             borderRadius: BorderRadius.circular(10),
             isExpanded: true,
             value: selectItem,
-            items: stutsDocumentDropDown
-                .map((item) => DropdownMenuItem(
-                      value: item,
-                      child: Text(
-                        item,
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-                    ))
-                .toList(),
+            items: currentLanguage == Language.arabic
+                ? stutsDocumentDropDownArabic
+                    .toSet()
+                    .toList()
+                    .map((item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: Theme.of(context).textTheme.displayMedium,
+                          ),
+                        ))
+                    .toList() // Ensure that the list is correctly of type List<DropdownMenuItem<String>>
+                : stutsDocumentDropDownEnglish
+                    .toSet()
+                    .toList()
+                    .map((item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: Theme.of(context).textTheme.displayMedium,
+                          ),
+                        ))
+                    .toList(), // Ensure that the list is correctly of type List<DropdownMenuItem<String>>
             onChanged: (item) => setState(() {
               selectItem = item!;
             }),

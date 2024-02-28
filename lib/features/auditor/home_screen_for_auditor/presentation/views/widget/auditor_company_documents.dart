@@ -159,7 +159,13 @@ class AuditorCompanyDocuments extends StatelessWidget {
                             ));
                           },
                           typeOfDocument: doc["docNumer"].toString(),
-                          color: ColorManger.darkGray,
+                          color: doc['status']['en'] == "Canceled" ||
+                                  doc['status']['en'] == "amendment"
+                              ? ColorManger.backGroundColorToSplashScreen
+                              : doc['status']['en'] == "accepted" ||
+                                      doc['status']['en'] == "Finished"
+                                  ? ColorManger.introScreenBackgroundColor
+                                  : ColorManger.darkGray,
                           status: currentLanguage == Language.arabic
                               ? doc['status']['ar']
                               : doc['status']['en'],
@@ -185,8 +191,16 @@ class AuditorCompanyDocuments extends StatelessWidget {
                             },
                             pdfFileExtention: doc["fileExtention"],
                             pdfFileName: doc["name"],
-                            color: ColorManger.darkGray,
-                            status: doc['status'],
+                            color: doc['status']['en'] == "Canceled" ||
+                                    doc['status']['en'] == "amendment"
+                                ? ColorManger.backGroundColorToSplashScreen
+                                : doc['status']['en'] == "accepted" ||
+                                        doc['status']['en'] == "Finished"
+                                    ? ColorManger.introScreenBackgroundColor
+                                    : ColorManger.darkGray,
+                            status: currentLanguage == Language.arabic
+                                ? doc['status']['ar']
+                                : doc['status']['en'],
                             typeOfDocument: doc["docNumer"].toString(),
                           ));
                         }

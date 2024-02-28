@@ -48,6 +48,7 @@ import 'package:mohra_project/generated/l10n.dart';
 void main() async {
   Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   await Hive.initFlutter();
   //

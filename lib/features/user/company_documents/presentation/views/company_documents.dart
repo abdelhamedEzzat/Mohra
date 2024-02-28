@@ -168,13 +168,18 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
                             ));
                           },
                           typeOfDocument: doc["docNumer"].toString(),
-                          color: doc['status'] == "Canceled" ||
-                                  doc['status'] == "amendment"
+                          color: doc['status']['en'] == "Canceled" ||
+                                  doc['status']['en'] == "amendment"
                               ? ColorManger.backGroundColorToSplashScreen
-                              : doc['status'] == "accepted"
-                                  ? Colors.grey // Adjust color as desired
+                              : doc['status']['en'] == "accepted" ||
+                                      doc['status']['en'] == "Finished"
+                                  ? ColorManger.introScreenBackgroundColor
+
+                                  // Adjust color as desired
                                   : ColorManger.darkGray,
-                          status: doc['status'],
+                          status: currentLanguage == Language.arabic
+                              ? doc['status']["ar"]
+                              : doc['status']["en"],
                         ));
                       } else {
                         String fileExtension =
@@ -196,7 +201,14 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
                             },
                             pdfFileExtention: doc["fileExtention"],
                             pdfFileName: doc["name"],
-                            color: ColorManger.darkGray,
+                            color: doc['status']['en'] == "Canceled" ||
+                                    doc['status']['en'] == "amendment"
+                                ? ColorManger.backGroundColorToSplashScreen
+                                : doc['status']['en'] == "accepted" ||
+                                        doc['status']['en'] == "Finished"
+                                    ? ColorManger
+                                        .introScreenBackgroundColor // Adjust color as desired
+                                    : ColorManger.darkGray,
                             status: currentLanguage == Language.arabic
                                 ? doc['status']["ar"]
                                 : doc['status']["en"],
@@ -244,7 +256,7 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
                       },
                     );
                   } else if (snapshot.data == null) {
-                    return Text("No Data");
+                    return const Text("No Data");
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {
                     return const Center(

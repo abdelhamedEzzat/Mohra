@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/helpers/custom_app_bar.dart';
@@ -9,6 +10,7 @@ import 'package:mohra_project/core/helpers/custom_text_form_field.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/user/create_company/presentation/views/widget/title_of_form_create_company.dart';
 import 'package:mohra_project/features/user/details_documents/presentation/views/details_documents.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/manger/language/language_cubit.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
 class AuditorDocumentDetails extends StatefulWidget {
@@ -28,16 +30,23 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
   List<String> typeDocumentDropDown = [];
   String? selectTypeItem;
   String comment = "";
-  List<String> stutsDocumentDropDown = [
+  List<String> stutsDocumentDropDownEnglish = [
     "amendment",
     "Finished",
     "Canceled",
     "acceptable",
   ];
+
+  List<String> stutsDocumentDropDownArabic = [
+    "مكرر",
+    "تم الانتهاء من المستند",
+    "المستند ملغي",
+    "تم قبول المستند"
+  ];
   @override
   Widget build(BuildContext context) {
     // bool isBord = true;
-
+    Language currentLanguage = BlocProvider.of<LanguageCubit>(context).state;
     Map<String, dynamic> docDitails =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
@@ -189,18 +198,18 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                           : [];
 
                       List<Widget> accountantContainers =
-                          _buildAccountantReviewContainers(
-                              accountantReviews, "Accountant Reviews");
+                          _buildAccountantReviewContainers(accountantReviews,
+                              S.of(context).AccountantReviews);
                       List<Widget> auditorContainers =
-                          _buildAuditorReviewContainers(
-                              auditorReviews, "Auditor Reviews", context);
+                          _buildAuditorReviewContainers(auditorReviews,
+                              S.of(context).AuditorReviews, context);
 
 //
 //
 //
 //
                       //todo
-                      if (document['isAccountantReview'] == false) {
+                      if (document['isAccountantReview'] == true) {
                         return Column(
                           children: [
                             if (accountantContainers.isNotEmpty)
@@ -210,8 +219,8 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                             SizedBox(
                               height: 10.h,
                             ),
-                            auditorData(
-                                context, mediaQueryHeight, docDitails, comment),
+                            auditorData(context, mediaQueryHeight, docDitails,
+                                comment, currentLanguage),
                             SizedBox(
                               height: 10.h,
                             )
@@ -242,8 +251,8 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                         child: Text("No data available."),
                       );
                     }
-                    return auditorData(
-                        context, mediaQueryHeight, docDitails, comment);
+                    return auditorData(context, mediaQueryHeight, docDitails,
+                        comment, currentLanguage);
                   },
                 ),
               ],
@@ -252,50 +261,71 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
         ));
   }
 
-  Container SelectStatusOfDocument(BuildContext context) {
+  Widget SelectStatusOfDocument(
+      BuildContext context, Language currentLanguage) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
-      decoration: BoxDecoration(
-        color: ColorManger.white,
-        borderRadius: BorderRadius.circular(15.h),
-        border: Border.all(color: ColorManger.darkGray),
-      ),
-      child: DropdownButton<String>(
-        hint: Text(
-          S.of(context).SelectStatusOfDocument,
-          style: Theme.of(context)
-              .textTheme
-              .displayMedium!
-              .copyWith(color: ColorManger.backGroundColorToSplashScreen),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
+        decoration: BoxDecoration(
+          color: ColorManger.white,
+          borderRadius: BorderRadius.circular(15.h),
+          border: Border.all(color: ColorManger.darkGray),
         ),
-        borderRadius: BorderRadius.circular(10),
-        isExpanded: true,
-        value: selectItem,
-        items: [
-          // Add a DropdownMenuItem with the initial value
-          DropdownMenuItem(
-            value: "Select Type",
-            child: Text(
-              "Select Type",
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
+        child: DropdownButton<String>(
+          hint: Text(
+            S.of(context).SelectStatusOfDocument,
+            style: Theme.of(context)
+                .textTheme
+                .displayMedium!
+                .copyWith(color: ColorManger.backGroundColorToSplashScreen),
           ),
-          // Add other DropdownMenuItem instances from your stutsDocumentDropDown list
-          ...stutsDocumentDropDown
-              .map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(
-                      item,
-                      style: Theme.of(context).textTheme.displayMedium,
-                    ),
-                  ))
-              .toList(),
-        ],
-        onChanged: (item) => setState(() {
-          selectItem = item!;
-        }),
-      ),
-    );
+          borderRadius: BorderRadius.circular(10),
+          isExpanded: true,
+          value: selectItem,
+          items: [
+            // Add a DropdownMenuItem with the initial value
+            DropdownMenuItem(
+              value: "Select Type",
+              child: Text(
+                currentLanguage == Language.english
+                    ? "Select Type"
+                    : "حدد حاله المستند ",
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+            ),
+            // Add other DropdownMenuItem instances from your stutsDocumentDropDown list
+            ...(currentLanguage == Language.arabic
+                    ? stutsDocumentDropDownArabic
+                    : stutsDocumentDropDownEnglish)
+                .map((item) => DropdownMenuItem(
+                      value: item,
+                      child: Text(
+                        item,
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                    ))
+                .toList(),
+            // DropdownMenuItem(
+            //   value: "Select Type",
+            //   child: Text(
+            //     "Select Type",
+            //     style: Theme.of(context).textTheme.displayMedium,
+            //   ),
+            // ),
+            // // Add other DropdownMenuItem instances from your stutsDocumentDropDown list
+            // ...stutsDocumentDropDownEnglish
+            //     .map((item) => DropdownMenuItem(
+            //           value: item,
+            //           child: Text(
+            //             item,
+            //             style: Theme.of(context).textTheme.displayMedium,
+            //           ),
+            //         ))
+            //     .toList(),
+          ],
+          onChanged: (item) => setState(() {
+            selectItem = item!;
+          }),
+        ));
   }
 
   List<Widget> _buildAccountantReviewContainers(
@@ -387,7 +417,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
               Container(
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  color: Colors.amber.withOpacity(0.8),
+                  color: Colors.amber.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 height: 150,
@@ -395,11 +425,11 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                   child: Column(
                     children: [
                       data(review, context,
-                          "Staff Type Review: ${review['staffTypeReview']}"),
+                          "${S.of(context).Comments} ${review['comment']}"),
                       data(review, context,
-                          "Comment: ${review['comment'] ?? 'No comment'}"),
+                          "${S.of(context).StaffTypeReview} ${review['staffTypeReview']}"),
                       data(review, context,
-                          "Document Status: ${review['statusDoc'] != null ? review['statusDoc'] : 'No status'}"),
+                          "${S.of(context).DocumentStatus} ${review['statusDoc'] != null ? review['statusDoc'] : 'No status'}"),
                       // Add more UI elements for auditors
                     ],
                   ),
@@ -415,11 +445,11 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
   }
 
   Widget auditorData(
-    BuildContext context,
-    double mediaQueryHeight,
-    Map<String, dynamic> docDitails,
-    String? comment,
-  ) {
+      BuildContext context,
+      double mediaQueryHeight,
+      Map<String, dynamic> docDitails,
+      String? comment,
+      Language currentLanguage) {
     return Form(
       key: globalKey,
       child: Column(
@@ -427,7 +457,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
           SizedBox(
             height: 15.h,
           ),
-          SelectStatusOfDocument(context),
+          SelectStatusOfDocument(context, currentLanguage),
           SizedBox(
             height: 15.h,
           ),
@@ -474,11 +504,12 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                         {
                           'comment': comment,
                           // ignore: use_build_context_synchronously
-                          'staffTypeReview': "Auditor",
+                          'staffTypeReview': "Auditor", "statusDoc": selectItem,
                         }
                       ]),
                       "statusDoc": selectItem,
                       'isAccountantReview': false,
+
                       //  'accountant by':"email"
                     }).then((value) {
                       try {
@@ -490,7 +521,8 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                           querySnapshot.docs.forEach((doc) {
                             // Check if the document exists
                             if (doc.exists) {
-                              if (selectItem == "amendment") {
+                              if (selectItem == "amendment" ||
+                                  selectItem == "مكرر") {
                                 doc.reference
                                     .update({
                                       "status": {
@@ -502,19 +534,21 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                                         print("Document updated successfully"))
                                     .catchError((error) => print(
                                         "Failed to update document: $error"));
-                              } else if (selectItem == "Finished") {
+                              } else if (selectItem == "Finished" ||
+                                  selectItem == "تم الانتهاء من المستند") {
                                 doc.reference
                                     .update({
                                       "status": {
                                         'en': "Finished",
-                                        'ar': "تم الانتهاء من المستند",
+                                        'ar': "تم الانتهاء من المستند"
                                       }
                                     })
                                     .then((_) =>
                                         print("Document updated successfully"))
                                     .catchError((error) => print(
                                         "Failed to update document: $error"));
-                              } else if (selectItem == "Canceled") {
+                              } else if (selectItem == "Canceled" ||
+                                  selectItem == "المستند ملغي") {
                                 doc.reference
                                     .update({
                                       "status": {
@@ -526,7 +560,8 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                                         print("Document updated successfully"))
                                     .catchError((error) => print(
                                         "Failed to update document: $error"));
-                              } else if (selectItem == "Finished") {
+                              } else if (selectItem == "Finished" ||
+                                  selectItem == "تم قبول المستند") {
                                 doc.reference
                                     .update({
                                       "status": {

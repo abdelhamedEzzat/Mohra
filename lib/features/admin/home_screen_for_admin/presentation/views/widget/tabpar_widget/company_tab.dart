@@ -68,18 +68,33 @@ class CompanysTabBarScreen extends StatefulWidget {
 }
 
 class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
-  List<String> filterCompanyDropDown = [
-    "Accepted",
-    "Rejected",
-    "Waiting for Accepted",
-  ];
+  Map<String, Map<String, String>> filterCompanyDropDown = {
+    "Accepted": {
+      "en": "Accepted",
+      "ar": "تم قبول الشركه",
+    },
+    "Rejected": {
+      "en": "Rejected",
+      "ar": "تم رفض الشركه",
+    },
+    "Waiting for Accepted": {
+      "en": "Waiting for Accepted",
+      "ar": "في انتظار الموافقه",
+    },
+  };
+ 
 
   String? selectItem;
   @override
   Widget build(BuildContext context) {
+    Language currentLanguage = BlocProvider.of<LanguageCubit>(context).state;
     Stream<QuerySnapshot> allCompany = FirebaseFirestore.instance
         .collection('Companys')
-        .where('CompanyStatus', isEqualTo: selectItem)
+        .where(
+            currentLanguage == Language.arabic
+                ? 'CompanyStatus.ar'
+                : 'CompanyStatus.en',
+            isEqualTo: selectItem)
         .snapshots();
     return Container(
       //color: ColorManger.darkGray.withOpacity(0.5),
@@ -154,14 +169,23 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
               borderRadius: BorderRadius.circular(10),
               isExpanded: true,
               value: selectItem,
-              items: filterCompanyDropDown
-                  .map((item) => DropdownMenuItem(
-                      value: item,
-                      child: Text(
-                        item,
-                        style: Theme.of(context).textTheme.displayMedium,
-                      )))
-                  .toList(),
+              items: currentLanguage == Language.arabic
+                  ? filterCompanyDropDown.values
+                      .map((value) => DropdownMenuItem(
+                          value: value['ar'],
+                          child: Text(
+                            value['ar']!,
+                            style: Theme.of(context).textTheme.displayMedium,
+                          )))
+                      .toList()
+                  : filterCompanyDropDown.values
+                      .map((value) => DropdownMenuItem(
+                          value: value['en'],
+                          child: Text(
+                            value['en']!,
+                            style: Theme.of(context).textTheme.displayMedium,
+                          )))
+                      .toList(),
               onChanged: (item) => setState(() {
                 selectItem = item!;
               }),
@@ -187,21 +211,26 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                     shrinkWrap: true,
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return snapshot.data!.docs[index]["CompanyStatus"]
-                                      .containsKey('en') ==
-                                  "Waiting for Review" ||
-                              snapshot.data!.docs[index]["CompanyStatus"]
-                                      .containsKey('ar') ==
-                                  "في انتظار المراجعة"
+                      return (snapshot.data!.docs[index]["CompanyStatus"]
+                                      .containsKey('en') &&
+                                  snapshot.data!.docs[index]["CompanyStatus"]
+                                          ['en'] ==
+                                      "Waiting for Accepted") ||
+                              (snapshot.data!.docs[index]["CompanyStatus"]
+                                      .containsKey('ar') &&
+                                  snapshot.data!.docs[index]["CompanyStatus"]
+                                          ['ar'] ==
+                                      "في انتظار الموافقه")
                           ? SingleChildScrollView(
                               child: Container(
-                                  height: 135.h,
-                                  decoration: BoxDecoration(
-                                      color: ColorManger.darkGray
-                                          .withOpacity(0.08),
-                                      borderRadius: BorderRadius.circular(25)),
-                                  margin: EdgeInsets.all(8.0),
-                                  child: Column(children: [
+                                height: 135.h,
+                                decoration: BoxDecoration(
+                                  color: ColorManger.darkGray.withOpacity(0.08),
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                margin: EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
                                     CompanyButton(
                                       onTap: () {},
                                       withStatus: true,
@@ -221,16 +250,20 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                                       height: 2.h,
                                     ),
                                     Expanded(
-                                        child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        rejectedCompanyMethod(
-                                            context, snapshot, index),
-                                        acceptedCompanyMethod(
-                                            context, snapshot, index),
-                                      ],
-                                    )),
-                                  ])))
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          rejectedCompanyMethod(
+                                              context, snapshot, index),
+                                          acceptedCompanyMethod(
+                                              context, snapshot, index),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
                           : SingleChildScrollView(
                               child: Column(
                                 children: [
@@ -247,7 +280,7 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                                                 "Accepted" ||
                                             snapshot.data!.docs[index]
                                                     ["CompanyStatus"]['ar'] ==
-                                                "مقبول") {
+                                                "تم قبول الشركه") {
                                           Navigator.of(context).pushNamed(
                                               RouterName.mangeCompanyStaff,
                                               arguments: snapshot.data!
@@ -265,7 +298,7 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                                                 'Accepted' ||
                                             snapshot.data!.docs[index]
                                                     ["CompanyStatus"]['ar'] ==
-                                                'مقبول'
+                                                "تم قبول الشركه"
                                         ? Colors.black.withOpacity(0.8)
                                         : Colors.red,
                                     statusText:
@@ -390,7 +423,7 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                     .collection('Companys')
                     .doc(companyDocument.id)
                     .update({
-                  'CompanyStatus': {"ar": "مرفوض", "en": "rejected"}
+                  'CompanyStatus': {"ar": "تم رفض الشركه", "en": "Rejected"}
                 });
 
                 await FirebaseFirestore.instance
@@ -452,7 +485,10 @@ class _CompanysTabBarScreenState extends State<CompanysTabBarScreen> {
                           .collection('Companys')
                           .doc(companyDocument.id)
                           .update({
-                        'CompanyStatus': {"ar": "مقبول", "en": "Accepted"}
+                        'CompanyStatus': {
+                          "ar": "تم قبول الشركه",
+                          "en": "Accepted"
+                        }
                       });
 
                       await FirebaseFirestore.instance

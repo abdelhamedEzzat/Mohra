@@ -208,7 +208,9 @@
   
    
    
-   "Profile":"Profile"
+   "Profile":"Profile",
+   "AccountantReviews": "Accountant Reviews",
+   "AuditorReviews":"Auditor Reviews"
    
    
 }

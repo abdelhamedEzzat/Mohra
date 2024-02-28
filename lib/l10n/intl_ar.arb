@@ -191,5 +191,9 @@
    "status": "في انتظار المراجعة",
    "CompanyStatus":"في انتظار الموافقه",
    "Regected":"رفض",
-   "Profile":"معلومات الحساب"
+   "Profile":"معلومات الحساب",
+   "AccountantReviews": "مراجعة المحاسب",
+   "AuditorReviews":"مراجعه المدقق " 
+   
+   
 }

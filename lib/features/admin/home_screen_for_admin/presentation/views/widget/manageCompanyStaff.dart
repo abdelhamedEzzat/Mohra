@@ -68,33 +68,38 @@ class MangeCompanyStaff extends StatelessWidget {
                         .copyWith(color: Colors.white),
                   ),
                   Expanded(
-                    child: StreamBuilder(
-                      stream: allDocument,
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: 1,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Row(
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      "${snapshot.data.docs.length}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displayMedium!
-                                          .copyWith(color: Colors.white),
+                    flex: 1,
+                    child: Container(
+                      height: 15.h,
+                      child: StreamBuilder(
+                        stream: allDocument,
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: 1,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Row(
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        "${snapshot.data.docs.length}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displayMedium!
+                                            .copyWith(color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }
-                        return Text("data");
-                      },
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                          return Text("data");
+                        },
+                      ),
                     ),
                   ),
                 ],
