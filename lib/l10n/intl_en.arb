@@ -85,7 +85,7 @@
      "DetailsDocuments":"Details Documents",
      "CreateCompanys":"Create Company",
      "AddLogo":"Add Logo",
-     "CompanyName":"Company Name",   
+     "CompanyName":"Company Name :",   
      "FeildRequierd":"*this Field is Requierd",
      "LattersOnly":"Please enter only letters",
      "hintNameCompany":"Write Your Company Name",
@@ -127,7 +127,7 @@
     "invoiceNumber":"invoiceNumber :",
     "selectItem":"select Item :",
     "selectTypeItem":"select Type Item :",
-   "amountOfTheInvoice":"amount Of The Invoice :",
+   "amountOfTheInvoice":"amount Of The Invoice ",
    "StaffTypeReview":"Staff Type Review :",
    "DocumentStatus":"Document Status :",
    

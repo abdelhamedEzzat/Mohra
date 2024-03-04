@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -167,14 +168,22 @@ class _AccountantDocumentDetailsState extends State<AccountantDocumentDetails> {
                     decoration: BoxDecoration(
                         color: ColorManger.white,
                         borderRadius: BorderRadius.circular(10)),
-                    child: Row(children: [
-                      Text(
-                        S.of(context).Comments,
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-                      Text(docDitails['comment'],
-                          style: Theme.of(context).textTheme.displayMedium)
-                    ]),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            S.of(context).Comments,
+                            style: Theme.of(context).textTheme.displayMedium,
+                          ),
+                          Expanded(
+                            child: Text(docDitails['comment'],
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                style:
+                                    Theme.of(context).textTheme.displayMedium),
+                          )
+                        ]),
                   ),
                   SizedBox(
                     height: 10.h,

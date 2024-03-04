@@ -154,14 +154,21 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                   decoration: BoxDecoration(
                       color: ColorManger.white,
                       borderRadius: BorderRadius.circular(10)),
-                  child: Row(children: [
-                    Text(
-                      S.of(context).Comments,
-                      style: Theme.of(context).textTheme.displayMedium,
-                    ),
-                    Text(docDitails['comment'],
-                        style: Theme.of(context).textTheme.displayMedium)
-                  ]),
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          S.of(context).Comments,
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
+                        Expanded(
+                          child: Text(docDitails['comment'],
+                              maxLines: 4,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                              style: Theme.of(context).textTheme.displayMedium),
+                        )
+                      ]),
                 ),
                 const Divider(
                   color: Colors.black,

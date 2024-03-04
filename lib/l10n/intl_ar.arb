@@ -73,7 +73,7 @@
     "DetailsDocuments":"تفاصيل المستند",
     "CreateCompanys":"انشئ شركه",
     "AddLogo":"اضف شعار",
-    "CompanyName":"اسم الشركه",
+    "CompanyName":"اسم الشركه:",
     "FeildRequierd":"هذا الحقل مطلوب *",
     "LattersOnly":"من فضلك بمكنك كتابه الاحرف فقط ",
     "hintNameCompany":"اكتب اسم الشركه ",

@@ -2,7 +2,9 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/features/search_screen/search_screen_for_user.dart';
@@ -105,14 +107,21 @@ class _DetailsDocumentsState extends State<DetailsDocuments> {
                       ),
                       Container(
                         padding: EdgeInsets.only(
-                            left: 15.w, top: 10.h, bottom: 10.h),
+                            left: 15.w, top: 10.h, bottom: 10.h, right: 15.w),
                         decoration: BoxDecoration(
                             border: Border.all(color: ColorManger.darkGray),
                             color: ColorManger.white,
                             borderRadius: BorderRadius.circular(25)),
                         child: Row(children: [
                           Text(S.of(context).Comments),
-                          Text("${doc['comment']}")
+                          Expanded(
+                            child: Text(
+                              "${doc['comment']}",
+                              maxLines: 4,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                            ),
+                          )
                         ]),
                       )
                     ],
@@ -148,15 +157,24 @@ class _DetailsDocumentsState extends State<DetailsDocuments> {
                       ),
                       Container(
                         padding: EdgeInsets.only(
-                            left: 15.w, top: 10.h, bottom: 10.h),
+                            left: 15.w, top: 10.h, bottom: 10.h, right: 15.w),
                         decoration: BoxDecoration(
                             border: Border.all(color: ColorManger.darkGray),
                             color: ColorManger.white,
                             borderRadius: BorderRadius.circular(25)),
-                        child: Row(children: [
-                          Text(S.of(context).Comments),
-                          Text("${doc['comment']}")
-                        ]),
+                        child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(S.of(context).Comments),
+                              Expanded(
+                                child: Text(
+                                  "${doc['comment']}",
+                                  maxLines: 4,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                ),
+                              )
+                            ]),
                       )
                     ],
                   )));

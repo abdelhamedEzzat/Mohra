@@ -67,20 +67,20 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) =>
+    // DevicePreview(
+    //   enabled: !kReleaseMode,
+    //   builder: (context) =>
 
-          //  MultiBlocProvider(
-          // providers: [
-          //   RepositoryProvider<AuthRepostory>(
-          //       create: (_) => AuthRepostory()),
-          //   RepositoryProvider<LoginAuthProvider>(
-          //       create: (_) => LoginAuthProvider()),
-          // ],
-          const MyApp(),
-      // )
-    ),
+    //  MultiBlocProvider(
+    // providers: [
+    //   RepositoryProvider<AuthRepostory>(
+    //       create: (_) => AuthRepostory()),
+    //   RepositoryProvider<LoginAuthProvider>(
+    //       create: (_) => LoginAuthProvider()),
+    // ],
+    const MyApp(),
+    // )
+    // ),
   );
 }
 
