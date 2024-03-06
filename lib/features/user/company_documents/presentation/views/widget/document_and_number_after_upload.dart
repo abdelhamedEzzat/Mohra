@@ -199,7 +199,7 @@ class ImageDocWidget extends StatelessWidget {
                     ],
                   ),
                   Positioned(
-                    top: 35.h,
+                    top: 34.5.h,
                     right: 0,
                     bottom: 0,
                     child: GestureDetector(
@@ -333,100 +333,10 @@ class FilesDocWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      //      Column(
-                      //   mainAxisSize: MainAxisSize.min,
-                      //   children: [
-                      //     BlocBuilder<UploadDocumentsCubit, UploadDocumentsState>(
-                      //         builder: (context, state) {
-                      //       if (trigerCubit.filePlatforme != null &&
-                      //           trigerCubit.imagefile == null) {
-                      //         if (trigerCubit.filePlatforme!.extension == 'jpg' ||
-                      //             trigerCubit.filePlatforme!.extension == 'jpeg' ||
-                      //             trigerCubit.filePlatforme!.extension == 'JPG' ||
-                      //             trigerCubit.filePlatforme!.extension == 'JPEG') {
-                      //           return AddImageWidget(
-                      //             image: ClipRRect(
-                      //               borderRadius:
-                      //                   const BorderRadius.all(Radius.circular(24)),
-                      //               child: Image.file(
-                      //                 File(trigerCubit.filePlatforme!.path
-                      //                     .toString()),
-                      //                 fit: BoxFit.fitWidth,
-                      //               ),
-                      //             ),
-                      //           );
-                      //         } else if (trigerCubit.imagefile != null &&
-                      //             trigerCubit.filePlatforme == null) {
-                      //           return Expanded(
-                      //             child: Row(
-                      //               mainAxisSize: MainAxisSize.min,
-                      //               children: [
-                      //                 Expanded(
-                      //                     flex: 4,
-                      //                     child: Container(
-                      //                         decoration: BoxDecoration(
-                      //                             color: ColorManger.slogenColor,
-                      //                             borderRadius:
-                      //                                 const BorderRadius.only(
-                      //                                     bottomLeft:
-                      //                                         Radius.circular(25),
-                      //                                     bottomRight:
-                      //                                         Radius.circular(25))),
-                      //                         height: MediaQuery.of(context)
-                      //                             .size
-                      //                             .height,
-                      //                         child: Row(
-                      //                           children: [
-                      //                             SizedBox(
-                      //                               width: 10.w,
-                      //                             ),
-                      //                             CircleAvatar(
-                      //                               backgroundColor:
-                      //                                   ColorManger.darkGray,
-                      //                               maxRadius: 28.h,
-                      //                               minRadius: 22.h,
-                      //                               child: Text(
-                      //                                 pdfFileExtention,
-                      //                                 style: Theme.of(context)
-                      //                                     .textTheme
-                      //                                     .displayLarge!
-                      //                                     .copyWith(
-                      //                                         color: Colors.white),
-                      //                               ),
-                      //                             ),
-                      //                             SizedBox(
-                      //                               width: 10.w,
-                      //                             ),
-                      //                             SizedBox(
-                      //                               width: 200.w,
-                      //                               child: Text(
-                      //                                 pdfFileName,
-                      //                                 style: Theme.of(context)
-                      //                                     .textTheme
-                      //                                     .displayLarge!
-                      //                                     .copyWith(
-                      //                                         color: Colors.white),
-                      //                                 maxLines: 3,
-                      //                                 overflow:
-                      //                                     TextOverflow.ellipsis,
-                      //                               ),
-                      //                             )
-                      //                           ],
-                      //                         )))
-                      //               ],
-                      //             ),
-                      //           );
-                      //         }
-                      //       }
-                      //     }
-
-                      //     )
-                      //   ],
-                      // ),
                     ],
                   ),
                   Positioned(
-                    top: 35.h,
+                    top: 34.5.h,
                     right: 0,
                     bottom: 0,
                     child: Container(
@@ -540,7 +450,7 @@ class DocumentForAuditor extends StatelessWidget {
                     ],
                   ),
                   Positioned(
-                    top: 35.h,
+                    top: 34.5.h,
                     right: 0,
                     bottom: 0,
                     child: GestureDetector(
