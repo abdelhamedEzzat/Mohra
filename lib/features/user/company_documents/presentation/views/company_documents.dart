@@ -60,8 +60,14 @@ class _CompanyDocumentsState extends State<CompanyDocuments> {
               ),
               GestureDetector(
                 onTap: () async {
-                  await Navigator.pushNamed(context, RouterName.uploadDocuments,
-                      arguments: companyData["companyId"].toString());
+                  await Navigator.pushNamed(
+                    context,
+                    RouterName.uploadDocuments,
+                    arguments: {
+                      'companyId': companyData["companyId"].toString(),
+                      'companyName': companyData["companyName"],
+                    },
+                  );
                 },
                 child: const UploadDocumentsBotton(),
               ),

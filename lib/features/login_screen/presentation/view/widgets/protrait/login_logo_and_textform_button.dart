@@ -61,156 +61,167 @@ class _LoginLogoAndTextFieldAndbuttonProtraitState
       builder: (context, state) {
         return Container(
           height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 25,
-          ),
-          child: Center(
-              child: ModalProgressHUD(
+          child: ModalProgressHUD(
             inAsyncCall: isLoading,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  ImageManger.mohraLogo,
+            child: Container(
+                height: MediaQuery.of(context).size.height,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 25,
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                ClassMorphismInsideScreen(
-                  blur: 20,
-                  opacity: 0.5,
-                  child: SingleChildScrollView(
-                    child: Container(
-                        margin: const EdgeInsets.only(
-                          right: 8,
-                          left: 8,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        ImageManger.mohraLogo,
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      ClassMorphismInsideScreen(
+                        blur: 20,
+                        opacity: 0.5,
+                        child: SingleChildScrollView(
+                          child: Container(
+                              margin: const EdgeInsets.only(
+                                right: 8,
+                                left: 8,
+                              ),
+                              padding: const EdgeInsets.only(
+                                  top: 20, bottom: 20, right: 10, left: 10),
+                              child: Form(
+                                key: formKey,
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const LoginAccountText(),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+
+                                      //
+                                      //   TextFormField fo email
+
+                                      CustomTextFormField(
+                                          controller: _emailController,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return "* this Field is required You must enter data";
+                                            }
+                                            return null;
+                                          },
+                                          onChanged: (value) {
+                                            trigerCubit.emailCubit = value;
+                                          },
+                                          labelText: S
+                                              .of(context)
+                                              .emailLabelTextInRegisterScreen,
+                                          hintText: S
+                                              .of(context)
+                                              .emailHintTextInRegisterScreen,
+                                          prefixIcon: const Icon(Icons.email)),
+
+                                      //
+                                      //   TextFormField fo password
+
+                                      CustomTextFormField(
+                                        obscureText: isPasswordVisible,
+                                        controller: _passwordController,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return "* this Field is required You must enter data";
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+                                          trigerCubit.passwordCubit = value;
+                                        },
+                                        labelText: S
+                                            .of(context)
+                                            .passwordLabelTextInRegisterScreen,
+                                        hintText: S
+                                            .of(context)
+                                            .passwordHintTextInRegisterScreen,
+                                        prefixIcon: const Icon(Icons.lock),
+                                        suffixIcon: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isPasswordVisible =
+                                                  !isPasswordVisible;
+                                            });
+                                          },
+                                          child: Icon(
+                                            isPasswordVisible
+                                                ? Icons.visibility_off
+                                                : Icons.visibility,
+                                          ),
+                                        ),
+                                      ),
+                                      //
+                                      //this widget for forget password
+
+                                      const ForgetPassword(),
+
+                                      //
+                                      //
+                                      CustomButton(
+                                          nameOfButton:
+                                              S.of(context).loginAccountBotton,
+                                          onTap: () async {
+                                            if (formKey.currentState!
+                                                .validate()) {
+                                              formKey.currentState!.save();
+                                              //
+                                              // this function for  user sign in
+                                              Constanscollection
+                                                  .getUserStatus();
+                                              await trigerCubit.userSignin(
+                                                email: trigerCubit.emailCubit,
+
+                                                //
+                                                // this function for get user data
+
+                                                password:
+                                                    trigerCubit.passwordCubit,
+                                              );
+                                              await trigerCubit.getUserdata();
+                                            }
+                                          }),
+
+                                      //
+                                      // this function for sign in with google
+
+                                      CustomBottonWithIconOrImage(
+                                          onTap: () async {
+                                            await trigerCubit
+                                                .signInWithGoogle();
+
+                                            final user = trigerCubit.user;
+
+                                            if (user != null) {
+                                              checkEmailForSigninWithGoogle(
+                                                  context);
+                                            }
+                                          },
+                                          imageIconButton:
+                                              ImageManger.googleLogo,
+                                          nameOfButton: S
+                                              .of(context)
+                                              .loginAccountBottonByGoogle),
+
+                                      //
+                                      //this function for goto signup screen
+
+                                      const IfYouDidntHaveAccount()
+                                    ]),
+                              )),
                         ),
-                        padding: const EdgeInsets.only(
-                            top: 20, bottom: 20, right: 10, left: 10),
-                        child: Form(
-                          key: formKey,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const LoginAccountText(),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-
-                                //
-                                //   TextFormField fo email
-
-                                CustomTextFormField(
-                                    controller: _emailController,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "* this Field is required You must enter data";
-                                      }
-                                      return null;
-                                    },
-                                    onChanged: (value) {
-                                      trigerCubit.emailCubit = value;
-                                    },
-                                    labelText: S
-                                        .of(context)
-                                        .emailLabelTextInRegisterScreen,
-                                    hintText: S
-                                        .of(context)
-                                        .emailHintTextInRegisterScreen,
-                                    prefixIcon: const Icon(Icons.email)),
-
-                                //
-                                //   TextFormField fo password
-
-                                CustomTextFormField(
-                                  obscureText: isPasswordVisible,
-                                  controller: _passwordController,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "* this Field is required You must enter data";
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-                                    trigerCubit.passwordCubit = value;
-                                  },
-                                  labelText: S
-                                      .of(context)
-                                      .passwordLabelTextInRegisterScreen,
-                                  hintText: S
-                                      .of(context)
-                                      .passwordHintTextInRegisterScreen,
-                                  prefixIcon: const Icon(Icons.lock),
-                                  suffixIcon: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isPasswordVisible = !isPasswordVisible;
-                                      });
-                                    },
-                                    child: Icon(
-                                      isPasswordVisible
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                    ),
-                                  ),
-                                ),
-                                //
-                                //this widget for forget password
-
-                                const ForgetPassword(),
-
-                                //
-                                //
-                                CustomButton(
-                                    nameOfButton:
-                                        S.of(context).loginAccountBotton,
-                                    onTap: () async {
-                                      if (formKey.currentState!.validate()) {
-                                        formKey.currentState!.save();
-                                        //
-                                        // this function for  user sign in
-                                        Constanscollection.getUserStatus();
-                                        await trigerCubit.userSignin(
-                                          email: trigerCubit.emailCubit,
-
-                                          //
-                                          // this function for get user data
-
-                                          password: trigerCubit.passwordCubit,
-                                        );
-                                        await trigerCubit.getUserdata();
-                                      }
-                                    }),
-
-                                //
-                                // this function for sign in with google
-
-                                CustomBottonWithIconOrImage(
-                                    onTap: () async {
-                                      await trigerCubit.signInWithGoogle();
-
-                                      final user = trigerCubit.user;
-
-                                      if (user != null) {
-                                        checkEmailForSigninWithGoogle(context);
-                                      }
-                                    },
-                                    imageIconButton: ImageManger.googleLogo,
-                                    nameOfButton: S
-                                        .of(context)
-                                        .loginAccountBottonByGoogle),
-
-                                //
-                                //this function for goto signup screen
-
-                                const IfYouDidntHaveAccount()
-                              ]),
-                        )),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          )),
+                )),
+          ),
         );
       },
     );

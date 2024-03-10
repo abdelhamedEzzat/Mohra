@@ -133,7 +133,8 @@
    
    "PleaseWriteaComment": "Please write a comment",
    "Auditor":"Auditor",
-   "AuditorReviewyourDocumentin":"Auditor Review your Document in",
+   "AuditorReviewyourDocumentin":"Auditor Review your Document Number ",
+  
    "witha":"with",
    "YouMustaddStatusOfDocument":"You Must add Status Of Document",
    "AddDocumentType":"Add Document Type",
@@ -210,7 +211,10 @@
    
    "Profile":"Profile",
    "AccountantReviews": "Accountant Reviews",
-   "AuditorReviews":"Auditor Reviews"
+   "AuditorReviews":"Auditor Reviews",
+   
+   
+   "ina":"in"
    
    
 }

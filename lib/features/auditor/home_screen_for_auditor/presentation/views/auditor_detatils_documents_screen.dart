@@ -47,6 +47,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
   Widget build(BuildContext context) {
     // bool isBord = true;
     Language currentLanguage = BlocProvider.of<LanguageCubit>(context).state;
+
     Map<String, dynamic> docDitails =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
@@ -216,7 +217,7 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
 //
 //
                       //todo
-                      if (document['isAccountantReview'] == true) {
+                      if (document['isAccountantReview'] == false) {
                         return Column(
                           children: [
                             if (accountantContainers.isNotEmpty)
@@ -599,10 +600,10 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                             .collection('Notification')
                             .add({
                           'notificationMassage':
-                              "${S.of(context).AuditorReviewyourDocumentin} ${docDitails['company_Name']} ${S.of(context).witha} $selectItem ",
+                              "${S.of(context).AuditorReviewyourDocumentin}  ${docDitails['docNumer']}${S.of(context).ina} ${docDitails['companyName']} ${S.of(context).witha} $selectItem ",
                           'role': "forUser",
                           'MassgeSendBy': 'AuditorReview',
-                          'NotificationCompanyID': docDitails['DocID'],
+                          'NotificationCompanyID': docDitails['companydocID'],
                           'NotificationUserID':
                               FirebaseAuth.instance.currentUser!.uid
                         });
@@ -611,10 +612,10 @@ class _AccountantDocumentDetailsState extends State<AuditorDocumentDetails> {
                             .collection('Notification')
                             .add({
                           'notificationMassage':
-                              "${S.of(context).AuditorReviewyourDocumentin} ${docDitails['company_Name']} ${S.of(context).witha} $selectItem ",
+                              "${S.of(context).AuditorReviewyourDocumentin}  ${docDitails['docNumer']}${S.of(context).ina} ${docDitails['companyName']} ${S.of(context).witha} $selectItem ",
                           'role': "Auditor",
                           'MassgeSendBy': 'AuditorReview',
-                          'NotificationCompanyID': docDitails['DocID'],
+                          'NotificationCompanyID': docDitails['companydocID'],
                           'NotificationUserID':
                               FirebaseAuth.instance.currentUser!.uid
                         });

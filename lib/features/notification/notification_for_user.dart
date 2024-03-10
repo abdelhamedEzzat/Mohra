@@ -37,7 +37,7 @@ class NotificationScreenForUser extends StatelessWidget {
                                   .collection('Notification')
                                   .where('NotificationCompanyID',
                                       isEqualTo: userCompanysId)
-                                  .where('role', isEqualTo: 'admin')
+                                  .where('role', isEqualTo: "forUser")
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {

@@ -66,22 +66,21 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(
-    // DevicePreview(
-    //   enabled: !kReleaseMode,
-    //   builder: (context) =>
+  runApp(DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) =>
 
-    //  MultiBlocProvider(
-    // providers: [
-    //   RepositoryProvider<AuthRepostory>(
-    //       create: (_) => AuthRepostory()),
-    //   RepositoryProvider<LoginAuthProvider>(
-    //       create: (_) => LoginAuthProvider()),
-    // ],
-    const MyApp(),
-    // )
-    // ),
-  );
+        //  MultiBlocProvider(
+        // providers: [
+        //   RepositoryProvider<AuthRepostory>(
+        //       create: (_) => AuthRepostory()),
+        //   RepositoryProvider<LoginAuthProvider>(
+        //       create: (_) => LoginAuthProvider()),
+        // ],
+        const MyApp(),
+  )
+      // ),
+      );
 }
 
 class MyApp extends StatelessWidget {

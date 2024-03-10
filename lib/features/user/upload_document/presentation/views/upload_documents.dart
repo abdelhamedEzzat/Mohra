@@ -34,7 +34,7 @@ class _UploadDocumentsState extends State<UploadDocuments> {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
     final trigerCubit = BlocProvider.of<UploadDocumentsCubit>(context);
-    var companyId = ModalRoute.of(context)?.settings.arguments;
+    var companyId = ModalRoute.of(context)?.settings.arguments as Map;
     bool isLoading = false;
     return Scaffold(
         appBar: CustomAppBar(
@@ -258,6 +258,8 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                           onTap: () async {
                             if (trigerCubit.filePlatforme != null) {
                               await trigerCubit.pickFile(
+                                  companyName:
+                                      companyId['companyName'] as String,
                                   status: S.of(context).status,
                                   docNumber: trigerCubit.docNumber++,
                                   // fileExtention: trigerCubit.file!.extension,
@@ -271,9 +273,11 @@ class _UploadDocumentsState extends State<UploadDocuments> {
                             } else if (trigerCubit.imagefile != null) {
                               await trigerCubit
                                   .uploadImageAndAddInfoToFirestore(
+                                      companyName: companyId["companyName"],
                                       status: S.of(context).status,
                                       docNumber: trigerCubit.docNumber++,
-                                      companydocID: companyId as String,
+                                      companydocID:
+                                          companyId['companyId'] as String,
                                       comment: trigerCubit.comment);
                               // ignore: use_build_context_synchronously
                               Navigator.of(context).pop(

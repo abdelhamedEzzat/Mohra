@@ -1,15 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/icon_and_text_company.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/manger/language/language_cubit.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
-class AccountantHomeScreenBody extends StatelessWidget {
-  const AccountantHomeScreenBody({Key? key});
+class AccountantHomeScreenBody extends StatefulWidget {
+  const AccountantHomeScreenBody({Key? key}) : super(key: key);
+
+  @override
+  _AccountantHomeScreenBodyState createState() =>
+      _AccountantHomeScreenBodyState();
+}
+
+class _AccountantHomeScreenBodyState extends State<AccountantHomeScreenBody> {
+  late Stream<QuerySnapshot<Map<String, dynamic>>> staffStream;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +53,18 @@ class AccountantHomeScreenBody extends StatelessWidget {
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
+                          // List<String> companyId =
+                          //     snapshot.data?.docs.map((doc) {
+                          //           return doc['companyId'] as String;
+                          //         }).toList() ??
+                          //         [];
                           return StreamBuilder<QuerySnapshot>(
                             stream: FirebaseFirestore.instance
                                 .collection('Staff')
                                 .where('userid',
                                     isEqualTo:
                                         FirebaseAuth.instance.currentUser!.uid)
+                                // .where('CompanyId', isEqualTo: companyId)
                                 .snapshots(),
                             builder:
                                 (BuildContext context, AsyncSnapshot snapshot) {
@@ -76,7 +97,8 @@ class AccountantHomeScreenBody extends StatelessWidget {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator(color: Colors.black);
+                        return const CircularProgressIndicator(
+                            color: Colors.black);
                       }
 
                       if (snapshot.hasError) {
@@ -99,7 +121,7 @@ class AccountantHomeScreenBody extends StatelessWidget {
                               AsyncSnapshot docSnapshot) {
                             if (docSnapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator(
+                              return const CircularProgressIndicator(
                                   color: Colors.black);
                             }
 
@@ -119,6 +141,7 @@ class AccountantHomeScreenBody extends StatelessWidget {
                         );
                       } else {
                         return IconsAndTextToCompany(
+                          //numberOfCompany: 1,
                           text: S.of(context).Documents,
                         );
                       }
@@ -131,28 +154,82 @@ class AccountantHomeScreenBody extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 20.h),
             margin: EdgeInsets.only(top: 20.h),
             width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
-              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              child: StreamBuilder(
                 stream: companyCollection,
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                        staffSnapshot) {
-                  if (staffSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  }
-
-                  if (staffSnapshot.hasError) {
-                    return Text('Error: ${staffSnapshot.error}');
-                  }
-
-                  if (!staffSnapshot.hasData ||
-                      staffSnapshot.data!.docs.isEmpty) {
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                    Language currentLanguage =
+                        BlocProvider.of<LanguageCubit>(context).state;
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: currentLanguage == Language.arabic
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: Text(
+                            S.of(context).MyAvailableCompanies,
+                            style: Theme.of(context).textTheme.displayLarge,
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap:
+                              true, // Allow the outer ListView to take its natural size
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data.docs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            String companyId =
+                                snapshot.data.docs[index]['CompanyId'];
+                            return StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('Companys')
+                                  .where('companyId', isEqualTo: companyId)
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot companySnapshot) {
+                                if (companySnapshot.hasData &&
+                                    companySnapshot.data.docs.isNotEmpty) {
+                                  return ListView.builder(
+                                    shrinkWrap:
+                                        true, // Allow the inner ListView to take its natural size
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: companySnapshot.data.docs.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return CompanyButton(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                            RouterName
+                                                .accuntantCompanyDocuments,
+                                            arguments: companySnapshot
+                                                .data!.docs[index]['companyId']
+                                                .toString(),
+                                          );
+                                        },
+                                        withStatus: false,
+                                        companyName: companySnapshot
+                                            .data!.docs[index]['company_Name'],
+                                        logoCompany: companySnapshot
+                                            .data!.docs[index]['logo'],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  // Handle the case when there is no data
+                                  return Text(
+                                      S.of(context).NoAvailableCompanies);
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  } else {
                     return Center(
                       child: Container(
                         alignment: Alignment.center,
@@ -182,87 +259,11 @@ class AccountantHomeScreenBody extends StatelessWidget {
                       ),
                     );
                   }
-
-                  return Container(
-                    width: 300,
-                    height: 300,
-                    child: ListView.builder(
-                      itemCount: staffSnapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        QueryDocumentSnapshot<Object?> staffDocument =
-                            staffSnapshot.data!.docs[index];
-                        var staffCompanyId = staffDocument['CompanyId'];
-
-                        var companyCollection = FirebaseFirestore.instance
-                            .collection('Companys')
-                            .where("companyId", isEqualTo: staffCompanyId)
-                            .snapshots();
-
-                        return StreamBuilder<
-                            QuerySnapshot<Map<String, dynamic>>>(
-                          stream: companyCollection,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                                  companySnapshot) {
-                            if (companySnapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
-                            }
-
-                            if (companySnapshot.hasError) {
-                              return Text('Error: ${companySnapshot.error}');
-                            }
-
-                            if (!companySnapshot.hasData ||
-                                companySnapshot.data!.docs.isEmpty) {
-                              return Text(S.of(context).Nodocumentsfoundforyou);
-                            }
-
-                            if (index < companySnapshot.data!.docs.length) {
-                              var companyData =
-                                  companySnapshot.data!.docs[index].data();
-
-                              if (companyData.containsKey('company_Name')) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      S.of(context).MyAvailableCompanies,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displayLarge,
-                                    ),
-                                    CompanyButton(
-                                      onTap: () {
-                                        Navigator.of(context).pushNamed(
-                                            RouterName
-                                                .accuntantCompanyDocuments,
-                                            arguments: companySnapshot.data!
-                                                .docs[index]['companyId']);
-                                      },
-                                      withStatus: false,
-                                      companyName: companyData['company_Name'],
-                                      logoCompany: companySnapshot
-                                          .data!.docs[index]['logo'],
-                                    )
-                                  ],
-                                );
-                              } else {
-                                return Text('Missing data: company_Name');
-                              }
-                            } else {
-                              return Text('Invalid index: $index');
-                            }
-                          },
-                        );
-                      },
-                    ),
-                  );
                 },
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }

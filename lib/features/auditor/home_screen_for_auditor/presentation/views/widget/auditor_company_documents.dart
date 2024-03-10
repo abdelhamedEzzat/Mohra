@@ -80,6 +80,7 @@ class AuditorCompanyDocuments extends StatelessWidget {
                 stream: documentCompany,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    print("*sadasda654asd $companyDocId");
                     Language currentLanguage =
                         BlocProvider.of<LanguageCubit>(context).state;
                     List<Widget> itemList = [];
@@ -114,8 +115,11 @@ class AuditorCompanyDocuments extends StatelessWidget {
                               arguments: {
                                 'url': doc["url"],
                                 'DocID': doc["DocID"],
+                                'companyName': doc["companyName"],
                                 'fileExtention': doc["fileExtention"],
                                 'comment': doc['comment'],
+                                "companydocID": doc["companydocID"],
+                                "docNumer": doc["docNumer"],
                               },
                             );
                           },
@@ -185,7 +189,10 @@ class AuditorCompanyDocuments extends StatelessWidget {
                                   'url': doc["url"],
                                   'DocID': doc["DocID"],
                                   'comment': doc['comment'],
-                                  'fileExtention': doc['fileExtention']
+                                  'fileExtention': doc['fileExtention'],
+                                  'companyName': doc["companyName"],
+                                  "companydocID": doc["companydocID"],
+                                  "docNumer": doc["docNumer"],
                                 },
                               );
                             },

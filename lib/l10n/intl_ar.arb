@@ -69,7 +69,7 @@
 
     "WatingforReview":"بأنتظار المراجعه",
 
-
+   
     "DetailsDocuments":"تفاصيل المستند",
     "CreateCompanys":"انشئ شركه",
     "AddLogo":"اضف شعار",
@@ -121,6 +121,7 @@
    "Auditor":"مدقق الحسابات",
    "AuditorReviewyourDocumentin":"تم مراجعه المستند بواسطه مدقق الحسابات في ",
    "witha":"وتم",
+   "w":"withNumber",
    "YouMustaddStatusOfDocument":"يجب عليك إضافة حالة المستند",
    "AddDocumentType":"اضف نوع المستند",
    "Companydocumentnotfound":"لا يوجد مستندات للشركه",
@@ -193,7 +194,8 @@
    "Regected":"رفض",
    "Profile":"معلومات الحساب",
    "AccountantReviews": "مراجعة المحاسب",
-   "AuditorReviews":"مراجعه المدقق " 
-   
+   "AuditorReviews":"مراجعه المدقق " ,
+  
+   "ina":"in"
    
 }

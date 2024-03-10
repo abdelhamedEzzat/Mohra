@@ -1470,6 +1470,18 @@ class S {
     );
   }
 
+  /// `Auditor Review your Document in`
+
+  /// `Auditor Review your Document in`
+  String get ina {
+    return Intl.message(
+      'in',
+      name: 'in',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Type Invoice date`
   String get TypeInvoicedate {
     return Intl.message(

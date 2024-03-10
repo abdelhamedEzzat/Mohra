@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mohra_project/core/constants/color_manger/color_manger.dart';
 import 'package:mohra_project/core/routes/name_router.dart';
 import 'package:mohra_project/features/user/home_screen_for_user/presentation/views/widget/company_botton.dart';
+import 'package:mohra_project/features/user/settings_screen/persentation/manger/language/language_cubit.dart';
 import 'package:mohra_project/generated/l10n.dart';
 
 class CustomAppBarForUsers extends StatefulWidget
@@ -101,6 +103,8 @@ class _searchuserState extends State<searchuser> {
                   isEqualTo: FirebaseAuth.instance.currentUser!.uid)
               .snapshots(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
+            Language currentLanguage =
+                BlocProvider.of<LanguageCubit>(context).state;
             if (snapshot.connectionState == ConnectionState.waiting) {
               print(FirebaseAuth.instance.currentUser!.uid);
               return const Center(
@@ -140,15 +144,17 @@ class _searchuserState extends State<searchuser> {
                         );
                         return CompanyButton(
                           onTap: () {
-                            if (snapshot.data.docs[index]['CompanyStatus'] ==
-                                "Accepted") {
+                            if (snapshot.data.docs[index]['CompanyStatus.en'] ==
+                                    "Accepted" ||
+                                snapshot.data.docs[index]['CompanyStatus.ar'] ==
+                                    "تم قبول الشركه") {
                               Navigator.pushNamed(
                                   context, RouterName.companyDocuments,
                                   arguments: {
                                     "companyId": data["companyId"],
                                     "companyName": data["company_Name"],
-                                    "companyAddress": data["Company_Address"],
-                                    "Company_type": data["companyType"],
+                                    "CompanyAddress": data["Company_Address"],
+                                    "Companytype": data["companyType"],
                                   });
                             } else {
                               return;
@@ -159,12 +165,16 @@ class _searchuserState extends State<searchuser> {
                               ["company_Name"],
                           logoCompany: snapshot.data.docs[index]["logo"],
                           colorOfStatus: snapshot.data.docs[index]
-                                      ["CompanyStatus"] ==
-                                  'Accepted'
+                                          ["CompanyStatus.en"] ==
+                                      'Accepted' ||
+                                  snapshot.data.docs[index]
+                                          ["CompanyStatus.ar"] ==
+                                      'تم قبول الشركه'
                               ? Colors.green
                               : Colors.red,
-                          statusText: snapshot.data.docs[index]
-                              ["CompanyStatus"],
+                          statusText: currentLanguage == Language.english
+                              ? snapshot.data.docs[index]["CompanyStatus.en"]
+                              : snapshot.data.docs[index]["CompanyStatus.ar"],
                         );
                       } else {
                         return SizedBox.shrink();

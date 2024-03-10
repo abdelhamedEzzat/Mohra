@@ -73,14 +73,14 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
     }
   }
 
-  Future pickFile({
-    required int docNumber,
-    required String filename,
-    required File file,
-    required String comment,
-    required String companydocID,
-    required String status,
-  }) async {
+  Future pickFile(
+      {required int docNumber,
+      required String filename,
+      required File file,
+      required String comment,
+      required String companydocID,
+      required String status,
+      required String companyName}) async {
     emit(UploadDocumentLoading());
 
     try {
@@ -112,7 +112,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
               'en': "Waiting for Review",
               'ar': "في انتظار المراجعة",
             },
-            'companyName': "",
+            'companyName': companyName,
             'invoiceDate': "",
             'invoiceNumber': "",
             'amountOfTheInvoice': "",
@@ -171,12 +171,12 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
 
 // Function to upload image to Firebase Storage and add information to Firestore
 
-  Future<void> uploadImageAndAddInfoToFirestore({
-    required String comment,
-    required String companydocID,
-    required int docNumber,
-    required String status,
-  }) async {
+  Future<void> uploadImageAndAddInfoToFirestore(
+      {required String comment,
+      required String companydocID,
+      required int docNumber,
+      required String status,
+      required String companyName}) async {
     emit(UploadDocumentLoading());
 
     try {
@@ -210,7 +210,7 @@ class UploadDocumentsCubit extends Cubit<UploadDocumentsState> {
               'en': "Waiting for Review",
               'ar': "في انتظار المراجعة",
             },
-            'companyName': "",
+            'companyName': companyName,
             'invoiceDate': "",
             'invoiceNumber': "",
             'amountOfTheInvoice': "",
